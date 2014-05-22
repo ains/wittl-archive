@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-9">
             <h1>{{ list.name }}</h1>
 
             <form method="POST" action="{% url 'insert_list_item' list.id %}">
@@ -27,6 +27,27 @@
                     </div>
                 </div>
             {% endfor %}
+        </div>
+        <div class="col-lg-3">
+            <h1>Whittles</h1>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Travel prices from <strong>London</strong></h3>
+                </div>
+                <div class="panel-body">
+                    Panel content
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Weather</h3>
+                </div>
+                <div class="panel-body">
+                    Panel content
+                </div>
+            </div>
         </div>
     </div>
 

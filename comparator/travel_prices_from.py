@@ -4,7 +4,9 @@ from money import Money
 
 
 class TravelPricesFromComparator(BaseComparator):
+    NAME = "travel_prices_from"
     REQUIRED_ATTRIBUTES = ("latitude", "longitude")
+    TRIGGERS = ["travel prices from (?P<origin_location>.*)"]
 
     @staticmethod
     def get_route_data(route):
@@ -31,6 +33,3 @@ class TravelPricesFromComparator(BaseComparator):
 
         sorted_routes = sorted(all_routes, key=lambda x: x["total_price"])
         return sorted_routes[0]["total_price"] * 2
-
-
-TRIGGERS = [(["travel prices from (?P<origin_location>.*)"], TravelPricesFromComparator)]
