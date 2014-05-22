@@ -13,5 +13,4 @@ class FactualApi():
         table = self.factual.table("global")
         query = table.search(search_parameter).include_count(True)
         query = query.geo(circle(lat, lon, radius))
-        print query.data()
         return query.data()
