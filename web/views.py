@@ -1,4 +1,5 @@
 import json
+import comparator
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
@@ -64,3 +65,15 @@ def insert_list_item(request, list_id):
         return HttpResponse("ok")
 
     return HttpResponseServerError()
+
+
+@login_required()
+def all_comparators(request):
+    def get_comparator_data(comparator_class):
+        return {
+            'name': comparator_class.NAME,
+            'required_attributes': comparator_class.REQUIRED_ATTRIBUTES
+        }
+
+    comparator_json = json.dumps(map(get_comparator_data, comparator.all_comparators.values()))
+    return HttpResponse(comparator_json)

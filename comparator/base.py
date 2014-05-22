@@ -1,5 +1,7 @@
 class BaseComparator():
+    NAME = ''
     REQUIRED_ATTRIBUTES = []
+    TRIGGERS = []
 
     def __init__(self):
         pass
@@ -7,5 +9,3 @@ class BaseComparator():
     def score(self, **kwargs):
         pass
 
-
-TRIGGERS = []

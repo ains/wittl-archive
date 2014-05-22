@@ -1,7 +1,6 @@
 import json
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from comparator import run_comparator
 
 
 class User(AbstractUser):
@@ -25,6 +24,3 @@ class ListItem(models.Model):
 
     def __unicode__(self):
         return self.name
-
-    def price_test(self):
-        return run_comparator("travel prices from london", json.loads(self.attributes))
