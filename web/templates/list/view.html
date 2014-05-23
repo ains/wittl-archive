@@ -14,44 +14,87 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-lg-9">
-            <h1>{{ list.name }}</h1>
+    <section class="col-sm-9 pane">
+        <header>
+            <h2>My Wittlist - {{ list.name }}</h2>
+        </header>
 
-            <form method="POST" action="{% url 'insert_list_item' list.id %}">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="url">URL</label>
-                    <input type="text" name="url" class="form-control" placeholder="Insert URL"/>
-                </div>
-                <input type="submit" value="Whittle It" class="btn btn-default"/>
-            </form>
+        <!-- Wittlist -->
+        <div class="wittlist row">
 
             {% for list_item in list.listitem_set.all %}
-                <div class="media">
-                    <a class="pull-left" href="#">
-                        <img class="media-object" src="{{ list_item.card_image }}" style="height: 64px; width:64px;"
-                             alt="..."/>
-                    </a>
+                <!-- Start card -->
+                <div class="col-sm-4 card-wrapper">
+                    <div class="card" data-wittl-weight="3">
+                        <div class="pic">
+                            <a class="favourite pull-right" href="#"><i class="icon_star_alt"></i></a>
+                            <img src="{{ list_item.card_image }}" title="Name of thing here"/>
+                        </div>
 
-                    <div class="media-body">
-                        <h4 class="media-heading">{{ list_item.name }}</h4>
-                        {{ list_item.price_test }}
+                        <div class="detail">
+                            <header class="col-xs-9">
+                                <h3 class="title">{{ list_item.name|truncatechars:15 }}</h3>
+
+                                <p class="wittl-meta-description">Ericeira, Portugal</p>
+                            </header>
+                            <div class="user-metrics col-xs-3">
+                                <div class="row">
+                                    <span class="col-xs-6 icon_building key"></span>
+                                    <small class="col-xs-6 value">25</small>
+                                </div>
+                                <div class="row">
+                                    <span class="col-xs-6 icon_pin_alt key"></span>
+                                    <small class="col-xs-6 value">3</small>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End detail -->
                     </div>
+                    <!-- End card -->
                 </div>
+                <!-- End card-wrapper -->
             {% endfor %}
-        </div>
-        <div class="col-lg-3">
-            <h1>Whittles</h1>
 
-            <ul id="draggablePanelList" class="sortable list-unstyled">
+        </div>
+
+        <div>
+            <form method="POST" action="{% url 'insert_list_item' list.id %}">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" name="urlt" class="form-control" placeholder="Add a new item to your Wittlist"/>
+              <span class="input-group-btn">
+                <button type="button" class="btn wittl-btn">Insert</button>
+              </span>
+                </div>
+            </form>
+        </div>
+        <!-- End wittlist -->
+    </section>
+
+
+    <section class="col-sm-3 pane">
+        <header>
+            <h2>Wittls</h2>
+        </header>
+
+        <div class="query-wrapper">
+            <div class="input-group">
+                <input type="text" name="query-input" class="form-control" placeholder="Add a new Wittl here..."/>
+              <span class="input-group-btn">
+                <button type="button" class="btn wittl-btn">WITTL</button>
+              </span>
+            </div>
+        </div>
+
+        <div class="wittl-wrapper">
+            <ul class="wittls">
                 {% for comparator in comparators %}
                     {% include 'list/comparator.html' with comparator=comparator %}
                 {% endfor %}
             </ul>
         </div>
-    </div>
 
+    </section>
 
 {% endblock %}
 
@@ -59,11 +102,11 @@
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
     <script>
         $(function () {
-            var panelList = $('#draggablePanelList');
+            var panelList = $('.wittls');
             panelList.sortable({
                 // Only make the .panel-heading child elements support dragging.
                 // Omit this to make then entire <li>...</li> draggable.
-                handle: '.panel-heading',
+                handle: 'header',
                 update: function () {
                     console.log("aa")
                 }
@@ -73,7 +116,7 @@
                     .on("change", ":input", function () {
                         var formData = $(this).parent("form").serializeArray();
                         var serializedForm = {};
-                        $.each(formData, function(i, field) {
+                        $.each(formData, function (i, field) {
                             serializedForm[field["name"]] = field["value"];
                         });
 

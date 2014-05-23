@@ -1,9 +1,40 @@
-<li class="panel panel-info">
-    <div class="panel-heading">{{ comparator.title }}</div>
-    <div class="panel-body">
-        <form class="comparator_form">
-            {{ comparator.comparator_form }}
-            <input type="hidden" name="comparator_id" value="{{ comparator.id }}"/>
-        </form>
-    </div>
+<li class="wittl">
+    <header>
+        <p class="name pull-left">Travel Cost from <span class="primary-param" contenteditable>New...</span>
+        </p>
+                  <span class="reveal pull-right">
+                    <a href="#">
+                        <i class="arrow_carrot-2down"></i>
+                    </a>
+                  </span>
+    </header>
+    <section class="wittl-body">
+        <div class="wittl-info">
+            <p>
+                <span class="wittl-name">Travel Cost</span>
+                <br/>
+                from <span class="primary-param" contenteditable>Newcastle-upon-T...</span>
+            </p>
+
+            <p class="wittl-description">The cost to get to your destination from your chosen start
+                location.</p>
+        </div>
+        <div class="wittl-params">
+            <header>
+                <h3>Options</h3>
+            </header>
+
+            <!-- Extra params -->
+            <div class="secondary-param">
+                      <span class="key">
+                        Transport Mode
+                      </span>
+                      <span class="value">
+                        <input type="text" class="form-control" placeholder="E.g. car..."/>
+                      </span>
+            </div>
+            <!-- End extra params -->
+
+        </div>
+    </section>
 </li>

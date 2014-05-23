@@ -1,0 +1,455 @@
+// Import bootstrap
+@import "vendor/bootstrap";
+// Import variables
+@import "variables";
+
+/* ------------------------------
+ * Debug styles -----------------
+ * --------------------------- */
+.debug {
+  position: absolute;
+}
+
+// ==============================
+// Custom styles here 
+// ============================== 
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  float: left;
+  background-color: #FFFFFF;
+  font-family: $body-font;
+  letter-spacing: 1px;
+}
+
+.sidebar {
+  float: left;
+  position: absolute;
+}
+
+.sidebar {
+  width: 60px;
+  height: 100%;
+  background-color: #EEE;
+}
+
+.wrapper {
+  background-color: #FFF;
+  padding-top: 10px;
+  padding-bottom: 40px;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.page-header {
+  float: left;
+  width: 100%;
+  margin: 20px 0;
+  padding: 20px 0;
+  border: none;
+}
+
+section.pane {
+
+  header {
+    padding: 10px 0;
+    border-bottom: 1px solid #F7F7F7;
+
+    h2 {
+      font-family: $body-font;
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: $wittl-color;
+    }
+  }
+}
+
+.query-wrapper {
+  padding: 20px 0;
+
+  input[name="query-input"] {
+    height: $query-height;
+    background-color: #fbfbfb;
+    border-color: #f2eee9;
+    box-shadow: none;
+    font-size: 0.9em;
+    font-weight: 300;
+    letter-spacing: 1px;
+
+    &::-webkit-input-placeholder {
+      color: #CCC;
+    }
+    &::-moz-placeholder {
+      color: #CCC;
+    }
+    &:-moz-placeholder {
+      color: #CCC;
+    }
+    &:-ms-input-placeholder {
+      color: #CCC;
+    }
+  }
+
+  .wittl-btn {
+    height: $query-height;
+    width: 70px;
+    color: #FFFFFF;
+    background-color: $wittl-color;
+    font-family: $theme-font;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 3px;
+  }
+}
+
+.wittl-wrapper {
+  width: 100%;
+  float: left;
+
+  .wittls {
+    width: 100%;
+    float: left;
+    padding-left: 0;
+    list-style-type: none;
+
+    .wittl {
+      width: 100%;
+      overflow: hidden;
+      float: left;
+      height: $wittl-header-height;
+      transition: height 0.3s ease-out;
+      -webkit-transition: height 0.3s ease-out;
+
+      .primary-param {
+        text-transform: none;
+        font-family: $body-font;
+        font-weight: 300;
+        padding: 0 3px;
+        padding-bottom: 1px;
+        border-bottom: 1px solid #FFF;
+      }
+
+      & > header {
+        position: relative;
+        z-index: 2;
+        float: left;
+        width: 100%;
+        padding-bottom: 0;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+        -webkit-transition: margin-top 0.5s ease-out, border-bottom-left-radius 0.5s ease-out 0.3s, border-bottom-right-radius 0.5s ease-out 0.3s;
+        transition: margin-top 0.5s ease-out, border-bottom-left-radius 0.5s ease-out 0.3s, border-bottom-right-radius 0.5s ease-out 0.3s;
+        border: none;
+        background-color: $wittl-color;
+        color: #FFFFFF;
+        cursor: move;
+
+        .name {
+          text-transform: uppercase;
+          font-weight: 600;
+          letter-spacing: 1px;
+          width: 85%;
+          padding: 0 10px;
+        }
+
+        .reveal {
+          width: 15%;
+          padding: 0 3px;
+
+          a {
+            color: #FFF;
+            -webkit-transition: color 0.3s ease-out;
+            transition: color 0.3s ease-out;
+
+            i {
+              font-size: 18px;
+            }
+
+            &:hover {
+              text-decoration: none;
+              color: darken(white, 15%);
+              -webkit-transition: color 0.3s ease-in;
+              transition: color 0.3s ease-in;
+            }
+          }
+        }
+      }
+
+      .wittl-body {
+        float: left;
+        width: 100%;
+        left: -999em;
+        margin-top: - (2 * $wittl-body-height) px;
+        height: $wittl-body-height;
+        background-color: #f4f2f0;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+
+        padding: 20px 20px;
+
+        .wittl-info {
+          color: lighten($heading-color, 20%);
+          line-height: 1.8em;
+
+          .wittl-name {
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: $wittl-color;
+          }
+
+          .primary-param {
+            color: $subheading-color;
+            border-bottom-color: $subheading-color;
+          }
+
+          .wittl-description {
+            padding-top: 5px;
+            color: lighten($heading-color, 30%);
+            line-height: 1.5em;
+            font-family: $heading-font;
+            font-style: italic;
+            font-size: 12px;
+          }
+        }
+
+        .wittl-params {
+          float: left;
+          padding: 5px 0;
+
+          & > header {
+            float: left;
+            width: 100%;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #E5E5E5;
+
+            h3 {
+              text-transform: uppercase;
+              margin: 0;
+              font-size: 14px;
+              font-weight: 700;
+              color: lighten($heading-color, 15%);
+            }
+          }
+
+          .secondary-param {
+            float: left;
+            width: 100%;
+            padding: 8px 0;
+
+            .key, .value {
+              float: left;
+              padding: 0 10px;
+            }
+
+            .key {
+              width: 40%;
+              padding-left: 0;
+              font-family: $body-font;
+              text-transform: uppercase;
+              font-size: 12px;
+              font-weight: 600;
+              color: $wittl-color;
+            }
+
+            .value {
+              width: 60%;
+              padding-right: 0;
+
+              input {
+                background-color: #fbfbfb;
+                border-color: #f2eee9;
+                box-shadow: none;
+                font-size: 0.8em;
+                font-weight: 300;
+                letter-spacing: 1px;
+
+                &::-webkit-input-placeholder {
+                  color: #CCC;
+                }
+                &::-moz-placeholder {
+                  color: #CCC;
+                }
+                &:-moz-placeholder {
+                  color: #CCC;
+                }
+                &:-ms-input-placeholder {
+                  color: #CCC;
+                }
+              }
+            }
+          }
+        }
+
+      }
+
+      &.opened {
+        height: $wittl-header-height + $wittl-body-height;
+        transition: height 0.3s ease-in 0.3s;
+        -webkit-transition: height 0.3s ease-in 0.3s;
+
+        header {
+          border-bottom-left-radius: 0px;
+          border-bottom-right-radius: 0px;
+          -webkit-transition: margin-top 0.5s ease-in, border-bottom-left-radius 0.3s ease-in, border-bottom-right-radius 0.3s ease-in;
+          transition: margin-top 0.5s ease-in, border-bottom-left-radius 0.3s ease-in, border-bottom-right-radius 0.3s ease-in;
+        }
+
+        .wittl-body {
+          left: 0;
+          margin-top: 0;
+          transition: margin-top 0.5s ease-in;
+          -webkit-transition: margin-top 0.5s ease-in;
+        }
+      }
+
+    }
+  }
+}
+
+.wittlist {
+  padding: 10px 0;
+
+  .card-wrapper {
+    float: left;
+    padding-top: 25px;
+
+    .card {
+      background-color: #FFFFFF;
+      border: 1px solid #ededed;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(206, 154, 236, 0.35);
+
+      .pic {
+        position: relative;
+        width: 100%;
+        height: 140px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        overflow: hidden;
+
+        a.favourite {
+          position: absolute;
+          right: 0;
+          z-index: 5;
+          font-size: 20px;
+          padding-top: 5px;
+          padding-right: 10px;
+          color: #FFFFFF;
+
+          &:hover {
+            text-decoration: none;
+            color: darken(white, 10%);
+          }
+        }
+
+        img {
+          width: 100%;
+          position: absolute;
+        }
+      }
+
+      .detail {
+        height: 80px;
+        padding: 5px 15px;
+        border-top: 4px solid #ffdd8d;
+
+        header {
+          border: none;
+          padding: 10px 3px 5px 0;
+
+          .title {
+            font-family: $heading-font;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: $heading-color;
+            transition: color 0.3s ease-out;
+            -webkit-transition: color 0.3s ease-out;
+
+            margin: 5px 0;
+          }
+
+          .wittl-meta-description {
+            font-family: $heading-font;
+            font-weight: 400;
+            font-size: 12px;
+            font-style: italic;
+            letter-spacing: 1px;
+            color: $subheading-color;
+            margin: 2px;
+          }
+        }
+
+        .user-metrics {
+          padding: 10px 0 5px 3px;
+
+          .key, .value {
+            padding: 4px 3px;
+          }
+
+          .key {
+            font-size: 14px;
+            color: $wittl-color;
+          }
+
+          .value {
+            line-height: 14px;
+            font-family: $heading-font;
+            font-weight: 300;
+            font-size: 1.1em;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: lighten($subheading-color, 10%);
+          }
+        }
+
+        .user-display-metrics {
+          width: 100%;
+          padding: 5px 0;
+
+          td {
+            border: none;
+            padding: 1.5px 0;
+            font-size: 12px;
+            letter-spacing: 0.75px;
+          }
+
+          .key {
+            width: 65%;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: lighten(#58555a, 10%);
+          }
+
+          .value {
+            width: 35%;
+            color: #9b9b9b;
+          }
+        }
+
+        &:hover {
+          cursor: pointer;
+
+          .title {
+            color: $wittl-color;
+            transition: color 0.3s ease-in;
+            -webkit-transition: color 0.3s ease-in;
+          }
+        }
+      }
+    }
+
+  }
+}
+
