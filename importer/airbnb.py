@@ -33,8 +33,9 @@ class AirbnbImporter():
         ]
 
         for (index, attribute_name) in table_attributes:
-            row = property_detail_rows[index]
-            attributes[attribute_name] = row.find_all("td")[1].get_text()
+            if index < len(property_detail_rows):
+                row = property_detail_rows[index]
+                attributes[attribute_name] = row.find_all("td")[1].get_text()
 
         meta_property_getter = self.meta_property_getter(soup)
         meta_properties = [
