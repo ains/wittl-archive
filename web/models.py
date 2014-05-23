@@ -1,5 +1,5 @@
 import json
-from django.template.loader import render_to_string
+from django.forms import Form
 import comparator
 
 from django.db import models
@@ -54,6 +54,12 @@ class ListComparator(models.Model):
     def title(self):
         c = Context(self.decoded_configuration)
         return Template(self.get_comparator_class().TITLE).render(c)
+
+    @property
+    def comparator_form(self):
+        form = Form()
+        form.fields = self.get_comparator_class().EXTRA_FIELDS
+        return form
 
     @property
     def decoded_configuration(self):

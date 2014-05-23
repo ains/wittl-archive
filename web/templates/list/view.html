@@ -68,6 +68,22 @@
                     console.log("aa")
                 }
             });
+
+            $(".comparator_form")
+                    .on("change", ":input", function () {
+                        var formData = $(this).parent("form").serializeArray();
+                        var serializedForm = {};
+                        $.each(formData, function(i, field) {
+                            serializedForm[field["name"]] = field["value"];
+                        });
+
+                        var comparatorID = serializedForm["comparator_id"];
+                        delete serializedForm["comparator_id"];
+
+                        $.post("{% url "save_comparator_settings" %}",
+                                {"comparator_id": comparatorID, "configuration": JSON.stringify(serializedForm)}
+                        )
+                    });
         });
 
     </script>
