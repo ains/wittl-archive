@@ -1,7 +1,7 @@
 import requests
 
 
-class GoogleMaps():
+class GoogleMapsAPI():
     def __init__(self):
         self.key = 'AIzaSyCWKYgtklp2F3UoU8TNlovlF_LpqbarfXg'
         self.base_url = 'https://maps.googleapis.com/maps/api/distancematrix/'

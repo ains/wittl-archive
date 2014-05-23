@@ -2,7 +2,7 @@ from factual import Factual
 from factual.utils import circle
 
 
-class FactualApi():
+class FactualAPI():
     def __init__(self):
         self.key = 'wsFe9EAGZaonuLPYGH8jBevYIAAFDiSQnJXizNCt'
         self.secret = '5grxa14smxPAxDNoYmfbidNNKoA895MRfqwUVjmN'
