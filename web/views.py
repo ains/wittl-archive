@@ -1,4 +1,5 @@
 import json
+from django.views.decorators.csrf import csrf_exempt
 import comparator
 
 from collections import defaultdict
@@ -10,7 +11,7 @@ from django.views.decorators.http import require_POST
 from django.http import HttpResponse, HttpResponseServerError
 from django.views.generic import CreateView
 
-from models import List, ListItem
+from models import List, ListItem, ListComparator
 from importer import get_importer_for_url
 
 
@@ -75,7 +76,7 @@ def insert_list_item(request, list_id):
     return HttpResponseServerError()
 
 
-@login_required()
+@login_required
 def all_comparators(request):
     def get_comparator_data(comparator_class):
         return {
@@ -87,7 +88,7 @@ def all_comparators(request):
     return HttpResponse(comparator_json)
 
 
-@login_required()
+@login_required
 def get_scores(request, list_id):
     list = get_object_or_404(List, id=list_id)
     user_comparators = list.get_comparators_for_user(request.user)
@@ -98,3 +99,16 @@ def get_scores(request, list_id):
             score_data[item.id][comparator.comparator_name] = comparator.run(item.decoded_attributes)
 
     return HttpResponse(json.dumps(score_data))
+
+
+@login_required
+@csrf_exempt
+@require_POST
+def save_comparator_settings(request):
+    comparator_id = request.POST['comparator_id']
+    new_configuration = request.POST['configuration']
+    comparator = get_object_or_404(ListComparator, id=comparator_id)
+    comparator.configuration = new_configuration
+    comparator.save()
+
+    return HttpResponse("ok")

@@ -1,8 +1,9 @@
 import re
 
-from distance_from import *
-from travel_prices_from import *
-from travel_time_from import *
+from distance_from import DistanceFromComparator
+from travel_prices_from import TravelPricesFromComparator
+from travel_time_from import TravelTimeFromComparator
+from weather import WeatherComparator
 
 
 # Magic/Reflection method of getting all comparators
@@ -21,7 +22,12 @@ from travel_time_from import *
 # }
 
 
-ENABLED_COMPARATORS = [DistanceFromComparator, TravelPricesFromComparator, TravelTimeFromComparator]
+ENABLED_COMPARATORS = [
+    DistanceFromComparator,
+    TravelPricesFromComparator,
+    TravelTimeFromComparator,
+    WeatherComparator,
+]
 all_comparators = {comparator.NAME: comparator for comparator in ENABLED_COMPARATORS}
 
 

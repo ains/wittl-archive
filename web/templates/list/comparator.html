@@ -1,4 +1,9 @@
 <li class="panel panel-info">
     <div class="panel-heading">{{ comparator.title }}</div>
-    <div class="panel-body">Content ...</div>
+    <div class="panel-body">
+        <form class="comparator_form">
+            {{ comparator.comparator_form }}
+            <input type="hidden" name="comparator_id" value="{{ comparator.id }}"/>
+        </form>
+    </div>
 </li>
