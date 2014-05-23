@@ -1,6 +1,8 @@
 import json
 import comparator
 
+from collections import defaultdict
+
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, get_object_or_404
@@ -24,7 +26,12 @@ class ListCreateView(CreateView):
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
-        return super(ListCreateView, self).form_valid(form)
+        resp = super(ListCreateView, self).form_valid(form)
+
+        form.instance.users.add(self.request.user)
+        form.instance.save()
+
+        return resp
 
 
 @login_required
@@ -40,7 +47,8 @@ def list_list(request):
 def list_view(request, list_id):
     list = get_object_or_404(List, id=list_id)
     render_data = {
-        "list": list
+        "list": list,
+        "comparators": list.get_comparators_for_user(request.user)
     }
     return render(request, "list/view.html", render_data)
 
@@ -77,3 +85,16 @@ def all_comparators(request):
 
     comparator_json = json.dumps(map(get_comparator_data, comparator.all_comparators.values()))
     return HttpResponse(comparator_json)
+
+
+@login_required()
+def get_scores(request, list_id):
+    list = get_object_or_404(List, id=list_id)
+    user_comparators = list.get_comparators_for_user(request.user)
+
+    score_data = defaultdict(dict)
+    for item in list.listitem_set.all():
+        for comparator in user_comparators:
+            score_data[item.id][comparator.comparator_name] = comparator.run(item.decoded_attributes)
+
+    return HttpResponse(json.dumps(score_data))

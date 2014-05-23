@@ -52,3 +52,7 @@ def run_comparator_by_name(comparator_name, arguments, object):
         return comparator.score(**kwargs)
 
     return None
+
+
+def get_comparator_by_name(comparator_name):
+    return all_comparators.get(comparator_name)
