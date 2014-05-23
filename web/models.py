@@ -1,6 +1,10 @@
 import json
+from django.template.loader import render_to_string
+import comparator
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.template import Template, Context
 
 
 class User(AbstractUser):
@@ -9,10 +13,14 @@ class User(AbstractUser):
 
 class List(models.Model):
     name = models.CharField(max_length=256)
-    creator = models.ForeignKey(User)
+    creator = models.ForeignKey(User, related_name="created_lists")
+    users = models.ManyToManyField(User)
 
     def __unicode__(self):
         return "{}/{}".format(self.creator, self.name)
+
+    def get_comparators_for_user(self, user):
+        return self.listcomparator_set.filter(user=user).all()
 
 
 class ListItem(models.Model):
@@ -24,3 +32,35 @@ class ListItem(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    @property
+    def decoded_attributes(self):
+        return json.loads(self.attributes)
+
+
+class ListComparator(models.Model):
+    user = models.ForeignKey(User)
+    list = models.ForeignKey(List)
+    order = models.IntegerField()
+    comparator_name = models.CharField(max_length="128")
+
+    #JSON for comparator's special fields
+    configuration = models.TextField()
+
+    def get_comparator_class(self):
+        return comparator.get_comparator_by_name(self.comparator_name)
+
+    @property
+    def title(self):
+        c = Context(self.decoded_configuration)
+        return Template(self.get_comparator_class().TITLE).render(c)
+
+    @property
+    def decoded_configuration(self):
+        return json.loads(self.configuration)
+
+    def run(self, object):
+        return comparator.run_comparator_by_name(self.comparator_name, self.decoded_configuration, object)
+
+    def __unicode__(self):
+        return "{}/{}/{}".format(self.user, self.list, self.comparator_name)

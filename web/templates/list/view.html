@@ -1,5 +1,18 @@
 {% extends "base.html" %}
 
+{% block css %}
+    <style type="text/css">
+        #draggablePanelList .panel-heading {
+            cursor: move;
+        }
+
+        #draggablePanelList {
+            height: 300px
+        }
+    </style>
+    <link href="//code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" type="text/css" rel="stylesheet" media="all">
+{% endblock %}
+
 {% block content %}
     <div class="row">
         <div class="col-lg-9">
@@ -31,25 +44,31 @@
         <div class="col-lg-3">
             <h1>Whittles</h1>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Travel prices from <strong>London</strong></h3>
-                </div>
-                <div class="panel-body">
-                    Panel content
-                </div>
-            </div>
-
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Weather</h3>
-                </div>
-                <div class="panel-body">
-                    Panel content
-                </div>
-            </div>
+            <ul id="draggablePanelList" class="sortable list-unstyled">
+                {% for comparator in comparators %}
+                    {% include 'list/comparator.html' with comparator=comparator %}
+                {% endfor %}
+            </ul>
         </div>
     </div>
 
 
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            var panelList = $('#draggablePanelList');
+            panelList.sortable({
+                // Only make the .panel-heading child elements support dragging.
+                // Omit this to make then entire <li>...</li> draggable.
+                handle: '.panel-heading',
+                update: function () {
+                    console.log("aa")
+                }
+            });
+        });
+
+    </script>
 {% endblock %}
