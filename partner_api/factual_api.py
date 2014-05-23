@@ -8,9 +8,9 @@ class FactualAPI():
         self.secret = '5grxa14smxPAxDNoYmfbidNNKoA895MRfqwUVjmN'
         self.factual = Factual(self.key, self.secret)
 
-    #radius in metres
+    #returns query object
     def get_nearby(self, lat, lon, radius, search_parameter):
         table = self.factual.table("global")
         query = table.search(search_parameter).include_count(True)
         query = query.geo(circle(lat, lon, radius))
-        return query.data()
+        return query
