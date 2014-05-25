@@ -1,7 +1,11 @@
 // Import bootstrap
 @import "vendor/bootstrap";
+
 // Import variables
 @import "variables";
+
+// Import components
+@import "components";
 
 /* ------------------------------
  * Debug styles -----------------
@@ -71,42 +75,58 @@ section.pane {
   }
 }
 
+.wittl-input-group {
+  input {
+      height: $query-height;
+      background-color: #fbfbfb;
+      border-color: #f2eee9;
+      box-shadow: none;
+      font-size: 0.9em;
+      font-weight: 300;
+      letter-spacing: 1px;
+
+      &::-webkit-input-placeholder {
+        color: #CCC;
+      }
+      &::-moz-placeholder {
+        color: #CCC;
+      }
+      &:-moz-placeholder {
+        color: #CCC;
+      }
+      &:-ms-input-placeholder {
+        color: #CCC;
+      }
+    }
+
+    .wittl-btn {
+      height: $query-height;
+      width: 70px;
+      color: #FFFFFF;
+      background-color: $wittl-color;
+      font-family: $theme-font;
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+}
+
 .query-wrapper {
   padding: 20px 0;
 
   input[name="query-input"] {
-    height: $query-height;
-    background-color: #fbfbfb;
-    border-color: #f2eee9;
-    box-shadow: none;
-    font-size: 0.9em;
-    font-weight: 300;
-    letter-spacing: 1px;
 
-    &::-webkit-input-placeholder {
-      color: #CCC;
-    }
-    &::-moz-placeholder {
-      color: #CCC;
-    }
-    &:-moz-placeholder {
-      color: #CCC;
-    }
-    &:-ms-input-placeholder {
-      color: #CCC;
-    }
   }
 
   .wittl-btn {
-    height: $query-height;
-    width: 70px;
-    color: #FFFFFF;
-    background-color: $wittl-color;
-    font-family: $theme-font;
-    font-weight: 500;
-    font-size: 12px;
-    letter-spacing: 3px;
+
   }
+
+}
+
+.add-new-card {
+  padding: 20px 0;
 }
 
 .wittl-wrapper {
@@ -122,6 +142,7 @@ section.pane {
     .wittl {
       width: 100%;
       overflow: hidden;
+      margin: 6px 0;
       float: left;
       height: $wittl-header-height;
       transition: height 0.3s ease-out;
