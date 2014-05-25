@@ -20,12 +20,10 @@ $(document).ready(function() {
 
 	$('.wittl .reveal').hover( 
 		function(e) {
-			console.log('what is happ');
 			$(this).closest('.wittl').addClass('opened');
 		});
 
 	$('.wittl').on('mouseleave', function(e) {
-		console.log('enning');
 		$(this).closest('.wittl').removeClass('opened');
 	});
 });
