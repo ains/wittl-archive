@@ -25,7 +25,7 @@
             {% for list_item in list.listitem_set.all %}
                 <!-- Start card -->
                 <div class="col-sm-4 card-wrapper">
-                    <div class="card" data-wittl-weight="3">
+                    <div class="card" data-id="{{ list_item.id }}" data-wittl-weight="3">
                         <div class="pic">
                             <a class="favourite pull-right" href="#"><i class="icon_star_alt"></i></a>
                             <img src="{{ list_item.card_image }}" title="Name of thing here"/>
@@ -86,12 +86,13 @@
             </div>
         </div>
 
-        <div class="wittl-wrapper">
-            <ul class="wittls">
-                {% for comparator in comparators %}
-                    {% include 'list/comparator.html' with comparator=comparator %}
-                {% endfor %}
-            </ul>
+        <div class="wittl-wrapper" id="wittl-wrapper">
+            {#            <ul class="wittls" id="wittl-list">#}
+            {##}
+            {#                                {% for comparator in comparators %}#}
+            {#                                    {% include 'list/comparator.html' with comparator=comparator %}#}
+            {#                                {% endfor %}#}
+            {#            </ul>#}
         </div>
 
     </section>
@@ -100,17 +101,37 @@
 
 {% block javascript %}
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+    <script type="text/javascript">
+        var scoringUrl = "{% url "get_scores" list.id %}";
+    </script>
+    <script src='http://cdn.ractivejs.org/latest/ractive.js'></script>
+    <script src="/static/web/js/wittl_list.js"></script>
+
     <script>
-        $(function () {
-            var panelList = $('.wittls');
-            panelList.sortable({
-                // Only make the .panel-heading child elements support dragging.
-                // Omit this to make then entire <li>...</li> draggable.
-                handle: 'header',
-                update: function () {
-                    console.log("aa")
+        $.get("/static/web/js/test.tmpl").done(function (data) {
+            var ractive = new Ractive({
+                el: 'wittl-wrapper',
+
+                // We could pass in a string, but for the sake of convenience
+                // we're passing the ID of the <script> tag above.
+                template: data,
+
+                // Here, we're passing in some initial data
+                data: { name: 'world', wittls: [
+                    {name: "a", primary_param:"London"},
+                    {name: "b"},
+                    {name: "c"}
+                ] },
+                complete: function () {
+                    initializeSorting({"1": {"travel_prices_from": 90, "travel_time_from": 420}, "2": {"travel_prices_from": 152, "travel_time_from": 368}});
                 }
             });
+        });
+
+    </script>
+
+    <script>
+        $(function () {
 
             $(".comparator_form")
                     .on("change", ":input", function () {
@@ -130,4 +151,5 @@
         });
 
     </script>
+
 {% endblock %}

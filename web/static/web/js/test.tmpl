@@ -1,8 +1,14 @@
-<li class="wittl" data-wittl-name="{{ comparator.comparator_name }}">
+<ul class="wittls" id="wittl-list">
+{{#wittls:i}}
+    {{>wittl}}
+{{/wittls}}
+</ul>
+
+<!-- {{>wittl}} -->
+<li class="wittl" data-wittl-name="test-comparator">
     <header>
-        <p class="name pull-left">{{ comparator.get_comparator_class.TITLE }} <span class="primary-param"
-                                                                                    contenteditable>{{ comparator.get_primary_field_value }}</span>
-        </p>
+        <p class="name pull-left">Test Comparator
+        <span style="display: block; overflow: hidden; padding: 0 5px 0 0;"><input class="primary-param" value="{{primary_param}}"style="width: 100%; color: #aaa9aa; background: transparent; border: none;"/></span></p>
                   <span class="reveal pull-right">
                     <a href="#">
                         <i class="arrow_carrot-2down"></i>
@@ -12,14 +18,12 @@
     <section class="wittl-body">
         <div class="wittl-info">
             <p>
-                <span class="wittl-name">{{ comparator.get_comparator_class.TITLE }}</span>
+                <span class="wittl-name">Test Comparator</span>
                 <br/>
-                from <span class="primary-param" contenteditable>
-                {{ comparator.get_primary_field_value }}
-            </span>
+                from <input class="primary-param" value="{{primary_param}}"style="color: #aaa9aa; float:right; background: transparent; border: none; width: auto;"/>
             </p>
 
-            <p class="wittl-description">{{ comparator.get_comparator_class.DESCRIPTION }}</p>
+            <p class="wittl-description">esting</p>
         </div>
         <div class="wittl-params">
             <header>
@@ -40,3 +44,4 @@
         </div>
     </section>
 </li>
+<!-- {{/wittl}} -->
