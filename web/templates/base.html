@@ -62,8 +62,8 @@
 
             <ul class="text_nav"> 
                 <li>
-                    <a href="#">
-                        Wittlists
+                    <a href="{% url 'list_list' %}">
+                        Home
                     </a>
                 </li>
                 <li>
@@ -97,8 +97,8 @@
                 </header>
                 <ul class="icon_nav"> 
                     <li>
-                        <a href="#">
-                            <i class="icon_documents_alt"></i>
+                        <a href="{% url 'list_list' %}">
+                            <i class="icon_house_alt"></i>
                         </a>
                     </li>
                     <li>
@@ -141,7 +141,7 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="/static/web/js/vendor/jquery.min.js"><\/script>')</script>
         <script src="/static/web/js/vendor/bootstrap.js"></script>
-        <script src="/static/web/js/vendor/jquery.sidr.js"></script>
+        <script src="/static/web/js/vendor/jquery.sidr.min.js"></script>
         {% block javascript %}
         {% endblock %}
         <script src="/static/web/js/main.js"></script>
