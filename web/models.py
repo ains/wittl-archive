@@ -65,6 +65,12 @@ class ListComparator(models.Model):
     def decoded_configuration(self):
         return json.loads(self.configuration)
 
+    def get_configuration_attribute(self, attr):
+        return self.decoded_configuration.get(attr)
+
+    def get_primary_field_value(self):
+        return self.get_configuration_attribute(self.get_comparator_class().PRIMARY_FIELD)
+
     def run(self, object):
         return comparator.run_comparator_by_name(self.comparator_name, self.decoded_configuration, object)
 
