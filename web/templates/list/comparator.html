@@ -1,6 +1,7 @@
-<li class="wittl">
+<li class="wittl" data-wittl-name="{{ comparator.comparator_name }}">
     <header>
-        <p class="name pull-left">Travel Cost from <span class="primary-param" contenteditable>New...</span>
+        <p class="name pull-left">{{ comparator.get_comparator_class.TITLE }} <input type='text' class="primary-param"
+                                                                                     value="Newcastle-upon-T..."/>
         </p>
                   <span class="reveal pull-right">
                     <a href="#">
@@ -11,13 +12,12 @@
     <section class="wittl-body">
         <div class="wittl-info">
             <p>
-                <span class="wittl-name">Travel Cost</span>
+                <span class="wittl-name">{{ comparator.get_comparator_class.TITLE }}</span>
                 <br/>
-                from <input type='text' class="primary-param" value="Newcastle-upon-T..." />
+                from <input type='text' class="primary-param" value="Newcastle-upon-T..."/>
             </p>
 
-            <p class="wittl-description">The cost to get to your destination from your chosen start
-                location.</p>
+            <p class="wittl-description">{{ comparator.get_comparator_class.DESCRIPTION }}</p>
         </div>
         <div class="wittl-params">
             <header>
