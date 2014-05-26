@@ -56,28 +56,34 @@
 
         <!-- Sidebar -->
         <div class="sidebar">
-            <br/>
+            <header>
+                <a id="open-menu" href="#open-menu"><i class="icon_menu"></i></a>
+            </header>
+        </div>
+        
+        <div id="side-menu">
+            <p>lkjnljnflejnfljnewlanflkw wflknwelkfn felknflwek lwef</p>
+
+            <ul>
+                <li><a href="#">List 1</a></li>
+                <li class="active"><a href="#">List 2</a></li>
+                <li><a href="#">List 3</a></li>
+            </ul>
         </div>
 
         <!-- Main body -->
         <div class="wrapper">
-            <div class="container">
 
-                <header class="page-header">
-                    <div class="logo-head col-sm-4">
-                    </div>
-                    <div class="col-sm-8">
-                        <br/>
-                        <br/>
-                        <br/>
-                    </div>
-                </header>
+            <header class="page-header">
+                
+            </header>
 
+            <div class="container content">
                 {% block content %}
 
                 {% endblock %}
-
             </div>
+
         </div>
         <!-- End main body -->
 
@@ -88,9 +94,9 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="/static/web/js/vendor/jquery.min.js"><\/script>')</script>
         <script src="/static/web/js/vendor/bootstrap.js"></script>
-        <script src="/static/web/js/vendor/isotope.pkgd.js"></script>
-        <script src="/static/web/js/main.js"></script>
+        <script src="/static/web/js/vendor/jquery.sidr.js"></script>
         {% block javascript %}
         {% endblock %}
+        <script src="/static/web/js/main.js"></script>
     </body>
 </html>

@@ -16,18 +16,20 @@
 {% block content %}
 
     <div class="modal fade" id="card-detail">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" data-field="name"></h4>
-            <strong data-field="city"></strong>
-          </div>
-          <div class="modal-body">
-            <p data-field="description"></p>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" data-field="name"></h4>
+                    <strong data-field="city"></strong>
+                </div>
+                <div class="modal-body">
+                    <p data-field="description"></p>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
     <section class="col-sm-9 pane">
@@ -117,22 +119,23 @@
 
 {% block javascript %}
     <script type="text/javascript" src="/static/web/js/wittl_list.js"></script>
+    <script src="/static/web/js/vendor/isotope.pkgd.js"></script>
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
     <script>
         $(function () {
-            $('.wittlist').on('click', '.card', function(e) {
+            $('.wittlist').on('click', '.card', function (e) {
                 var id = $(this).data('listItemId');
                 var url = '/static/web/dummy.json'; // DUMMY
 
-                $.get(url, function(data) {
+                $.get(url, function (data) {
                     console.log(data);
                     populate_and_show_modal(data);
                 });
             });
 
-            var populate_and_show_modal = function(data) {
+            var populate_and_show_modal = function (data) {
                 var $modal = $('#card-detail');
-                for(field in data) {
+                for (field in data) {
                     console.log($modal.find('[data-field="' + field + '"]'));
                     $modal.find('[data-field="' + field + '"]').text(data[field]);
                 }

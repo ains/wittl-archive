@@ -1,7 +1,7 @@
 <li class="wittl" data-wittl-name="{{ comparator.comparator_name }}">
     <header>
-        <p class="name pull-left">{{ comparator.get_comparator_class.TITLE }} <span class="primary-param"
-                                                                                    contenteditable>{{ comparator.get_primary_field_value }}</span>
+        <p class="name pull-left">{{ comparator.get_comparator_class.TITLE }} <input type='text' class="primary-param"
+                                                                                     value="Newcastle-upon-T..."/>
         </p>
                   <span class="reveal pull-right">
                     <a href="#">
@@ -14,9 +14,7 @@
             <p>
                 <span class="wittl-name">{{ comparator.get_comparator_class.TITLE }}</span>
                 <br/>
-                from <span class="primary-param" contenteditable>
-                {{ comparator.get_primary_field_value }}
-            </span>
+                from <input type='text' class="primary-param" value="Newcastle-upon-T..."/>
             </p>
 
             <p class="wittl-description">{{ comparator.get_comparator_class.DESCRIPTION }}</p>
