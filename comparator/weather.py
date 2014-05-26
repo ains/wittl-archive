@@ -8,6 +8,7 @@ class WeatherComparator(BaseComparator):
     REQUIRED_ATTRIBUTES = ("latitude", "longitude")
     TRIGGERS = [r"distance from (?P<destination_location>.*)"]
     TITLE = "Weather at destination"
+    DESCRIPTION = "Compare locations by how close the temperature is to your ideal temperature."
     EXTRA_FIELDS = {
         'ideal_temperature': forms.CharField()
     }

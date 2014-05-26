@@ -1,7 +1,8 @@
 var initializeSorting = function (scoringData) {
     var calculateScore = function (cardID, wittls) {
         return _.reduce(wittls, function (acc, wittl, index) {
-            return acc + (scoringData[cardID][wittl] * (1 / Math.pow(2, index + 1)));
+            var score = (wittl in scoringData[cardID]) ? scoringData[cardID][wittl] : 0;
+            return acc + (score * (1 / Math.pow(2, index + 1)));
         }, 0);
     }
 
