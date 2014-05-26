@@ -1,4 +1,11 @@
 $(document).ready(function() {
+
+	/* Menu */
+	$('#open-menu').sidr({
+		name: 'side-menu',
+		source: '#side-menu'
+	});
+
 	var $wittlist = $('.wittlist');
 
 	$wittlist.isotope({
