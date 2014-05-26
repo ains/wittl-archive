@@ -18,7 +18,6 @@ var initializeSorting = function (scoringData) {
     });
 
     var panelList = $('.wittls');
-    console.log(panelList);
     panelList.sortable({
         handle: 'header',
         update: function () {
@@ -29,7 +28,7 @@ var initializeSorting = function (scoringData) {
 
             //Update cards with their new weights
             $(".card").each(function (i, card) {
-                var cardID = $(card).data('id');
+                var cardID = $(card).data('list-item-id');
                 var newWeight = calculateScore(cardID, wittls);
                 $(card).data('wittl-weight', newWeight);
             });
@@ -44,3 +43,7 @@ var initializeSorting = function (scoringData) {
         $(this).closest('.wittl').toggleClass('opened');
     });
 };
+
+$(function () {
+    initializeSorting({"1": {"travel_prices_from": 90, "travel_time_from": 420}, "2": {"travel_prices_from": 152, "travel_time_from": 368}});
+})

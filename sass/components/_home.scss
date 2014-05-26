@@ -1,0 +1,123 @@
+#home {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-color: #FAFAFA;
+
+	#main-nav {
+		position: absolute;
+		width: 100%;
+		top: 0;
+		z-index: 5;
+
+		background: none;
+		border: none;
+
+		.navbar-nav {
+			padding-top: 30px;
+
+			li {
+				padding: 15px 6px;
+
+				a {
+					padding: 6px 20px;
+					border-radius: 4px;
+					color: #FFF;
+					font-size: 0.9em;
+					font-weight: 500;
+					font-family: $body-font;
+					text-transform: uppercase;
+					letter-spacing: 1.2px;
+					// background-color: rgba(0, 0, 0, 0.3);
+					-webkit-transition: background-color 0.3s ease-out;
+					transition: background-color 0.3s ease-out;
+
+					&:hover {
+						background-color: rgba(0, 0, 0, 0.25);
+						//background-color: rgba(255,255,255, 0.1);
+						-webkit-transition: background-color 0.3s ease-in;
+						transition: background-color 0.3s ease-in;
+						
+					}
+				}
+
+				&.active {
+
+					a {
+						background-color: rgba(255,255,255, 0.1);
+					}
+				}
+			}
+		}
+	}
+
+	.hero {
+		position: fixed;
+		width: 100%;
+		height: 440px;
+		background-color: white;
+		background-image: url('../images/decisions.png');
+		background-size: 100% auto;
+		background-position: 0 -50px;
+		background-repeat: no-repeat;
+
+		&> header {
+			position: relative;
+			width: 300px;
+			left: 50%;
+			top: 40%;
+			margin-left: -150px;
+			margin-top: 0;
+
+			text-align: center;
+			color: #FFF;
+
+			h1 {
+				//background-color: rgba(255,255,255,0.15);
+				padding: 15px 20px;
+				border-radius: 8px;
+				// color: $wittl-color;
+				letter-spacing: 3px;
+
+				font-family: $body-font;
+				font-weight: 700;
+				font-size: 60px;
+
+			}
+		}
+	}
+
+	.content {
+		position: absolute;
+		width: 100%;
+		margin-top: 440px;
+		background-color: #FAFAFA;
+
+		.strip {
+			float: left;
+			width: 100%;
+			background-color: #FFF;
+			padding-top: 15px;
+		}
+
+		.main-header {
+			text-align: center;
+			padding: 20px 0;
+
+			h1 {
+				font-family: $heading-font;
+				font-size: 1.5em;
+				font-weight: 600;
+				text-transform: uppercase;
+				letter-spacing: 3.5px;
+				color: $wittl-color;
+				margin: 0;
+
+				.wittl-logo {
+					text-transform: lowercase;
+					font-family: $theme-font;
+				}
+			}
+		}
+	}
+}
