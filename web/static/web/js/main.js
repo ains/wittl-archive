@@ -3,7 +3,8 @@ $(document).ready(function() {
 	/* Menu */
 	$('#open-menu').sidr({
 		name: 'side-menu',
-		source: '#side-menu'
+		source: '#side-menu',
+		renaming: false
 	});
 
 	var $wittlist = $('.wittlist');
@@ -25,12 +26,12 @@ $(document).ready(function() {
 		}
 	});
 
-	$('.wittl .reveal').hover( 
-		function(e) {
-			$(this).closest('.wittl').addClass('opened');
-		});
+	// $('.wittl .reveal').hover( 
+	// 	function(e) {
+	// 		$(this).closest('.wittl').addClass('opened');
+	// 	});
 
-	$('.wittl').on('mouseleave', function(e) {
-		$(this).closest('.wittl').removeClass('opened');
-	});
+	// $('.wittl').on('mouseleave', function(e) {
+	// 	$(this).closest('.wittl').removeClass('opened');
+	// });
 });
