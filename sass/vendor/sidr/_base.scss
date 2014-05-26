@@ -38,30 +38,6 @@
     color: $sidr-text-color;
     //@include single-box-shadow($sidr-background-shadow-color, 0, 0, 5px, 5px, inset);
 
-    h1, h2, h3, h4, h5, h6 {
-        font-size: $sidr-font-size - 4;
-        font-weight: normal;
-        padding: 0 15px;
-        margin: 0 0 5px;
-        color: $sidr-text-color;
-        line-height: 24px;
-        //@include background-image(linear-gradient(lighten($sidr-background, 10%), darken($sidr-background, 10%)));
-        //@include single-box-shadow(rgba(#000, .2), 0, 5px, 5px, 3px);
-    }
-
-    p {
-        font-size: $sidr-font-size - 2;
-        margin: 0 0 12px;
-        a {
-            color: rgba($sidr-text-color, .9);
-        }
-    }
-
-    > p {
-        margin-left: 15px;
-        margin-right: 15px;
-    }
-
     ul {
         display: block;
         margin: 0 0 15px;
@@ -138,7 +114,7 @@
     input[type="date"],
     input[type="datetime"],
     input[type="email"],
-    input[type="number"],
+    input[type="number"], 
     input[type="search"],
     input[type="tel"],
     input[type="time"],
