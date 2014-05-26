@@ -13,22 +13,20 @@
     <link href="//code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" type="text/css" rel="stylesheet" media="all">
 {% endblock %}
 
-{% block content %}
+{% block outsidewrapper %}
 
     <div class="modal fade" id="card-detail">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-sm">
         <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" data-field="name"></h4>
-            <strong data-field="city"></strong>
-          </div>
-          <div class="modal-body">
-            <p data-field="description"></p>
-          </div>
+            <!-- modal content here -->
+
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+{% endblock %}
+
+{% block content %}
 
     <section class="col-sm-9 pane">
         <header>
@@ -116,8 +114,50 @@
 {% endblock %}
 
 {% block javascript %}
+    <script src="/static/web/js/vendor/handlebars.js"></script>
     <script src="/static/web/js/vendor/isotope.pkgd.js"></script>
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+    {% verbatim %}
+    <script id="modal-template" type="text/x-handlebars-template">
+      <div class="modal-body">
+        <!--button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button-->
+        <div class="details">
+            <header>
+                <h4 class="title">{{ name }}</h4>
+                <p class="city">{{ city }}</p>
+            </header>
+            <hr />
+            <div class="image-wrapper">
+                <img class="item-image" src="{{ image }}" />
+            </div>
+            <hr />
+            <p class="description">{{ description }}</p>
+        </div>
+        
+        <div class="stats">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td class="key">
+                            <i class="icon_pin"></i>
+                        </td>
+                        <td class="value">
+                            <strong>{{ region }}</td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="key">
+                            <i class="icon_group"></i>
+                        </td>
+                        <td class="value">
+                            <strong>{{ person_capacity }}</strong>
+                        </td>
+                </tbody>
+            </table>
+        </div>
+      </div>
+    </script>
+    {% endverbatim %}
     <script>
         $(function () {
             var panelList = $('.wittls');
@@ -141,11 +181,11 @@
             });
 
             var populate_and_show_modal = function(data) {
+                var src = $('#modal-template').html();
+                var template = Handlebars.compile(src);
+
                 var $modal = $('#card-detail');
-                for(field in data) {
-                    console.log($modal.find('[data-field="' + field + '"]'));
-                    $modal.find('[data-field="' + field + '"]').text(data[field]);
-                }
+                $modal.find('.modal-content').empty().append(template(data));
                 $modal.modal('show');
             };
 

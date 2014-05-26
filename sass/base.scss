@@ -58,11 +58,16 @@ body {
 
 .wrapper {
   background-color: $bg-color;
-  padding-left: $sidebar-width;
   padding-bottom: 40px;
   width: 100%;
   height: 100%;
   overflow: auto; 
+}
+
+.main-pane {
+  width: 100%;
+  float: left;
+  padding-left: $sidebar-width;
 }
 
 .page-header {
@@ -499,6 +504,104 @@ section.pane {
       }
     }
 
+  }
+}
+
+body.modal-open {
+  .wrapper {
+    -webkit-filter: grayscale(0.75);
+    filter: grayscale(0.75);
+  }
+}
+
+#card-detail {
+  float: left;
+
+  .modal-content {
+    float: left;
+    width: 100%;
+    padding: 20px 30px;
+
+    border-radius: 3px;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+
+
+    .modal-header, .modal-body {
+      float: left;
+      width: 100%;
+      padding: 0;
+      font-family: $body-font;
+      letter-spacing: 1px;
+      color: $subheading-color;
+      border: none;
+    }
+
+
+    .details {
+      width: 100%;
+      float: left;
+      padding-bottom: 10px;
+
+      &> header {
+       // padding-bottom: 10px;
+      }
+    }
+
+    .title {
+      font-family: $heading-font;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: $heading-color;
+    }
+
+    .city {
+      font-style: italic;
+      font-weight: 500;
+    }
+
+    .description {
+      font-size: 14px;
+      font-weight: 300;
+      color: #858285;
+    }
+ 
+    .image-wrapper {
+      position: relative;
+      width: 100%;
+      max-height: 200px;
+      // padding: 10px 30px;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .item-image {
+      width: 100%;
+    }
+
+    .stats {
+      float: left;
+      width: 50%;
+      //border-top: 1px solid #DDD;
+
+      table {
+
+        td {
+          border: none;
+        }
+
+        .key {
+          color: $wittl-color;
+        }
+
+        .value {
+          color: $subheading-color;
+        }
+      }
+    }
   }
 }
 
