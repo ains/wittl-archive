@@ -56,7 +56,7 @@ class ListComparator(models.Model):
         return Template(self.get_comparator_class().TITLE).render(c)
 
     @property
-    def comparator_form(self):
+    def form(self):
         form = Form()
         form.fields = self.get_comparator_class().EXTRA_FIELDS
         return form
