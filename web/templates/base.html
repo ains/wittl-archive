@@ -53,13 +53,6 @@
         </div> -->
 
         <!-- Content here -->
-
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <header>
-                <a id="open-menu" href="#open-menu"><i class="icon_menu"></i></a>
-            </header>
-        </div>
         
         <div id="side-menu">
             <p>lkjnljnflejnfljnewlanflkw wflknwelkfn felknflwek lwef</p>
@@ -71,17 +64,29 @@
             </ul>
         </div>
 
+        {% block outsidewrapper %}
+
+        {% endblock %}
+
         <!-- Main body -->
         <div class="wrapper">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <header>
+                    <a id="open-menu" href="#open-menu"><i class="icon_menu"></i></a>
+                </header>
+            </div>
 
-            <header class="page-header">
-                
-            </header>
+            <div class="main-pane">
+                <header class="page-header">
+                    
+                </header>
 
-            <div class="container content">
-                {% block content %}
+                <div class="container content">
+                    {% block content %}
 
-                {% endblock %}
+                    {% endblock %}
+                </div>
             </div>
 
         </div>
