@@ -170,9 +170,9 @@
 
             $('.wittlist').on('click', '.card', function (e) {
                 var id = $(this).data('listItemId');
-                var url = '/static/web/dummy.json'; // DUMMY
+                var url = "{% url 'card_data' 0 %}".replace("0", id);
 
-                $.get(url, function (data) {
+                $.getJSON(url, function (data) {
                     populate_and_show_modal(data);
                 });
             });

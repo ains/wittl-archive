@@ -89,6 +89,11 @@ def all_comparators(request):
 
 
 @login_required
+def card_data(request, list_item_id):
+    card = ListItem.objects.get(id=list_item_id)
+    return HttpResponse(card.attributes)
+
+@login_required
 def get_scores(request, list_id):
     list = get_object_or_404(List, id=list_id)
     user_comparators = list.get_comparators_for_user(request.user)

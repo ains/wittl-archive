@@ -15,6 +15,9 @@ urlpatterns = patterns('',
                        url(r'^list/(?P<list_id>[0-9]+)/get_scores', 'web.views.get_scores',
                            name='get_scores'),
 
+                       url(r'^listitem/(?P<list_item_id>[0-9]+)?/', 'web.views.card_data',
+                           name='card_data'),
+
                        url(r'^comparator/$', 'web.views.all_comparators', name='all_comparators'),
                        url(r'^comparator/update$', 'web.views.save_comparator_settings',
                            name='save_comparator_settings'),
