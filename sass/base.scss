@@ -716,3 +716,18 @@ body.modal-open {
    } 
   }
 }
+
+.profile-wrapper {
+  height: 600px;
+
+  .profile-pic {
+    width: 100%;
+    text-align: center;
+
+    img {
+      width: 160px;
+      height: 160px;
+      border-radius: 99em;
+    }
+  }
+}

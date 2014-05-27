@@ -5,19 +5,27 @@
         <div class="col-sm-4">
             <div class="profile-wrapper">
                 <div class="profile-pic">
-                    <img src="" />
+                    <img src="/static/web/images/ryan.jpg" />
                 </div>
 
             </div>
         </div>
         <div class="col-sm-8">
+            <header>
+            </header>
             <ul>
                 {% for list in lists %}
                     <li><a href="{% url 'list_view' list.id %}">{{ list.name }}</a></li>
                 {% endfor %}
             </ul>
-
-      <a href="{% url 'list_create' %}">Create new Wittl List</a>
+                  <form action="{% url 'list_create' %}" method="post">{% csrf_token %}
+                <div class="input-group wittl-input-group">
+                    <input name="{{ form.name.name }}"  class="form-control" type="text" placeholder="Name your wittlist..." />
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn wittl-btn">Create</button>
+                    </span>
+                </div>
+            </form>
 
         </div>
     </div>
