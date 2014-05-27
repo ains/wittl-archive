@@ -4,7 +4,10 @@
     <div class="row">
         <div class="col-lg-12">
             <form action="" method="post">{% csrf_token %}
-                {{ form.as_p }}
+                <label for="{{ form.name.name }}">
+                    {{ form.name.label }}
+                </label>
+                <input name="{{ form.name.name }}" type="text"/>
                 <input type="submit" value="Create"/>
             </form>
 
