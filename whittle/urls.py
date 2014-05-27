@@ -22,8 +22,8 @@ urlpatterns = patterns('',
                        url(r'^comparator/update$', 'web.views.save_comparator_settings',
                            name='save_comparator_settings'),
 
-                       # url(r'^blog/', include('blog.urls')),
                        (r'^accounts/login/$', 'django.contrib.auth.views.login'),
+                       (r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login'),
 
                        url(r'^admin/', include(admin.site.urls)),
 )
