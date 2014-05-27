@@ -1,8 +1,12 @@
 var initializeSorting = function (scoringData) {
     var calculateScore = function (cardID, wittls) {
         return _.reduce(wittls, function (acc, wittl, index) {
+            var totalScore = _.reduce(scoringData, function (acc, cardData, index) {
+                return acc + cardData[wittl];
+            }, 0);
             var score = (wittl in scoringData[cardID]) ? scoringData[cardID][wittl] : 0;
-            return acc + (score * (1 / Math.pow(2, index + 1)));
+            var normalisedScore = score / totalScore;
+            return acc + (normalisedScore * (1 / Math.pow(2, index + 1)));
         }, 0);
     }
 
@@ -30,7 +34,7 @@ var initializeSorting = function (scoringData) {
             //Update cards with their new weights
             $(".card").each(function (i, card) {
                 var cardID = $(card).data('list-item-id');
-                var newWeight = calculateScore(cardID, wittls);
+                var newWeight = calculateScore(cardID, wittls) * 100;
                 $(card).data('wittl-weight', newWeight);
             });
 
@@ -44,7 +48,3 @@ var initializeSorting = function (scoringData) {
         $(this).closest('.wittl').toggleClass('opened');
     });
 };
-
-$(function () {
-    initializeSorting({"1": {"travel_prices_from": 90, "travel_time_from": 420}, "2": {"travel_prices_from": 152, "travel_time_from": 368}});
-})

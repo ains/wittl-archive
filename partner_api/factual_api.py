@@ -1,11 +1,13 @@
+import keys
+
 from factual import Factual
 from factual.utils import circle
 
 
 class FactualAPI():
     def __init__(self):
-        self.key = 'wsFe9EAGZaonuLPYGH8jBevYIAAFDiSQnJXizNCt'
-        self.secret = '5grxa14smxPAxDNoYmfbidNNKoA895MRfqwUVjmN'
+        self.key = keys.FACTUAL_KEY
+        self.secret = keys.FACTUAL_SECRET
         self.factual = Factual(self.key, self.secret)
 
     #returns query object

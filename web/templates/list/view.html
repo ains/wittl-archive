@@ -164,12 +164,15 @@
     {% endverbatim %}
     <script>
         $(function () {
-            $('.wittlist').on('click', '.card', function(e) {
+            $.getJSON("{% url "get_scores" list.id%}", function (scoreData) {
+                initializeSorting(scoreData);
+            });
+
+            $('.wittlist').on('click', '.card', function (e) {
                 var id = $(this).data('listItemId');
                 var url = '/static/web/dummy.json'; // DUMMY
 
-                $.get(url, function(data) {
-                    console.log(data);
+                $.get(url, function (data) {
                     populate_and_show_modal(data);
                 });
             });

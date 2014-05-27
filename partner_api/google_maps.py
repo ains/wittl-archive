@@ -1,9 +1,9 @@
 import requests
-
+import keys
 
 class GoogleMapsAPI():
     def __init__(self):
-        self.key = 'AIzaSyCWKYgtklp2F3UoU8TNlovlF_LpqbarfXg'
+        self.key = keys.GOOGLE_MAPS_KEY
         self.base_url = 'https://maps.googleapis.com/maps/api/distancematrix/'
 
     def get_distance(self, from_lat, from_lon, to_lat, to_lon):

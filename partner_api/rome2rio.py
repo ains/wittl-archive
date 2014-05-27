@@ -1,8 +1,9 @@
 import requests
+import keys
 
 
 class Rome2RioAPI():
-    API_KEY = "wJpvLThd"
+    API_KEY = keys.ROME2RIO_KEY
     BASE_URL = "http://free.rome2rio.com/api/1.2/json/Search"
 
     def __init__(self):

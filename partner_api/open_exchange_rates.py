@@ -1,9 +1,9 @@
 import requests
-
+import keys
 
 class OpenExchangeRatesAPI():
     BASE_URL = "http://openexchangerates.org/api/"
-    API_KEY = "a73695b6e8f24aa7b398b9212a33252f"
+    API_KEY = keys.OPEN_EXCHANGE_RATES_KEY
 
     def __init__(self):
         pass
