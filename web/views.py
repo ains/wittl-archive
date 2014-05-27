@@ -5,13 +5,12 @@ import comparator
 from collections import defaultdict
 
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST, require_GET
-from django.http import HttpResponse, HttpResponseServerError
-from django.views.generic import CreateView
+from django.http import HttpResponse, HttpResponseServerError, HttpResponseRedirect
 
-from models import List, ListItem, ListComparator
+from models import List, ListItem, ListComparator, ListForm
 from importer import get_importer_for_url
 
 
@@ -19,26 +18,26 @@ def index(request):
     return render(request, "index.html")
 
 
-class ListCreateView(CreateView):
-    model = List
-    template_name = 'list/create.html'
-    fields = ['name']
-    success_url = reverse_lazy('list_list')
-
-    def form_valid(self, form):
-        form.instance.creator = self.request.user
-        resp = super(ListCreateView, self).form_valid(form)
-
-        form.instance.users.add(self.request.user)
+@require_POST
+def list_create(request):
+    form = ListForm(request.POST)
+    if form.is_valid():
+        form.instance.creator = request.user
+        form.instance.save()
+        form.instance.users.add(request.user)
         form.instance.save()
 
-        return resp
+        success_url = reverse('list_view', args=(form.instance.id,))
+        return HttpResponseRedirect(success_url)
+    else:
+        return HttpResponse(reverse('list_list'))
 
 
 @login_required
 def list_list(request):
     user_lists = request.user.list_set.all()
     render_data = {
+        "create_form": ListForm(),
         "lists": user_lists
     }
     return render(request, "list/list.html", render_data)
@@ -93,6 +92,7 @@ def all_comparators(request):
 def card_data(request):
     card = ListItem.objects.get(id=request.GET['list_item_id'])
     return HttpResponse(card.attributes)
+
 
 @login_required
 def get_scores(request, list_id):

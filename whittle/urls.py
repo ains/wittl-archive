@@ -8,7 +8,7 @@ urlpatterns = patterns('',
                        url(r'^$', 'web.views.index', name='index'),
 
                        url(r'^list/$', 'web.views.list_list', name='list_list'),
-                       url(r'^list/create$', web.views.ListCreateView.as_view(), name='list_create'),
+                       url(r'^list/create$', 'web.views.list_create', name='list_create'),
                        url(r'^list/(?P<list_id>[0-9]+)$', 'web.views.list_view', name='list_view'),
                        url(r'^list/(?P<list_id>[0-9]+)/insert_item$', 'web.views.insert_list_item',
                            name='insert_list_item'),

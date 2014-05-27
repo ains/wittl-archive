@@ -18,9 +18,10 @@
                     <li><a href="{% url 'list_view' list.id %}">{{ list.name }}</a></li>
                 {% endfor %}
             </ul>
-                  <form action="{% url 'list_create' %}" method="post">{% csrf_token %}
+                  <form action="{% url 'list_create' %}" method="post">
+                      {% csrf_token %}
                 <div class="input-group wittl-input-group">
-                    <input name="{{ form.name.name }}"  class="form-control" type="text" placeholder="Name your wittlist..." />
+                    <input name="{{ create_form.name.name }}" class="form-control" type="text" placeholder="Name your wittlist..." />
                     <span class="input-group-btn">
                         <button type="submit" class="btn wittl-btn">Create</button>
                     </span>

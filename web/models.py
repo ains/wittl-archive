@@ -6,7 +6,7 @@ from django.core.cache import cache
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.template import Template, Context
-from django.forms import Form
+from django.forms import ModelForm, Form
 
 
 class User(AbstractUser):
@@ -23,6 +23,12 @@ class List(models.Model):
 
     def get_comparators_for_user(self, user):
         return self.listcomparator_set.filter(user=user).all()
+
+
+class ListForm(ModelForm):
+    class Meta:
+        model = List
+        fields = ["name"]
 
 
 class ListItem(models.Model):
