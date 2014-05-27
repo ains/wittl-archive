@@ -1,10 +1,12 @@
 import json
-from django.forms import Form
 import comparator
+import hashlib
 
+from django.core.cache import cache
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.template import Template, Context
+from django.forms import Form
 
 
 class User(AbstractUser):
@@ -72,7 +74,17 @@ class ListComparator(models.Model):
         return self.get_configuration_attribute(self.get_comparator_class().PRIMARY_FIELD)
 
     def run(self, object):
-        return comparator.run_comparator_by_name(self.comparator_name, self.decoded_configuration, object)
+        comparator_data = {'comparator_name': self.comparator_name}
+        comparator_data.update(self.decoded_configuration)
+        comparator_data.update(object)
+        cache_key = hashlib.sha256(json.dumps(comparator_data)).hexdigest()
+
+        result = cache.get(cache_key)
+        if not result:
+            result = comparator.run_comparator_by_name(self.comparator_name, self.decoded_configuration, object)
+            cache.set(cache_key, result)
+
+        return result
 
     def __unicode__(self):
         return "{}/{}/{}".format(self.user, self.list, self.comparator_name)

@@ -44,7 +44,3 @@ var initializeSorting = function (scoringData) {
         $(this).closest('.wittl').toggleClass('opened');
     });
 };
-
-$(function () {
-    initializeSorting({"1": {"travel_prices_from": 90, "travel_time_from": 420}, "2": {"travel_prices_from": 152, "travel_time_from": 368}});
-})

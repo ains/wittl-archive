@@ -49,16 +49,19 @@ def run_comparator_by_trigger(trigger_string, object):
 
 
 def run_comparator_by_name(comparator_name, arguments, object):
-    comparator_class = all_comparators.get(comparator_name)
-    if comparator_class:
-        comparator = comparator_class()
-        comparator_attributes = {k: object[k] for k in comparator.REQUIRED_ATTRIBUTES}
+    try:
+        comparator_class = all_comparators.get(comparator_name)
+        if comparator_class:
+            comparator = comparator_class()
+            comparator_attributes = {k: object[k] for k in comparator.REQUIRED_ATTRIBUTES}
 
-        kwargs = arguments
-        kwargs.update(comparator_attributes)
-        return comparator.score(**kwargs)
+            kwargs = arguments
+            kwargs.update(comparator_attributes)
+            return comparator.score(**kwargs)
+    except Exception as e:
+        print(e)
 
-    return None
+    return -1
 
 
 def get_comparator_by_name(comparator_name):

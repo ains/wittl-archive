@@ -16,12 +16,14 @@
 {% block outsidewrapper %}
 
     <div class="modal fade" id="card-detail">
-      <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <!-- modal content here -->
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <!-- modal content here -->
 
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
 {% endblock %}
@@ -88,7 +90,9 @@
 
     <section class="wittlist-right pane">
         <header>
-            <h2>Wittls <small class="browse"><a href="#">Browse...</a></small></h2>
+            <h2>Wittls
+                <small class="browse"><a href="#">Browse...</a></small>
+            </h2>
         </header>
 
         <div class="query-wrapper">
@@ -160,17 +164,20 @@
     {% endverbatim %}
     <script>
         $(function () {
-            $('.wittlist').on('click', '.card', function(e) {
+            $.getJSON("{% url "get_scores" list.id%}", function (scoreData) {
+                initializeSorting(scoreData);
+            });
+
+            $('.wittlist').on('click', '.card', function (e) {
                 var id = $(this).data('listItemId');
                 var url = '/static/web/dummy.json'; // DUMMY
 
-                $.get(url, function(data) {
-                    console.log(data);
+                $.get(url, function (data) {
                     populate_and_show_modal(data);
                 });
             });
 
-            var populate_and_show_modal = function(data) {
+            var populate_and_show_modal = function (data) {
                 var src = $('#modal-template').html();
                 var template = Handlebars.compile(src);
 
