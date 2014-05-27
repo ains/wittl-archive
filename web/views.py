@@ -7,7 +7,7 @@ from collections import defaultdict
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, get_object_or_404
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 from django.http import HttpResponse, HttpResponseServerError
 from django.views.generic import CreateView
 
@@ -89,8 +89,9 @@ def all_comparators(request):
 
 
 @login_required
-def card_data(request, list_item_id):
-    card = ListItem.objects.get(id=list_item_id)
+@require_GET
+def card_data(request):
+    card = ListItem.objects.get(id=request.GET['list_item_id'])
     return HttpResponse(card.attributes)
 
 @login_required

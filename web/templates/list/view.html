@@ -16,12 +16,14 @@
 {% block outsidewrapper %}
 
     <div class="modal fade" id="card-detail">
-      <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <!-- modal content here -->
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <!-- modal content here -->
 
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
 {% endblock %}
@@ -88,7 +90,9 @@
 
     <section class="wittlist-right pane">
         <header>
-            <h2>Wittls <small class="browse"><a href="#">Browse...</a></small></h2>
+            <h2>Wittls
+                <small class="browse"><a href="#">Browse...</a></small>
+            </h2>
         </header>
 
         <div class="query-wrapper">
@@ -117,7 +121,8 @@
     <script src="/static/web/js/vendor/isotope.pkgd.js"></script>
     <script src="/static/web/js/wittl_list.js"></script>
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgcL0rohxn0A99lQMRJ8WcN17NT_x9mf0&sensor=true">
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgcL0rohxn0A99lQMRJ8WcN17NT_x9mf0&sensor=true">
     </script>
     {% verbatim %}
     <script id="modal-template" type="text/x-handlebars-template">
@@ -170,14 +175,14 @@
 
             $('.wittlist').on('click', '.card', function (e) {
                 var id = $(this).data('listItemId');
-                var url = "{% url 'card_data' 0 %}".replace("0", id);
+                var url = "{% url 'card_data' %}";
 
-                $.getJSON(url, function (data) {
+                $.getJSON(url, {list_item_id: id}, function (data) {
                     populate_and_show_modal(data);
                 });
             });
 
-            var populate_and_show_modal = function(data) {
+            var populate_and_show_modal = function (data) {
                 var src = $('#modal-template').html();
                 var template = Handlebars.compile(src);
 
@@ -188,15 +193,15 @@
                 $modal.modal('show');
             };
 
-            var render_map = function(lat, long) {
+            var render_map = function (lat, long) {
                 console.log(lat);
                 console.log(long);
                 var mapOptions = {
-                  center: new google.maps.LatLng(parseFloat(lat), parseFloat(long)),
-                  zoom: 8
+                    center: new google.maps.LatLng(parseFloat(lat), parseFloat(long)),
+                    zoom: 8
                 };
                 var map = new google.maps.Map(document.getElementById("map"),
-                    mapOptions);
+                        mapOptions);
             };
 
             $(".comparator_form")
