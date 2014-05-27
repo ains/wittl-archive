@@ -2,7 +2,15 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-sm-4">
+            <div class="profile-wrapper">
+                <div class="profile-pic">
+                    <img src="" />
+                </div>
+
+            </div>
+        </div>
+        <div class="col-sm-8">
             <ul>
                 {% for list in lists %}
                     <li><a href="{% url 'list_view' list.id %}">{{ list.name }}</a></li>
