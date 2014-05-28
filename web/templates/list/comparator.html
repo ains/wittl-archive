@@ -1,7 +1,12 @@
 <li class="wittl" data-wittl-name="{{ comparator.comparator_name }}">
     <header>
-        <p class="name pull-left">{{ comparator.get_comparator_class.TITLE }} {% if comparator.get_comparator_class.PRIMARY_FIELD %}<input type='text' class="primary-param"
-                                                                                     value="Newcastle-upon-T..."/>{% endif %}
+        <p class="name pull-left">{{ comparator.get_comparator_class.TITLE }}
+            {% if comparator.get_comparator_class.PRIMARY_FIELD %}
+                <input type='text'
+                       name="{{ comparator.get_comparator_class.PRIMARY_FIELD }}"
+                       class="primary-param"
+                       value="{{ comparator.get_primary_field_value|title }}"/>
+            {% endif %}
         </p>
                   <span class="reveal pull-right">
                     <a href="#">
@@ -11,13 +16,6 @@
     </header>
     <section class="wittl-body">
         <div class="wittl-info">
-            <p>
-                <span class="wittl-name">{{ comparator.get_comparator_class.TITLE }}</span>
-                {% if comparator.get_comparator_class.PRIMARY_FIELD %}
-                    <input type='text' class="primary-param" value="Newcastle-upon-T..."/>
-                {% endif %}
-            </p>
-
             <p class="wittl-description">{{ comparator.get_comparator_class.DESCRIPTION }}</p>
         </div>
         <div class="wittl-params">
@@ -33,7 +31,7 @@
                         {{ field.label_tag }}
                       </span>
                         <span class="value">
-                        <input type="text" name="{{ field.name }}" class="form-control" placeholder="..."/>
+                        <input type="text" name="{{ field.name }}" value="{{ field.value }}" class="form-control"/>
                       </span>
                     {% endfor %}
                 </div>

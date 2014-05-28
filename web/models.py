@@ -65,7 +65,7 @@ class ListComparator(models.Model):
 
     @property
     def form(self):
-        form = Form()
+        form = Form(self.decoded_configuration)
         form.fields = self.get_comparator_class().EXTRA_FIELDS
         return form
 
