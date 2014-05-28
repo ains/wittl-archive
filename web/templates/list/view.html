@@ -204,9 +204,9 @@
                         mapOptions);
             };
 
-            $(".comparator_form")
+            $(".comparator-form")
                     .on("change", ":input", function () {
-                        var formData = $(this).parent("form").serializeArray();
+                        var formData = $(this).parents("form").serializeArray();
                         var serializedForm = {};
                         $.each(formData, function (i, field) {
                             serializedForm[field["name"]] = field["value"];
