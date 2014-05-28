@@ -6,7 +6,7 @@ var initializeSorting = function (scoringData) {
             }, 0);
             var score = (wittl in scoringData[cardID]) ? scoringData[cardID][wittl] : 0;
             var normalisedScore = score / totalScore;
-            return acc + (normalisedScore * (1 / Math.pow(2, index + 1)));
+            return acc + (normalisedScore * (1 / Math.pow(8, index)));
         }, 0);
     }
 
