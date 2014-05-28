@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST, require_GET
-from django.http import HttpResponse, HttpResponseServerError, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseServerError, HttpResponseRedirect, HttpResponseForbidden
 
 from models import List, ListItem, ListComparator, ListForm
 from importer import get_importer_for_url
@@ -118,3 +118,19 @@ def save_comparator_settings(request):
     comparator.save()
 
     return HttpResponse("ok")
+
+@login_required
+@csrf_exempt
+@require_POST
+def update_wittl_order(request, list_id):
+    list = get_object_or_404(List, id=list_id)
+    if list.users.filter(pk=request.user.pk).exists():
+        wittl_ids = request.POST.getlist("wittl_ids[]")
+        for i, id in enumerate(wittl_ids):
+            wittl = ListComparator.objects.get(pk=int(id))
+            wittl.order = i
+            wittl.save()
+
+        return HttpResponse("ok")
+
+    return HttpResponseForbidden()

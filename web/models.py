@@ -55,6 +55,9 @@ class ListComparator(models.Model):
     #JSON for comparator's special fields
     configuration = models.TextField()
 
+    class Meta:
+        ordering = ['order']
+
     def get_comparator_class(self):
         return comparator.get_comparator_by_name(self.comparator_name)
 

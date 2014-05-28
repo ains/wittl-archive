@@ -31,6 +31,10 @@ var initializeSorting = function (scoringData) {
                 return $(e).data('wittl-name');
             });
 
+            var wittlIDs = $('.wittl').map(function(i, e) {
+               return $(e).data('witt-id');
+            });
+
             //Update cards with their new weights
             $(".card").each(function (i, card) {
                 var cardID = $(card).data('list-item-id');
@@ -43,8 +47,10 @@ var initializeSorting = function (scoringData) {
             $wittlist.isotope({sortBy: 'wittlWeight'});
         }
     });
+};
 
-    $('.wittl header').click(function (e) {
+$(function() {
+   $('.wittl header').click(function (e) {
         $(this).closest('.wittl').toggleClass('opened');
     });
-};
+});
