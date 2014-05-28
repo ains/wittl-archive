@@ -2,7 +2,7 @@
 .idea/
 .env/
 *.sqlite3
-web/static/web/css/
+web/static/web/css/*.css
 .sass-cache/
 run
 partner_api/keys.py
