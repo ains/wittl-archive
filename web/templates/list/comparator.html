@@ -1,7 +1,6 @@
-<form class="comparator-form">
-
-    <li class="wittl" data-wittl-name="{{ comparator.comparator_name }}">
+<li class="wittl" data-wittl-name="{{ comparator.comparator_name }}">
         <header>
+
             <p class="name pull-left">{{ comparator.get_comparator_class.TITLE }}
                 {% if comparator.get_comparator_class.PRIMARY_FIELD %}
                     <input type='text'
@@ -42,5 +41,4 @@
                 <input type="hidden" name="comparator_id" value="{{ comparator.id }}"/>
             </div>
         </section>
-    </li>
-</form>
+</li>

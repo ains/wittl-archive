@@ -1,4 +1,5 @@
 import re
+import traceback
 
 from distance_from import DistanceFromComparator
 from travel_prices_from import TravelPricesFromComparator
@@ -59,6 +60,7 @@ def run_comparator_by_name(comparator_name, arguments, object):
             kwargs.update(comparator_attributes)
             return comparator.score(**kwargs)
     except Exception as e:
+        traceback.print_exc()
         print(e)
 
     return -1

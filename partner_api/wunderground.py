@@ -26,7 +26,6 @@ class WundergroundAPI():
             #Use 10 day forecast
             request_url = '{}/{}/forecast10day/q/{},{}.json'.format(self.base_url,
                                                                     self.key,
-                                                                    date_formatted,
                                                                     lat, lon)
             data = requests.get(request_url).json()
             temp_data = data['forecast']['simpleforecast']['forecastday'][0]
