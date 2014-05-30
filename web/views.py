@@ -100,7 +100,7 @@ def get_scores(request, list_id):
     user_comparators = list.get_comparators_for_user(request.user)
 
     score_data = defaultdict(dict)
-    for item in list.listitem_set.all():
+    for item in list.items.all():
         for comparator in user_comparators:
             score_data[item.id][comparator.comparator_name] = comparator.run(item.decoded_attributes)
 
@@ -124,7 +124,7 @@ def save_comparator_settings(request):
 @require_POST
 def update_wittl_order(request, list_id):
     list = get_object_or_404(List, id=list_id)
-    if list.users.filter(pk=request.user.pk).exists():
+    if list.user_invited(request.user):
         wittl_ids = request.POST.getlist("wittl_ids[]")
         for i, id in enumerate(wittl_ids):
             wittl = ListComparator.objects.get(pk=int(id))

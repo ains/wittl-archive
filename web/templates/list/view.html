@@ -50,38 +50,6 @@
         <!-- Wittlist -->
         <div class="wittlist row">
 
-            {% for list_item in list.listitem_set.all %}
-                <!-- Start card -->
-                <div class="col-sm-4 card-wrapper">
-                    <div class="card" data-list-item-id="{{ list_item.id }}" data-wittl-weight="3">
-                        <div class="pic">
-                            <a class="favourite pull-right" href="#"><i class="icon_star_alt"></i></a>
-                            <img src="{{ list_item.card_image }}" title="Name of thing here"/>
-                        </div>
-
-                        <div class="detail">
-                            <header class="col-xs-9">
-                                <h3 class="title">{{ list_item.name|truncatechars:15 }}</h3>
-
-                                <p class="wittl-meta-description">{{ list_item.decoded_attributes.city|truncatechars:20 }}</p>
-                            </header>
-                            <div class="user-metrics col-xs-3">
-                                <div class="row">
-                                    <span class="col-xs-6 icon_building key"></span>
-                                    <small class="col-xs-6 value">25</small>
-                                </div>
-                                <div class="row">
-                                    <span class="col-xs-6 icon_pin_alt key"></span>
-                                    <small class="col-xs-6 value">3</small>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End detail -->
-                    </div>
-                    <!-- End card -->
-                </div>
-                <!-- End card-wrapper -->
-            {% endfor %}
 
         </div>
 
@@ -125,31 +93,61 @@
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgcL0rohxn0A99lQMRJ8WcN17NT_x9mf0&sensor=true">
     </script>
     {% verbatim %}
-    <script id="modal-template" type="text/x-handlebars-template">
-      <div class="modal-body">
-        <!--button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button-->
-        <div class="details">
-            <header>
-                <h4 class="title">{{ name }}</h4>
-                <p class="city">{{ city }}</p>
-            </header>
-            <hr />
-            <div class="image-wrapper">
-                <img class="item-image" src="{{ image }}" />
+    <script id="item-template" type="text/x-handlebars-template">
+        <div class="col-sm-4 card-wrapper">
+            <div class="card">
+                <div class="pic">
+                    <a class="favourite pull-right" href="#"><i class="icon_star_alt"></i></a>
+                    <img src="{{ card_image }}" title="Name of thing here"/>
+                </div>
+
+                <div class="detail">
+                    <header class="col-xs-9">
+                        <h3 class="title"> {{ truncate name 12 }}</h3>
+
+                        <p class="wittl-meta-description">{{ truncate attributes.city 15 }}</p>
+                    </header>
+                    <div class="user-metrics col-xs-3">
+                        <div class="row">
+                            <span class="col-xs-6 icon_building key"></span>
+                            <small class="col-xs-6 value">25</small>
+                        </div>
+                        <div class="row">
+                            <span class="col-xs-6 icon_pin_alt key"></span>
+                            <small class="col-xs-6 value">3</small>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <hr />
-            <p class="description">{{ description }}</p>
         </div>
-        
-        <div class="stats">
-            <table class="table">
-                <tbody>
+    </script>
+
+    <script id="modal-template" type="text/x-handlebars-template">
+        <div class="modal-body">
+            <!--button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button-->
+            <div class="details">
+                <header>
+                    <h4 class="title">{{ name }}</h4>
+
+                    <p class="city">{{ city }}</p>
+                </header>
+                <hr/>
+                <div class="image-wrapper">
+                    <img class="item-image" src="{{ image }}"/>
+                </div>
+                <hr/>
+                <p class="description">{{ description }}</p>
+            </div>
+
+            <div class="stats">
+                <table class="table">
+                    <tbody>
                     <tr>
                         <td class="key">
                             <i class="icon_pin"></i>
                         </td>
                         <td class="value">
-                            <strong>{{ region }}</td>
+                            <strong>{{ region }}</strong>
                         </td>
                     </tr>
                     <tr>
@@ -159,22 +157,39 @@
                         <td class="value">
                             <strong>{{ person_capacity }}</strong>
                         </td>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
+            <div id="map">
+            </div>
         </div>
-        <div id="map">
-        </div>
-      </div>
     </script>
     {% endverbatim %}
+    <script src="/static/web/js/handlebars_helpers.js" type="text/javascript"></script>
     <script>
         $(function () {
+            var itemTemplate = Handlebars.compile($('#item-template').html());
+            var addItem = function (data) {
+                var $newItem = $(itemTemplate(data));
+                $('.wittlist').isotope('insert', $newItem);
+            };
+
             $.getJSON("{% url "get_scores" list.id%}", function (scoreData) {
-                initializeSorting(scoreData);
+                var wittlSorting = new WittlSorting(scoreData);
+                $.getJSON("{% url 'lists-detail' list.id %}", function (data) {
+                    _.each(data.items, function (item) {
+                        var $newItem = $(itemTemplate(item));
+                        var $card = $newItem.find('.card');
+                        $card.data('list-item-id', item.id);
+                        wittlSorting.scoreCard($card);
+
+                        $('.wittlist').isotope('insert', $newItem);
+                    });
+                });
             });
 
             $('.wittlist').on('click', '.card', function (e) {
-                var id = $(this).data('listItemId');
+                var id = $(this).data('list-item-id');
                 var url = "{% url 'card_data' %}";
 
                 $.getJSON(url, {list_item_id: id}, function (data) {
