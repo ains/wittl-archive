@@ -9,9 +9,6 @@ class AirbnbImporter(BaseImporter):
     SORTABLE_ATTRS = {'bathrooms' : 'Bathrooms', 'person_capacity' : 'Guests', 'bedrooms' : 'Bedrooms', 'beds' : 'Beds'}
     URL_PATTERNS = (r"https?:\/\/(www.)?airbnb.([a-zA-Z.]+)\/rooms\/[0-9]+",)
 
-    def __init__(self):
-        pass
-
     @staticmethod
     def meta_property_getter(soup):
         def getter(property_name):

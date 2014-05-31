@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from importer import get_importer_for_url
 from web.models import List, ListItem
 from rest_framework import viewsets, routers
-from rest_framework.serializers import HyperlinkedModelSerializer, Field
+from rest_framework.serializers import HyperlinkedModelSerializer
 
 
 class ListItemSerializer(HyperlinkedModelSerializer):
