@@ -16,6 +16,7 @@ class User(AbstractUser):
 class List(models.Model):
     name = models.CharField(max_length=256)
     creator = models.ForeignKey(User, related_name="created_lists")
+    source = models.CharField(max_length=256)
     users = models.ManyToManyField(User)
 
     def __unicode__(self):

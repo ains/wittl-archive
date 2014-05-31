@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 class AirbnbImporter():
     NAME = "airbnb"
     URL_PATTERNS = ("https?:\/\/(www.)?airbnb.([a-zA-Z.]+)\/rooms\/[0-9]+",)
+    SORTABLE_ATTRS = {'bathrooms' : 'bathrooms', 'person_capacity' : 'guests', 'bedrooms' : 'bedrooms', 'beds' : 'beds'}
 
     def __init__(self):
         pass
