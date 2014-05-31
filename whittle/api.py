@@ -2,6 +2,7 @@ import json
 
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404
+from rest_framework.decorators import link
 from rest_framework.response import Response
 from web.models import List, ListItem
 from rest_framework import viewsets, routers
@@ -39,6 +40,36 @@ class ListViewSet(viewsets.ViewSet):
         else:
             return HttpResponseForbidden()
 
+    @link()
+    def score_data(self, request, pk=None):
+        list = get_object_or_404(List, pk=pk)
+
+        score_data = {}
+        for item in list.items.all():
+            score_data[item.id] = item.comparator_data(request.user)
+        return Response(score_data)
+
+
+class ListItemViewSet(viewsets.ViewSet):
+    def list(self, request):
+        queryset = ListItem.objects.filter(list__users=request.user).all()
+        serializer = ListItemSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        list_item = get_object_or_404(ListItem, pk=pk)
+        if list_item.list.user_invited(request.user):
+            serializer = ListItemSerializer(list_item)
+            return Response(serializer.data)
+        else:
+            return HttpResponseForbidden()
+
+    @link()
+    def score_data(self, request, pk=None):
+        list_item = get_object_or_404(ListItem, pk=pk)
+        return Response(list_item.comparator_data(request.user))
+
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'lists', ListViewSet, base_name="lists")
+router.register(r'list_items', ListItemViewSet, base_name="list_items")
