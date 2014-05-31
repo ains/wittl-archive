@@ -151,14 +151,14 @@
                 <table class="table">
                     <tbody>
                     {{#each sortable_attrs}}
-                        <tr>
-                            <td class="key">
-                                <p>{{@key}}</p>
-                            </td>
-                            <td class="value">
-                                <strong>{{this}}</strong>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td class="key">
+                            <p>{{@key}}</p>
+                        </td>
+                        <td class="value">
+                            <strong>{{this}}</strong>
+                        </td>
+                    </tr>
                     {{/each}}
                     </tbody>
                 </table>
@@ -239,7 +239,10 @@
 
                 var $modal = $('#card-detail');
                 $modal.find('.modal-content').empty().append(template(data));
-                render_map(data.latitude, data.longitude);
+                $modal.on('shown.bs.modal', function (e) {
+                    render_map(data.latitude, data.longitude);
+
+                });
                 $modal.modal('show');
             };
 
@@ -264,8 +267,8 @@
 
                         $.post("{% url "save_comparator_settings" %}",
                                 {"comparator_id": comparatorID, "configuration": JSON.stringify(serializedForm)}
-                        ).done(function() {
-                                   wittlSorting.fetchScoreData();
+                        ).done(function () {
+                                    wittlSorting.fetchScoreData();
                                 });
                     });
 
