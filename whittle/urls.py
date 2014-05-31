@@ -10,8 +10,6 @@ urlpatterns = patterns('',
                        url(r'^list/$', 'web.views.list_list', name='list_list'),
                        url(r'^list/create$', 'web.views.list_create', name='list_create'),
                        url(r'^list/(?P<list_id>[0-9]+)$', 'web.views.list_view', name='list_view'),
-                       url(r'^list/(?P<list_id>[0-9]+)/insert_item$', 'web.views.insert_list_item',
-                           name='insert_list_item'),
                        url(r'^list/(?P<list_id>[0-9]+)/update_wittl_order', 'web.views.update_wittl_order',
                            name='update_wittl_order'),
 
@@ -26,5 +24,5 @@ urlpatterns = patterns('',
 
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-                        url(r'^api/v1/', include(router.urls)),
+                       url(r'^api/v1/', include(router.urls)),
 )

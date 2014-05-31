@@ -52,29 +52,6 @@ def list_view(request, list_id):
     }
     return render(request, "list/view.html", render_data)
 
-
-@login_required
-@require_POST
-def insert_list_item(request, list_id):
-    list = get_object_or_404(List, id=list_id)
-
-    import_url = request.POST["url"]
-    importer = get_importer_for_url(import_url)
-    if importer is not None:
-        attributes = importer.get_attributes(import_url)
-
-        new_item = ListItem()
-        new_item.name = attributes["name"]
-        new_item.list = list
-        new_item.card_image = attributes["image"]
-        new_item.attributes = json.dumps(attributes)
-        new_item.save()
-
-        return HttpResponse("ok")
-
-    return HttpResponseServerError()
-
-
 @login_required
 def all_comparators(request):
     def get_comparator_data(comparator_class):

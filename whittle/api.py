@@ -1,9 +1,10 @@
 import json
 
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponse, HttpResponseServerError
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import link
 from rest_framework.response import Response
+from importer import get_importer_for_url
 from web.models import List, ListItem
 from rest_framework import viewsets, routers
 from rest_framework.serializers import ModelSerializer
@@ -64,6 +65,26 @@ class ListItemViewSet(viewsets.ViewSet):
         else:
             return HttpResponseForbidden()
 
+    def create(self, request):
+        list_id = request.DATA['list_id']
+        list = get_object_or_404(List, id=list_id)
+
+        import_url = request.DATA["url"]
+        importer = get_importer_for_url(import_url)
+        if importer is not None:
+            attributes = importer.get_attributes(import_url)
+
+            new_item = ListItem()
+            new_item.name = attributes["name"]
+            new_item.list = list
+            new_item.card_image = attributes["image"]
+            new_item.attributes = json.dumps(attributes)
+            new_item.save()
+
+            return HttpResponse("ok")
+        else:
+            return HttpResponseServerError("Unrecognised URL")
+
     @link()
     def score_data(self, request, pk=None):
         list_item = get_object_or_404(ListItem, pk=pk)
@@ -72,4 +93,4 @@ class ListItemViewSet(viewsets.ViewSet):
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'lists', ListViewSet, base_name="lists")
-router.register(r'list_items', ListItemViewSet, base_name="list_items")
+router.register(r'list-items', ListItemViewSet, base_name="list-items")
