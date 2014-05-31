@@ -16,13 +16,12 @@ urlpatterns = patterns('',
                        url(r'^comparator/$', 'web.views.all_comparators', name='all_comparators'),
                        url(r'^comparator/update$', 'web.views.save_comparator_settings',
                            name='save_comparator_settings'),
-                       url(r'^comparator/update$', 'web.views.save_comparator_settings',
-                           name='save_comparator_settings'),
 
                        (r'^accounts/login/$', 'django.contrib.auth.views.login'),
                        (r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login'),
 
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+                       url(r'^api/v1/token-auth/', 'rest_framework.authtoken.views.obtain_auth_token'),
                        url(r'^api/v1/', include(router.urls)),
 )

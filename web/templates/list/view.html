@@ -37,7 +37,7 @@
         </header>
 
         <div class="add-new-card">
-            <form id="new-list-item-form" method="POST" action="{% url 'list-items-list' %}">
+            <form id="new-list-item-form" method="POST" action="{% url 'listitem-list' %}">
                 {% csrf_token %}
                 <div class="input-group wittl-input-group">
                     <input type="text" name="url" class="form-control" placeholder="Add a new item to your Wittlist"/>
@@ -187,7 +187,7 @@
     <script src="/static/web/js/handlebars_helpers.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function () {
-            var wittlSorting = new WittlSorting("{% url "lists-score-data" list.id%}");
+            var wittlSorting = new WittlSorting("{% url "list-score-data" list.id%}");
             var itemTemplate = Handlebars.compile($('#item-template').html());
             var addItem = function (item) {
                 var $newItem = $(itemTemplate(item));
@@ -200,7 +200,7 @@
             };
 
             wittlSorting.fetchScoreData(function () {
-                $.getJSON("{% url 'lists-detail' list.id %}", function (data) {
+                $.getJSON("{% url 'list-detail' list.id %}", function (data) {
                     _.each(data.items, addItem);
                 });
             });
@@ -272,7 +272,9 @@
 
                         $.post("{% url "save_comparator_settings" %}",
                                 {"comparator_id": comparatorID, "configuration": JSON.stringify(serializedForm)}
-                        )
+                        ).done(function() {
+                                   wittlSorting.fetchScoreData();
+                                });
                     });
 
             $(".wittls").on("sortupdate", function (event, ui) {

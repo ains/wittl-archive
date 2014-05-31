@@ -7,18 +7,19 @@ from rest_framework.response import Response
 from importer import get_importer_for_url
 from web.models import List, ListItem
 from rest_framework import viewsets, routers
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import HyperlinkedModelSerializer
 
 
-class ListItemSerializer(ModelSerializer):
+class ListItemSerializer(HyperlinkedModelSerializer):
     def transform_attributes(self, obj, value):
         return json.loads(value)
 
     class Meta:
         model = ListItem
+        fields = ('name', 'attributes', 'url', 'id', 'card_image')
 
 
-class ListSerializer(ModelSerializer):
+class ListSerializer(HyperlinkedModelSerializer):
     items = ListItemSerializer()
 
     class Meta:
@@ -93,5 +94,5 @@ class ListItemViewSet(viewsets.ViewSet):
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
-router.register(r'lists', ListViewSet, base_name="lists")
-router.register(r'list-items', ListItemViewSet, base_name="list-items")
+router.register(r'lists', ListViewSet, base_name="list")
+router.register(r'list-items', ListItemViewSet, base_name="listitem")
