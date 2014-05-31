@@ -31,7 +31,7 @@ body {
 
 .sidebar {
   float: left;
-  position: absolute;
+  position: fixed;
   width: $sidebar-width;
   height: 100%;
   background-color: $sidebar-color;
@@ -47,6 +47,11 @@ body {
 
 #side-menu {
   background-color: $sidebar-color;
+  display: none;
+
+  &.sidr {
+    display: block;
+  }
 
   header {
     background-color: $wittl-color;
@@ -120,11 +125,12 @@ body {
   padding-bottom: 40px;
   width: 100%;
   height: 100%;
-  overflow: auto;
+  //overflow: auto;
 }
 
 .main-pane {
   width: 100%;
+  height: 100%;
   float: left;
   padding-left: $sidebar-width;
 }
@@ -146,6 +152,7 @@ body {
 
 .content {
   padding-top: $header-height + 30;
+  overflow: auto;
 }
 
 .wittlist-left.pane,
@@ -718,16 +725,201 @@ body.modal-open {
 }
 
 .profile-wrapper {
-  height: 600px;
+  //height: 600px;
+  padding: 0 20px;
 
   .profile-pic {
     width: 100%;
+    padding: 20px 0 10px 0;
     text-align: center;
 
     img {
-      width: 160px;
-      height: 160px;
+      width: 140px;
+      height: 140px;
       border-radius: 99em;
+      border: 5px solid white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
+  }
+
+  .user-details {
+    width: 100%;
+    margin-top: -80px;
+    background-color: white;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    border-radius: 3px;
+    padding: 30px 20px;
+    padding-top: 80px;
+    text-align: center;
+
+    .username {
+      margin: 10px 0;
+      font-size: 1.2em;
+      font-family: $body-font;
+      font-weight: 500;
+
+      a {
+        color: $wittl-color;
+        -webkit-transition: color 0.3s ease-out;
+        transition: color 0.3s ease-out;
+
+        &:hover {
+          text-decoration: none;
+          color: lighten($wittl-color, 10%);
+          -webkit-transition: color 0.3s ease-in;
+          transition: color 0.3s ease-in;
+        }
+      }
+    }
+
+    .fullname {
+      text-transform: uppercase;
+      font-family: $heading-font;
+      font-weight: 700;
+      letter-spacing: 1px;
+      font-size: 1.1em;
+      line-height: 1.2em;
+    }
+
+    .other {
+      padding: 0 5px;
+      text-align: left;
+      font-size: 0.9em;
+      color: $subheading-color;
+    }
+
+  }
+}
+
+.create-wittlist {
+  margin: 30px 0;
+}
+
+#newItemModal {
+    border-radius: 3px;
+    border: none;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+
+  .modal-header {
+
+    .modal-title {
+      font-family: $heading-font;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: $heading-color;
+    }
+  }
+}
+
+.wittlist-list {
+  padding: 20px 0;
+  list-style-type: none;
+
+  li {
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    .cover {
+      position: relative;
+      float: left;
+      width: 100%;
+      height: 120px;
+      overflow: hidden;
+
+      border: 5px solid #F7F7F7;
+      // outline: 1px solid #D8D8D8;
+      border-radius: 2px;
+      box-shadow: 0px 0px 0px 1px #D8D8D8;
+
+      a.add-item {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 5;
+
+        padding: 3px;
+        margin: 1px;
+        width: 25px;
+        height: 25px;
+        font-size: 15px;
+        text-align: center;
+        background-color: rgba(0,0,0,0.3);
+        color: #FFF;
+
+        opacity: 0;
+        // display: none;
+        -webkit-transition: opacity 0.3s ease-out;
+        transition: opacity 0.3s ease-out;
+      }
+
+      &:hover {
+
+        a.add-item {
+          // display: block;
+          opacity: 1;
+
+          text-decoration: none;
+
+          -webkit-transition: opacity 0.3s ease-in;
+          transition: opacity 0.3s ease-in;
+        }
+      }
+
+      .cover-inner {
+        border: 1px solid #D8D8D8;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        
+        img {
+          width: 100%;
+        }
+      }
+
+    }
+
+    .details {
+      float: left;
+      width: 100%;
+      padding: 15px 0;
+
+      .name {
+        margin: 0;
+        font-size: 0.9em;
+        
+        a {
+          text-transform: uppercase;
+          font-family: $heading-font;
+          font-weight: 600;
+          color: $heading-color;
+
+          &:hover {
+            text-decoration: none;
+          }
+        }
+      }
+
+      .stats {
+        float: left;
+        width: 100%;
+        padding: 15px 0;
+
+        .viewers, .items {
+          float: left;
+          width: 50%;
+          color: $subheading-color;
+
+          i {
+            padding-right: 20px;
+            color: $wittl-color;
+          }
+        }
+      }
+    }
+
+
   }
 }

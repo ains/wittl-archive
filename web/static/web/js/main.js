@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
 
     /* Menu */
     $('#open-menu').sidr({

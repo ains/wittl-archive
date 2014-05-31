@@ -24,7 +24,7 @@ class ListSerializer(HyperlinkedModelSerializer):
 
     class Meta:
         model = List
-        fields = ('name', 'items')
+        fields = ('name', 'id', 'users', 'items')
         depth = 1
 
 
