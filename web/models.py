@@ -10,6 +10,7 @@ from django.forms import ModelForm, Form
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
+from importer import get_importer_by_name
 
 
 class User(AbstractUser):
@@ -48,6 +49,7 @@ class ListItem(models.Model):
     name = models.CharField(max_length=256)
     card_image = models.CharField(max_length=256)
     list = models.ForeignKey(List, related_name="items")
+    source = models.CharField(max_length=256) 
     # JSON of object attributes
     attributes = models.TextField()
 
@@ -59,8 +61,13 @@ class ListItem(models.Model):
         return json.loads(self.attributes)
 
     @property
-    def get_sortable_attrs(self):
-        get_importer_by_name
+    def sortable_attrs(self):
+        importer = get_importer_by_name(self.source)
+        attrs = importer.SORTABLE_ATTRS
+        ext_sortable = {}
+        for (key, value) in attrs.items():
+            ext_sortable[value] = self.decoded_attributes[key] 
+        return ext_sortable
 
     def comparator_data(self, user):
         score_data = {}

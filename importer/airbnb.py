@@ -6,7 +6,7 @@ from importer.base import BaseImporter
 class AirbnbImporter(BaseImporter):
     NAME = "airbnb"
     URL_PATTERNS = ("https?:\/\/(www.)?airbnb.([a-zA-Z.]+)\/rooms\/[0-9]+",)
-    SORTABLE_ATTRS = {'bathrooms' : 'bathrooms', 'person_capacity' : 'guests', 'bedrooms' : 'bedrooms', 'beds' : 'beds'}
+    SORTABLE_ATTRS = {'bathrooms' : 'Bathrooms', 'person_capacity' : 'Guests', 'bedrooms' : 'Bedrooms', 'beds' : 'Beds'}
     URL_PATTERNS = (r"https?:\/\/(www.)?airbnb.([a-zA-Z.]+)\/rooms\/[0-9]+",)
 
     def __init__(self):
