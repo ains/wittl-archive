@@ -726,7 +726,7 @@ body.modal-open {
 
 .profile-wrapper {
   //height: 600px;
-  padding: 0 20px;
+  padding: 10px 20px;
 
   .profile-pic {
     width: 100%;
@@ -789,6 +789,10 @@ body.modal-open {
     }
 
   }
+}
+
+.wittlist-list-wrapper {
+  padding: 20px 0;
 }
 
 .create-wittlist {
