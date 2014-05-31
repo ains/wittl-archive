@@ -24,6 +24,9 @@ class List(models.Model):
     def get_comparators_for_user(self, user):
         return self.listcomparator_set.filter(user=user).all()
 
+    def user_invited(self, user):
+        return self.users.filter(pk=user.pk).exists()
+
 
 class ListForm(ModelForm):
     class Meta:
@@ -34,8 +37,8 @@ class ListForm(ModelForm):
 class ListItem(models.Model):
     name = models.CharField(max_length=256)
     card_image = models.CharField(max_length=256)
-    list = models.ForeignKey(List)
-    #JSON of object attributes
+    list = models.ForeignKey(List, related_name="items")
+    # JSON of object attributes
     attributes = models.TextField()
 
     def __unicode__(self):
@@ -45,6 +48,13 @@ class ListItem(models.Model):
     def decoded_attributes(self):
         return json.loads(self.attributes)
 
+    def comparator_data(self, user):
+        score_data = {}
+        for comparator in self.list.get_comparators_for_user(user):
+            score_data[comparator.id] = comparator.run(self.decoded_attributes)
+
+        return score_data
+
 
 class ListComparator(models.Model):
     user = models.ForeignKey(User)
@@ -52,7 +62,7 @@ class ListComparator(models.Model):
     order = models.IntegerField()
     comparator_name = models.CharField(max_length="128")
 
-    #JSON for comparator's special fields
+    # JSON for comparator's special fields
     configuration = models.TextField()
 
     class Meta:

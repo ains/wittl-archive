@@ -4,3 +4,4 @@ beautifulsoup4==4.3.2
 money==1.2.0
 factual-api
 requests_oauthlib
+djangorestframework

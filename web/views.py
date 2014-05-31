@@ -52,29 +52,6 @@ def list_view(request, list_id):
     }
     return render(request, "list/view.html", render_data)
 
-
-@login_required
-@require_POST
-def insert_list_item(request, list_id):
-    list = get_object_or_404(List, id=list_id)
-
-    import_url = request.POST["url"]
-    importer = get_importer_for_url(import_url)
-    if importer is not None:
-        attributes = importer.get_attributes(import_url)
-
-        new_item = ListItem()
-        new_item.name = attributes["name"]
-        new_item.list = list
-        new_item.card_image = attributes["image"]
-        new_item.attributes = json.dumps(attributes)
-        new_item.save()
-
-        return HttpResponse("ok")
-
-    return HttpResponseServerError()
-
-
 @login_required
 def all_comparators(request):
     def get_comparator_data(comparator_class):
@@ -85,26 +62,6 @@ def all_comparators(request):
 
     comparator_json = json.dumps(map(get_comparator_data, comparator.all_comparators.values()))
     return HttpResponse(comparator_json)
-
-
-@login_required
-@require_GET
-def card_data(request):
-    card = ListItem.objects.get(id=request.GET['list_item_id'])
-    return HttpResponse(card.attributes)
-
-
-@login_required
-def get_scores(request, list_id):
-    list = get_object_or_404(List, id=list_id)
-    user_comparators = list.get_comparators_for_user(request.user)
-
-    score_data = defaultdict(dict)
-    for item in list.listitem_set.all():
-        for comparator in user_comparators:
-            score_data[item.id][comparator.comparator_name] = comparator.run(item.decoded_attributes)
-
-    return HttpResponse(json.dumps(score_data))
 
 
 @login_required
@@ -119,12 +76,13 @@ def save_comparator_settings(request):
 
     return HttpResponse("ok")
 
+
 @login_required
 @csrf_exempt
 @require_POST
 def update_wittl_order(request, list_id):
     list = get_object_or_404(List, id=list_id)
-    if list.users.filter(pk=request.user.pk).exists():
+    if list.user_invited(request.user):
         wittl_ids = request.POST.getlist("wittl_ids[]")
         for i, id in enumerate(wittl_ids):
             wittl = ListComparator.objects.get(pk=int(id))
