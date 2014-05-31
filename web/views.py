@@ -97,12 +97,10 @@ def card_data(request):
 @login_required
 def get_scores(request, list_id):
     list = get_object_or_404(List, id=list_id)
-    user_comparators = list.get_comparators_for_user(request.user)
 
-    score_data = defaultdict(dict)
+    score_data = {}
     for item in list.items.all():
-        for comparator in user_comparators:
-            score_data[item.id][comparator.comparator_name] = comparator.run(item.decoded_attributes)
+        score_data[item.id] = item.comparator_data(request.user)
 
     return HttpResponse(json.dumps(score_data))
 
@@ -118,6 +116,7 @@ def save_comparator_settings(request):
     comparator.save()
 
     return HttpResponse("ok")
+
 
 @login_required
 @csrf_exempt

@@ -3,9 +3,9 @@ import json
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from web.models import User, List, ListItem
+from web.models import List, ListItem
 from rest_framework import viewsets, routers
-from rest_framework.serializers import ModelSerializer, CharField
+from rest_framework.serializers import ModelSerializer
 
 
 class ListItemSerializer(ModelSerializer):

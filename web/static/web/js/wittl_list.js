@@ -1,7 +1,7 @@
 function WittlSorting(scoringData) {
     this.calculateScore = function (cardID) {
         var wittlOrder = $('.wittl').map(function (i, e) {
-            return $(e).data('wittl-name');
+            return $(e).data('wittl-id');
         });
 
         return _.reduce(wittlOrder, function (acc, wittl, index) {

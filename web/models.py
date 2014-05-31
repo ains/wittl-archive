@@ -1,3 +1,4 @@
+from collections import defaultdict
 import json
 import comparator
 import hashlib
@@ -48,6 +49,12 @@ class ListItem(models.Model):
     def decoded_attributes(self):
         return json.loads(self.attributes)
 
+    def comparator_data(self, user):
+        score_data = {}
+        for comparator in self.list.get_comparators_for_user(user):
+            score_data[comparator.id] = comparator.run(self.decoded_attributes)
+
+        return score_data
 
 class ListComparator(models.Model):
     user = models.ForeignKey(User)
