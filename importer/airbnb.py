@@ -1,13 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
+from importer.base import BaseImporter
 
 
-class AirbnbImporter():
+class AirbnbImporter(BaseImporter):
     NAME = "airbnb"
-    URL_PATTERNS = ("https?:\/\/(www.)?airbnb.([a-zA-Z.]+)\/rooms\/[0-9]+",)
-
-    def __init__(self):
-        pass
+    URL_PATTERNS = (r"https?:\/\/(www.)?airbnb.([a-zA-Z.]+)\/rooms\/[0-9]+",)
 
     @staticmethod
     def meta_property_getter(soup):

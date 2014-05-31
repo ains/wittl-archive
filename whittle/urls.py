@@ -16,8 +16,6 @@ urlpatterns = patterns('',
                        url(r'^comparator/$', 'web.views.all_comparators', name='all_comparators'),
                        url(r'^comparator/update$', 'web.views.save_comparator_settings',
                            name='save_comparator_settings'),
-                       url(r'^comparator/update$', 'web.views.save_comparator_settings',
-                           name='save_comparator_settings'),
 
                        (r'^accounts/login/$', 'django.contrib.auth.views.login'),
                        (r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login'),
