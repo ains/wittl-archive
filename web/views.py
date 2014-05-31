@@ -88,24 +88,6 @@ def all_comparators(request):
 
 
 @login_required
-@require_GET
-def card_data(request):
-    card = ListItem.objects.get(id=request.GET['list_item_id'])
-    return HttpResponse(card.attributes)
-
-
-@login_required
-def get_scores(request, list_id):
-    list = get_object_or_404(List, id=list_id)
-
-    score_data = {}
-    for item in list.items.all():
-        score_data[item.id] = item.comparator_data(request.user)
-
-    return HttpResponse(json.dumps(score_data))
-
-
-@login_required
 @csrf_exempt
 @require_POST
 def save_comparator_settings(request):

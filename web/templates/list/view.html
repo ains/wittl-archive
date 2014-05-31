@@ -176,13 +176,14 @@
 
 
             //Initially load card data
-            $.getJSON("{% url "get_scores" list.id%}", function (scoreData) {
+            $.getJSON("{% url "lists-score-data" list.id%}", function (scoreData) {
                 var wittlSorting = new WittlSorting(scoreData);
                 $.getJSON("{% url 'lists-detail' list.id %}", function (data) {
                     _.each(data.items, function (item) {
                         var $newItem = $(itemTemplate(item));
                         var $card = $newItem.find('.card');
                         $card.data('list-item-id', item.id);
+                        $card.data('modal-data', item.attributes);
                         wittlSorting.scoreCard($card);
 
                         $('.wittlist').isotope('insert', $newItem);
@@ -191,12 +192,8 @@
             });
 
             $('.wittlist').on('click', '.card', function (e) {
-                var id = $(this).data('list-item-id');
-                var url = "{% url 'card_data' %}";
-
-                $.getJSON(url, {list_item_id: id}, function (data) {
-                    populate_and_show_modal(data);
-                });
+                var modalData = $(this).data('modal-data');
+                populate_and_show_modal(modalData);
             });
 
             var populate_and_show_modal = function (data) {
@@ -211,8 +208,6 @@
             };
 
             var render_map = function (lat, long) {
-                console.log(lat);
-                console.log(long);
                 var mapOptions = {
                     center: new google.maps.LatLng(parseFloat(lat), parseFloat(long)),
                     zoom: 8
