@@ -8,6 +8,7 @@ function WittlSorting(scoreDataURL) {
             if (!_.isUndefined(callback)) {
                 callback(data);
             }
+            $(".wittlist").trigger('resort');
         });
     };
 

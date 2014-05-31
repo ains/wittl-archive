@@ -10,7 +10,8 @@
             height: 300px
         }
     </style>
-    <link href="//code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" type="text/css" rel="stylesheet" media="all">
+    <link href="//code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" type="text/css" rel="stylesheet" media="all"/>
+    <link href="/static/web/js/vendor/ladda/ladda-themeless.min.css" type="text/css" rel="stylesheet"/>
 {% endblock %}
 
 {% block outsidewrapper %}
@@ -36,12 +37,13 @@
         </header>
 
         <div class="add-new-card">
-            <form id="new-list-item-form" method="POST" action="{% url 'list-items-list'%}">
+            <form id="new-list-item-form" method="POST" action="{% url 'list-items-list' %}">
                 {% csrf_token %}
                 <div class="input-group wittl-input-group">
                     <input type="text" name="url" class="form-control" placeholder="Add a new item to your Wittlist"/>
                     <span class="input-group-btn">
-                        <button type="submit" class="btn wittl-btn">Insert</button>
+                        <button id="new-list-item-submit" class="ladda-button wittl-btn btn" type="submit"
+                                data-style="zoom-in"><span class="ladda-label">Insert</span></button>
                     </span>
                 </div>
                 <input type="hidden" name="list_id" value="{{ list.id }}"/>
@@ -91,8 +93,13 @@
     <script src="/static/web/js/wittl_list.js"></script>
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
     <script type="text/javascript"
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgcL0rohxn0A99lQMRJ8WcN17NT_x9mf0&sensor=true">
-    </script>
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgcL0rohxn0A99lQMRJ8WcN17NT_x9mf0&sensor=true"></script>
+    <script type="text/javascript" src="/static/web/js/vendor/ladda/spin.min.js"></script>
+
+    <script type="text/javascript" src="/static/web/js/vendor/ladda/ladda.min.js"></script>
+    <script type="text/javascript" src="/static/web/js/vendor/ladda/ladda.jquery.min.js"></script>
+
+
     {% verbatim %}
     <script id="item-template" type="text/x-handlebars-template">
         <div class="col-sm-4 card-wrapper">
@@ -187,12 +194,31 @@
                 });
             });
 
-            $("#new-list-item-form").submit(function(e) {
+
+            $("#new-list-item-form").submit(function (e) {
+                var form = $(this);
+
+                //Start loading indicator
+                var l = $('#new-list-item-submit').ladda();
+                l.ladda('start');
+
+                var resetForm = function () {
+                    form.find("input[name='url']").val("");
+                    l.ladda('stop');
+                };
+
+                var submitURL = form.attr("action");
+                $.post(submitURL, form.serialize())
+                        .done(function (data) {
+                            wittlSorting.fetchScoreData(function () {
+                                addItem(data);
+                                resetForm();
+                            });
+                        }).fail(function () {
+                            resetForm();
+                        });
+
                 e.preventDefault();
-                var submitURL = $(this).attr("action");
-                $.post(submitURL, $(this).serialize(), function(data) {
-                    console.log(data);
-                });
             });
 
             var render_map = function (lat, long) {

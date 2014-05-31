@@ -1,6 +1,6 @@
 import json
 
-from django.http import HttpResponseForbidden, HttpResponse, HttpResponseServerError
+from django.http import HttpResponseForbidden, HttpResponseServerError
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import link
 from rest_framework.response import Response
@@ -81,7 +81,8 @@ class ListItemViewSet(viewsets.ViewSet):
             new_item.attributes = json.dumps(attributes)
             new_item.save()
 
-            return HttpResponse("ok")
+            serializer = ListItemSerializer(new_item)
+            return Response(serializer.data)
         else:
             return HttpResponseServerError("Unrecognised URL")
 
