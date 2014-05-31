@@ -150,21 +150,16 @@
             <div class="stats">
                 <table class="table">
                     <tbody>
+                    {{#each sortable_attrs}}
                     <tr>
                         <td class="key">
-                            <i class="icon_pin"></i>
+                            <p>{{@key}}</p>
                         </td>
                         <td class="value">
-                            <strong>{{ region }}</strong>
+                            <strong>{{this}}</strong>
                         </td>
                     </tr>
-                    <tr>
-                        <td class="key">
-                            <i class="icon_group"></i>
-                        </td>
-                        <td class="value">
-                            <strong>{{ person_capacity }}</strong>
-                        </td>
+                    {{/each}}
                     </tbody>
                 </table>
             </div>
@@ -222,11 +217,19 @@
             });
 
             var render_map = function (lat, long) {
+                var latLng = new google.maps.LatLng(parseFloat(lat), parseFloat(long));
                 var mapOptions = {
-                    center: new google.maps.LatLng(parseFloat(lat), parseFloat(long)),
-                    zoom: 8
+                    center: latLng,
+                    zoom: 8,
+                    disableDefaultUI: true
                 };
-                new google.maps.Map(document.getElementById("map"), mapOptions);
+
+                var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+                var marker = new google.maps.Marker({
+                    position: latLng,
+                    map: map,
+                });
             };
 
             var populate_and_show_modal = function (data) {
@@ -236,7 +239,10 @@
 
                 var $modal = $('#card-detail');
                 $modal.find('.modal-content').empty().append(template(data));
-                render_map(data.latitude, data.longitude);
+                $modal.on('shown.bs.modal', function (e) {
+                    render_map(data.latitude, data.longitude);
+
+                });
                 $modal.modal('show');
             };
 
@@ -261,8 +267,8 @@
 
                         $.post("{% url "save_comparator_settings" %}",
                                 {"comparator_id": comparatorID, "configuration": JSON.stringify(serializedForm)}
-                        ).done(function() {
-                                   wittlSorting.fetchScoreData();
+                        ).done(function () {
+                                    wittlSorting.fetchScoreData();
                                 });
                     });
 
