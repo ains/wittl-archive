@@ -16,6 +16,7 @@ class ListItemSerializer(HyperlinkedModelSerializer):
 
     class Meta:
         model = ListItem
+        fields = ('name', 'attributes', 'url', 'id', 'card_image')
 
 
 class ListSerializer(HyperlinkedModelSerializer):
