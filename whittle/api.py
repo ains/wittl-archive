@@ -33,13 +33,13 @@ class ListSerializer(HyperlinkedModelSerializer):
 class ListViewSet(viewsets.ViewSet):
     def list(self, request):
         queryset = request.user.list_set.all()
-        serializer = ListSerializer(queryset, many=True)
+        serializer = ListSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
         list = get_object_or_404(List, pk=pk)
         if list.user_invited(request.user):
-            serializer = ListSerializer(list)
+            serializer = ListSerializer(list, context={'request': request})
             return Response(serializer.data)
         else:
             return HttpResponseForbidden()
@@ -57,13 +57,13 @@ class ListViewSet(viewsets.ViewSet):
 class ListItemViewSet(viewsets.ViewSet):
     def list(self, request):
         queryset = ListItem.objects.filter(list__users=request.user).all()
-        serializer = ListItemSerializer(queryset, many=True)
+        serializer = ListItemSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
         list_item = get_object_or_404(ListItem, pk=pk)
         if list_item.list.user_invited(request.user):
-            serializer = ListItemSerializer(list_item)
+            serializer = ListItemSerializer(list_item, context={'request': request})
             return Response(serializer.data)
         else:
             return HttpResponseForbidden()
@@ -85,7 +85,7 @@ class ListItemViewSet(viewsets.ViewSet):
             new_item.source = importer.NAME
             new_item.save()
 
-            serializer = ListItemSerializer(new_item)
+            serializer = ListItemSerializer(new_item, context={'request': request})
             return Response(serializer.data)
         else:
             return HttpResponseServerError("Unrecognised URL")
