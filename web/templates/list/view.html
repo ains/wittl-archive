@@ -150,21 +150,16 @@
             <div class="stats">
                 <table class="table">
                     <tbody>
-                    <tr>
-                        <td class="key">
-                            <i class="icon_pin"></i>
-                        </td>
-                        <td class="value">
-                            <strong>{{ region }}</strong>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="key">
-                            <i class="icon_group"></i>
-                        </td>
-                        <td class="value">
-                            <strong>{{ person_capacity }}</strong>
-                        </td>
+                    {{#each sortable_attrs}}
+                        <tr>
+                            <td class="key">
+                                <p>{{@key}}</p>
+                            </td>
+                            <td class="value">
+                                <strong>{{this}}</strong>
+                            </td>
+                        </tr>
+                    {{/each}}
                     </tbody>
                 </table>
             </div>

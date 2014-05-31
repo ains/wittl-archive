@@ -12,7 +12,9 @@ from rest_framework.serializers import HyperlinkedModelSerializer
 
 class ListItemSerializer(HyperlinkedModelSerializer):
     def transform_attributes(self, obj, value):
-        return json.loads(value)
+        decoded_attrs = json.loads(value)
+        decoded_attrs["sortable_attrs"] = obj.sortable_attrs
+        return decoded_attrs
 
     class Meta:
         model = ListItem
