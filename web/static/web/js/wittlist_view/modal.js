@@ -16,17 +16,19 @@ $(function () {
     };
 
     var showModal = function (data) {
-        var src = $('#modal-template').html();
-        var template = Handlebars.compile(src);
+        var template = Handlebars.Templates['modal_template'];
+        ;
 
 
         var $modal = $('#card-detail');
-        $modal.find('.modal-content').empty().append(template(data));
+        $modal.find('.modal-content')
+            .empty()
+            .append(template(data));
+
         $modal.on('shown.bs.modal', function (e) {
             renderMap(data.latitude, data.longitude);
 
-        });
-        $modal.modal('show');
+        }).modal('show');
     };
 
 

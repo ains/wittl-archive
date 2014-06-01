@@ -4,6 +4,12 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON("package.json"),
         handlebars: {
+            options: {
+                namespace: 'Handlebars.Templates',
+                processName: function (filePath) {
+                    return filePath.replace(/^web\/static\/web\/hbs\//, '').replace(/\.hbs$/, '');
+                }
+            },
             all: {
                 files: {
                     "web/static/web/js/templates.js": ["web/static/web/hbs/*.hbs"]
