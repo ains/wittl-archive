@@ -6,3 +6,4 @@ web/static/web/css/*.css
 .sass-cache/
 run
 partner_api/keys.py
+node_modules/*

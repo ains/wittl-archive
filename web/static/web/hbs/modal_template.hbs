@@ -1,0 +1,35 @@
+<div class="modal-body">
+    <!--button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button-->
+    <div class="details">
+        <header>
+            <h4 class="title">{{ name }}</h4>
+
+            <p class="city">{{ city }}</p>
+        </header>
+        <hr/>
+        <div class="image-wrapper">
+            <img class="item-image" src="{{ image }}"/>
+        </div>
+        <hr/>
+        <p class="description">{{ description }}</p>
+    </div>
+
+    <div class="stats">
+        <table class="table">
+            <tbody>
+            {{#each sortable_attrs}}
+            <tr>
+                <td class="key">
+                    <p>{{@key}}</p>
+                </td>
+                <td class="value">
+                    <strong>{{ this }}</strong>
+                </td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+    <div id="map">
+    </div>
+</div>
