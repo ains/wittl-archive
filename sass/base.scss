@@ -32,6 +32,7 @@ body {
 .sidebar {
   float: left;
   position: fixed;
+  z-index: 150;
   width: $sidebar-width;
   height: 100%;
   background-color: $sidebar-color;
@@ -46,6 +47,8 @@ body {
 }
 
 #side-menu {
+  //position: relative;
+  z-index: 150;
   background-color: $sidebar-color;
   display: none;
 
@@ -140,11 +143,12 @@ body {
   float: left;
   width: 100%;
   position: fixed;
-  z-index: 15;
+  z-index: 100;
   height: $header-height;
   margin-top: 0;
   margin-bottom: 0;
   padding: 20px 0;
+  padding-left: $sidebar-width;
   border: none;
   background-color: #FFF;
   border-bottom: 1px solid #EEE;
@@ -1000,5 +1004,49 @@ body.modal-open {
       width: 200px;
     }
 
+  }
+}
+
+.page-header {
+
+  .user-area {
+    float: right;
+    padding: 10px 30px;
+    font-size: 0.9em;
+    color: lighten($subheading-color, 15%);
+    font-weight: 700;
+
+    .profile-link, .logout {
+      color: lighten($subheading-color, 15%);
+      padding: 0 5px;
+      -webkit-transition: color 0.2s ease-in;
+      transition: color 0.2s ease-in;
+
+      &:hover {
+        text-decoration: none;
+        -webkit-transition: color 0.2s ease-in;
+        transition: color 0.2s ease-in;
+      }
+    }
+
+    .profile-link {
+      color: $wittl-color;
+      font-weight: 400;
+      font-size: 1em;
+
+      &:hover {
+        color: darken($wittl-color, 15%);
+      }
+    }
+
+    .logout {
+      text-transform: uppercase;
+      letter-spacing: 1;
+      color: lighten($subheading-color, 15%);
+
+      &:hover {
+        color: $subheading-color;
+      }
+    }
   }
 }

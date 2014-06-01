@@ -17,8 +17,8 @@ urlpatterns = patterns('',
                        url(r'^comparator/update$', 'web.views.save_comparator_settings',
                            name='save_comparator_settings'),
 
-                       (r'^accounts/login/$', 'django.contrib.auth.views.login'),
-                       (r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login'),
+                       url(r'^accounts/login/$', 'django.contrib.auth.views.login', name='login'),
+                       url(r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login', name='logout'),
 
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),

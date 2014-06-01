@@ -119,10 +119,20 @@
                 </ul>
             </div>
 
-            <div class="main-pane">
-                <header class="page-header">
+            <header class="page-header">
                     
-                </header>
+                {% if user.is_authenticated %}
+                <div class="user-area">
+                    <span>
+                        <a class="profile-link" href="{% url 'list_list' %}">{{ user.username }}</a>
+                        |
+                        <a class="logout" href="{% url 'logout' %}">Logout</a>
+                    </span>
+                </div>
+                {% endif %}
+            </header>
+
+            <div class="main-pane">
 
                 <div class="container-fluid content">
                     {% block content %}
