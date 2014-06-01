@@ -6,11 +6,13 @@ from django import forms
 
 
 class WeatherComparator(BaseComparator):
-    NAME = 'weather'
-    REQUIRED_ATTRIBUTES = ("latitude", "longitude")
-    TRIGGERS = [r"distance from (?P<destination_location>.*)"]
-    TITLE = "Weather at destination"
+    NAME = "weather"
+    TITLE = "Weather at location"
+    PRIMARY_FIELD = None
     DESCRIPTION = "Compare locations by how close the temperature is to your ideal temperature."
+
+    REQUIRED_ATTRIBUTES = ("latitude", "longitude")
+    TRIGGERS = [r"weather at destination"]
     EXTRA_FIELDS = {
         'ideal_temperature': forms.CharField()
     }
