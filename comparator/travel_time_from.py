@@ -4,11 +4,12 @@ from partner_api.rome2rio import Rome2RioAPI
 
 class TravelTimeFromComparator(BaseComparator):
     NAME = "travel_time_from"
-    REQUIRED_ATTRIBUTES = ("latitude", "longitude")
-    TRIGGERS = [r"travel time from (?P<origin_location>.*)"]
     TITLE = "Travel time from"
     PRIMARY_FIELD = "origin_location"
     DESCRIPTION = "The total time to get to your destination from your chosen start location"
+
+    REQUIRED_ATTRIBUTES = ("latitude", "longitude")
+    TRIGGERS = [r"travel time from (?P<origin_location>.*)"]
 
     @staticmethod
     def get_route_data(route):

@@ -5,11 +5,13 @@ from money import Money
 
 class TravelPricesFromComparator(BaseComparator):
     NAME = "travel_prices_from"
-    REQUIRED_ATTRIBUTES = ("latitude", "longitude")
-    TRIGGERS = [r"travel prices from (?P<origin_location>.*)"]
     TITLE = "Travel cost from"
     PRIMARY_FIELD = "origin_location"
     DESCRIPTION = "The cost to get to your destination from your chosen start location"
+
+    REQUIRED_ATTRIBUTES = ("latitude", "longitude")
+    TRIGGERS = [r"travel prices from (?P<origin_location>.*)"]
+
 
     @staticmethod
     def get_route_data(route):

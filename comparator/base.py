@@ -1,8 +1,12 @@
 class BaseComparator():
     NAME = ""
     TITLE = ""
-    REQUIRED_ATTRIBUTES = []
+    DESCRIPTION = ""
+    PRIMARY_FIELD = None
+
+    REQUIRED_ATTRIBUTES = set()
     TRIGGERS = []
+    EXTRA_FIELDS = {}
 
     def __init__(self):
         pass
