@@ -104,34 +104,7 @@
 
 
     {% verbatim %}
-    <script id="item-template" type="text/x-handlebars-template">
-        <div class="col-sm-4 card-wrapper">
-            <div class="card">
-                <div class="pic">
-                    <a class="favourite pull-right" href="#"><i class="icon_star_alt"></i></a>
-                    <img src="{{ card_image }}" title="Name of thing here"/>
-                </div>
-
-                <div class="detail">
-                    <header class="col-xs-9">
-                        <h3 class="title"> {{ truncate name 12 }}</h3>
-
-                        <p class="wittl-meta-description">{{ truncate attributes.city 15 }}</p>
-                    </header>
-                    <div class="user-metrics col-xs-3">
-                        <div class="row">
-                            <span class="col-xs-6 icon_building key"></span>
-                            <small class="col-xs-6 value">25</small>
-                        </div>
-                        <div class="row">
-                            <span class="col-xs-6 icon_pin_alt key"></span>
-                            <small class="col-xs-6 value">3</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </script>
+    <script id="item-template" type="text/x-handlebars-template" src="/static/web/hbs/item_template.hbs"></script>
 
     <script id="modal-template" type="text/x-handlebars-template">
         <div class="modal-body">
@@ -204,10 +177,15 @@
 
                         var comparatorID = serializedForm["comparator_id"];
                         delete serializedForm["comparator_id"];
-
-                        $.post("{% url "save_comparator_settings" %}",
-                                {"comparator_id": comparatorID, "configuration": JSON.stringify(serializedForm)}
-                        ).done(function () {
+                        var postData = {
+                            "comparator_id": comparatorID,
+                            "configuration": JSON.stringify(serializedForm)
+                        };
+                        $.post(
+                                "{% url "save_comparator_settings" %}",
+                                postData
+                        )
+                                .done(function () {
                                     wittlSorting.fetchScoreData();
                                 });
                     });
