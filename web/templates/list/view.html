@@ -27,6 +27,84 @@
         <!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
+    <div class="modal fade" id="browse-wittls">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <!-- modal content here -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <i class="icon_close"></i>
+                    </button>
+                    <h4 class="modal-title">Add a new <strong class="wittl-color">wittl</strong></h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <section class="available-wittls">
+                        <header>
+                            <h3><strong class="wittl-color">WITTLs</strong> available for <small>{{ list.name|truncatechars:30 }}</small></h3>
+                        </header> 
+
+                        <ul class="browsable-wittls">
+                            <li class="col-sm-6">
+                                <div class="browsable-wittl" data-selected="0">
+                                    <h4 class="title">Travel Price From</h4>
+                                    
+                                    <div class="more-info">
+                                        <div class="description">
+                                            <p>Brief description about wittl, its primary and secondary params and what it can be used for.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="col-sm-6">
+                                <div class="browsable-wittl" data-selected="0">
+                                    <h4 class="title">Ideal Weather</h4>
+                                    <div class="more-info">
+                                        <div class="description">
+                                            <p>Brief description about wittl, its primary and secondary params and what it can be used for.</p>
+                                        </div>
+                                    </div>   
+                                </div>
+                            </li>
+                            <li class="col-sm-6">
+                                <div class="browsable-wittl" data-selected="0">
+                                    <h4 class="title">Travel Time From</h4>
+                                    <div class="more-info">
+                                        <div class="description">
+                                            <p>Brief description about wittl, its primary and secondary params and what it can be used for.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="col-sm-6">
+                                <div class="browsable-wittl" data-selected="0">
+                                    <h4 class="title">Close To</h4>
+                                    <div class="more-info">
+                                        <div class="description">
+                                            <p>Brief description about wittl, its primary and secondary params and what it can be used for.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+
+                    </section>  
+
+                </div>
+
+                <div class="modal-footer">
+                    <div class="wittl-input-group pull-right">
+                        <button class="btn wittl-btn">Next</button>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 {% endblock %}
 
 {% block content %}
@@ -62,7 +140,7 @@
     <section class="wittlist-right pane">
         <header>
             <h2>Wittls
-                <small class="browse"><a href="#">Browse...</a></small>
+                <small class="browse"><a href="#" data-toggle="modal" data-target="#browse-wittls">Browse...</a></small>
             </h2>
         </header>
 
@@ -155,6 +233,18 @@
             $(".wittls").on("sortupdate", function (event, ui) {
                 var wittlIDs = $(".wittls").sortable("toArray", {attribute: "data-wittl-id"});
                 $.post("{% url "update_wittl_order" list.id %}", {wittl_ids: wittlIDs  });
+            });
+
+            $('.browsable-wittls').on('click', '.browsable-wittl', function() {
+                var selected = $(this).data('selected');
+                if(selected == 1) {
+                    $(this).removeClass('selected')
+                            .data('selected', 0);
+                } else {
+                    $(this).addClass('selected')
+                            .data('selected', 1);
+                }               
+
             });
         });
 

@@ -29,6 +29,10 @@ body {
   letter-spacing: 1px;
 }
 
+.wittl-color {
+  color: $wittl-color;
+}
+
 .sidebar {
   float: left;
   position: fixed;
@@ -156,6 +160,7 @@ body {
 }
 
 .content {
+  padding: 0 30px;
   padding-top: $header-height + 30;
   overflow: auto;
 }
@@ -498,7 +503,7 @@ section.pane {
       background-color: #FFFFFF;
       border: 1px solid #ededed;
       border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(206, 154, 236, 0.35);
+      box-shadow: 0 2px 5px rgba(34, 62, 85, 0.15);
 
       .pic {
         position: relative;
@@ -804,22 +809,25 @@ body.modal-open {
   margin: 30px 0;
 }
 
-#newItemModal {
+.modal {
+
+  .modal-content {
     border-radius: 3px;
     border: none;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
       overflow: hidden;
+  }
+}
 
-  .modal-header {
+.modal-header {
 
-    .modal-title {
-      font-family: $heading-font;
-      font-weight: 700;
-      font-size: 13px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: $heading-color;
-    }
+  .modal-title {
+    font-family: $heading-font;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: $heading-color;
   }
 }
 
@@ -878,6 +886,9 @@ body.modal-open {
       }
 
       .cover-inner {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
         border: 1px solid #D8D8D8;
         width: 100%;
         height: 100%;
@@ -1048,5 +1059,167 @@ body.modal-open {
         color: $subheading-color;
       }
     }
+  }
+}
+
+#browse-wittls {
+
+  section {
+
+    header {
+      padding: 5px 0;
+      border-bottom: 1px solid #EEE;
+      margin-bottom: 15px;
+
+      h3 {
+        font-size: 1em;
+        font-weight: 600;
+        font-family: $body-font;
+        color: lighten($heading-color, 10%);
+
+        small {
+          font-size: 1em;
+        }
+      }
+    }
+  }
+
+  .available-wittls {
+    float: left;
+    width: 100%;
+
+    .browsable-wittls {
+      float: left;
+      width: 100%;
+      height: 300px;
+      overflow-y: auto;
+      background-color: $bg-color;
+      padding: 30px 0;
+      list-style-type: none;
+      // border-top: 1px solid #EEE;
+      // border-bottom: 1px solid #EEE;
+
+      li {
+        margin: 15px 0;
+        
+        .browsable-wittl {
+          position: relative;
+          display: table;
+          width: 100%;
+          height: $browsable-wittl-height;
+          background-color: #F0F0F0;
+          border-radius: 4px;
+          text-align: center;
+          overflow: hidden;
+
+          -webkit-transition: background-color 0.3s ease-in;
+          transition: background-color 0.3s ease-in;
+
+          &.selected {
+            background-color: $wittl-color;
+
+            .title {
+              color: #FFF;
+            }
+
+            -webkit-transition: background-color 0.3s ease-in;
+            transition: background-color 0.3s ease-in;
+          }
+
+          .title {
+            position: relative;
+            display: table-cell;
+            vertical-align: middle;
+            font-family: $body-font;
+            font-weight: 600;
+            font-size: 1em;
+            color: lighten($subheading-color, 15%);
+
+            opacity: 1;
+            top: 0;
+
+            -webkit-transition: opacity 0.3s ease-out 0.1s,
+                        top 0.4s ease-out;
+            transition: opacity 0.3s ease-out 0.1s,
+                        top 0.4s ease-out;
+
+            margin: 0;
+            padding: 10px 10px;
+            text-transform: uppercase;
+          }
+
+          .more-info {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            bottom: - $browsable-wittl-height;
+            left: 0;
+
+            opacity: 0;
+            
+            -webkit-transition: opacity 0.3s ease-out 0.5s,
+                        bottom 0.2s ease-out;
+            transition: opacity 0.3s ease-out 0.5s,
+                        bottom 0.2s ease-out;
+
+            .description {
+              display: table;
+              width: 100%;
+              height: 100%;
+              padding: 10px 15px;
+              text-align: left;
+
+
+              p {
+                display: table-cell;
+                vertical-align: middle;
+                font-family: $heading-font;
+                font-size: 0.8em;
+                font-weight: 400;
+                letter-spacing: 1px;
+                color: white;
+              }
+            } 
+          }
+          
+          &:hover {
+            cursor: pointer;
+            background-color: $wittl-color;
+
+            -webkit-transition: background-color 0.3s ease-in;
+            transition: background-color 0.3s ease-in;
+
+            .title {
+              top: - $browsable-wittl-height;
+              opacity: 0;
+              -webkit-transition: opacity 0.3s ease-in 0.5s,
+                        top 0.3s ease-in;
+              transition: opacity 0.3s ease-in 0.5s,
+                        top 0.3s ease-in;
+            }
+
+            .more-info {
+              opacity: 1;
+              bottom: 0;
+
+              -webkit-transition: opacity 0.3s ease-in 0.2s,
+                          bottom 0.5s ease-in;
+              transition: opacity 0.3s ease-in 0.2s,
+                          bottom 0.5s ease-in;
+            }
+          }
+
+        }
+      }
+    }
+  }
+
+  .modal-body {
+    float: left;
+  }
+
+  .modal-footer {
+    float: left;
+    width: 100%;
   }
 }
