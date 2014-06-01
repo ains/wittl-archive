@@ -22,7 +22,7 @@ To do a single compilation of resources:
 grunt
 ```
 
-To continuously watch and build (when modifying sass or handlebars use:
+To continuously watch and build (when modifying sass or handlebars) use:
 ```
 grunt watch
 ```
