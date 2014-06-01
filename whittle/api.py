@@ -5,9 +5,15 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import link
 from rest_framework.response import Response
 from importer import get_importer_for_url
-from web.models import List, ListItem
+from web.models import List, ListItem, User
 from rest_framework import viewsets, routers
 from rest_framework.serializers import HyperlinkedModelSerializer
+
+
+class UserSerializer(HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name')
 
 
 class ListItemSerializer(HyperlinkedModelSerializer):
@@ -23,6 +29,7 @@ class ListItemSerializer(HyperlinkedModelSerializer):
 
 class ListSerializer(HyperlinkedModelSerializer):
     items = ListItemSerializer()
+    users = UserSerializer()
 
     class Meta:
         model = List
