@@ -1,7 +1,7 @@
 $(function () {
 
     /* Menu */
-    $('#open-menu').sidr({
+    $('.sidebar header').sidr({
         name: 'side-menu',
         source: '#side-menu',
         renaming: false
