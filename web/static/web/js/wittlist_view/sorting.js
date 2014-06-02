@@ -55,7 +55,7 @@ $(function () {
 
     $('.wittlist').isotope({
         itemSelector: '.card-wrapper',
-        layoutMode: 'fitRows',
+        layoutMode: 'vertical',
         transitionDuration: '0.65s',
         getSortData: {
             wittlWeight: function (elem) {
