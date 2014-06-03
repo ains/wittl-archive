@@ -43,5 +43,5 @@ class TravelTimeFromComparator(BaseComparator):
 
         return {
             "score": shortest_duration,
-            "summary": "{} from {}".format(duration_string, origin_location)
+            "summary": "<strong>{}</strong> from {}".format(duration_string, origin_location)
         }
