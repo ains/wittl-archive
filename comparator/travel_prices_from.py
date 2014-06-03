@@ -41,5 +41,5 @@ class TravelPricesFromComparator(BaseComparator):
         score = int(total_price)
         return {
             "score": score,
-            "summary": "Average cost of {} travelling from {}".format(total_price, origin_location)
+            "summary": "Average cost of {} travelling from {}".format(total_price.format('en_GB'), origin_location)
         }
