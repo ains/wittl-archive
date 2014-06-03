@@ -37,4 +37,9 @@ class TravelPricesFromComparator(BaseComparator):
         all_routes = map(self.get_route_data, trip_data["routes"])
 
         sorted_routes = sorted(all_routes, key=lambda x: x["total_price"])
-        return int(sorted_routes[0]["total_price"] * 2)
+        total_price = sorted_routes[0]["total_price"] * 2
+        score = int(total_price)
+        return {
+            "score": score,
+            "summary": "Average cost of {} travelling from {}".format(total_price, origin_location)
+        }

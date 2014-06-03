@@ -12,4 +12,8 @@ class DistanceFromComparator(BaseComparator):
     TRIGGERS = [r"distance from (?P<destination_location>.*)"]
 
     def score(self, latitude, longitude, to_lat, to_lon):
-        return GoogleMapsAPI().get_distance(latitude, longitude, to_lat, to_lon)
+        score = GoogleMapsAPI().get_distance(latitude, longitude, to_lat, to_lon)
+        return {
+            "score": score,
+            "summary": ""
+        }
