@@ -22,7 +22,7 @@ function WittlSorting(scoreDataURL) {
         var topWittlCount = _.min([wittlOrder.length, 3]);
         for (var i = 0; i < topWittlCount; i++) {
             var wittlSummary = card.find(".wittl-data li")[i];
-            $(wittlSummary).text(scoringData[cardID][wittlOrder[i]]["summary"]);
+            $(wittlSummary).html(scoringData[cardID][wittlOrder[i]]["summary"]);
         }
 
         return _.reduce(wittlOrder, function (acc, wittl, index) {

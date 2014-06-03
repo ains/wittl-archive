@@ -39,7 +39,9 @@ class TravelPricesFromComparator(BaseComparator):
         sorted_routes = sorted(all_routes, key=lambda x: x["total_price"])
         total_price = sorted_routes[0]["total_price"] * 2
         score = int(total_price)
+
+        formatted_price = total_price.format('en_GB')
         return {
             "score": score,
-            "summary": "Average cost of {} travelling from {}".format(total_price.format('en_GB'), origin_location)
+            "summary": "Average cost of {} travelling from <strong>{}</strong>".format(formatted_price, origin_location)
         }
