@@ -514,6 +514,7 @@ section.pane {
           height: 33.3%;
           padding: 10px 10px 10px 50px;
           font-size: 15px;
+          border-bottom: 1px solid #ededed;
         }
       }
 
@@ -521,6 +522,7 @@ section.pane {
         position: relative;
         height: 140px;
         overflow: hidden;
+        border-right: 1px solid #ededed;
 
         a.favourite {
           position: absolute;
