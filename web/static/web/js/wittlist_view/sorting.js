@@ -19,9 +19,9 @@ function WittlSorting(scoreDataURL) {
 
         return _.reduce(wittlOrder, function (acc, wittl, index) {
             var totalScore = _.reduce(scoringData, function (acc, cardData, index) {
-                return acc + cardData[wittl];
+                return acc + cardData[wittl]["score"];
             }, 0);
-            var score = (wittl in scoringData[cardID]) ? scoringData[cardID][wittl] : 0;
+            var score = (wittl in scoringData[cardID]) ? scoringData[cardID][wittl]["score"] : 0;
             var normalisedScore = score / totalScore;
             return acc + (normalisedScore * (1 / Math.pow(8, index)));
         }, 0) * 100;

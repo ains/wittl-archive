@@ -15,9 +15,14 @@ class TravelTimeFromComparator(BaseComparator):
 
     @staticmethod
     def get_route_data(route):
+        total_duration = 0
+
+        for segment in route["segments"]:
+            total_duration += segment["duration"]
+
         return {
             "name": route["name"],
-            "duration": route["duration"]
+            "duration": total_duration
         }
 
     def score(self, latitude, longitude, origin_location):
@@ -27,7 +32,6 @@ class TravelTimeFromComparator(BaseComparator):
         trip_data = r2r_api.do_search(oName=origin_location, dPos=destintation_lat_lon)
         all_routes = map(self.get_route_data, trip_data["routes"])
         sorted_routes = sorted(all_routes, key=lambda x: x["duration"])
-        print(sorted_routes)
         shortest_duration = int(sorted_routes[0]["duration"])
 
         h, m = divmod(shortest_duration, 60)
