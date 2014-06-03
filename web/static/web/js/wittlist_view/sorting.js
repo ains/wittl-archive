@@ -3,12 +3,29 @@ function WittlSorting(scoreDataURL) {
     var scoringData = null;
 
     this.fetchScoreData = function (callback) {
+        var nanobar = new Nanobar({ "bg" : "#5cb4ff" });
+
+        var percentage = 20;
+        var timeout = 25;
+
+        var timeoutID;
+
+        var increaseNanobar = function () {
+            nanobar.go(percentage);
+            percentage += (100 - percentage) / 160;
+            timeoutID = setTimeout(increaseNanobar, timeout);
+        };
+
+        timeoutID = setTimeout(increaseNanobar, timeout);
+
         $.getJSON(scoreDataURL, function (data) {
             scoringData = data;
             if (!_.isUndefined(callback)) {
                 callback(data);
             }
             $(".wittlist").trigger('resort');
+            clearTimeout(timeoutID);
+            nanobar.go(100);
         });
     };
 

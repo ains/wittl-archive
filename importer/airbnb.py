@@ -1,3 +1,4 @@
+import HTMLParser
 import requests
 from bs4 import BeautifulSoup
 from importer.base import BaseImporter
@@ -7,13 +8,13 @@ class AirbnbImporter(BaseImporter):
     NAME = "airbnb"
     URL_PATTERNS = ("https?:\/\/(www.)?airbnb.([a-zA-Z.]+)\/rooms\/[0-9]+",)
     SORTABLE_ATTRS = {'bathrooms' : 'Bathrooms', 'person_capacity' : 'Guests', 'bedrooms' : 'Bedrooms', 'beds' : 'Beds'}
-    URL_PATTERNS = (r"https?:\/\/(www.)?airbnb.([a-zA-Z.]+)\/rooms\/[0-9]+",)
 
     @staticmethod
     def meta_property_getter(soup):
         def getter(property_name):
+            h = HTMLParser.HTMLParser()
             meta_tag = soup.find("meta", attrs={"property": property_name})
-            return meta_tag["content"] if meta_tag is not None else ""
+            return h.unescape(meta_tag["content"]) if meta_tag is not None else ""
 
         return getter
 
@@ -21,21 +22,21 @@ class AirbnbImporter(BaseImporter):
         attributes = {}
 
         soup = BeautifulSoup(page)
-        property_detail_table = soup.find("table", id="description_details")
-        property_detail_rows = property_detail_table.find_all("tr")
-        table_attributes = [
-            (1, "person_capacity"),
-            (2, "bedrooms"),
-            (3, "bathrooms"),
-            (4, "beds"),
-            (9, "check_in_time"),
-            (10, "check_out_time")
-        ]
 
-        for (index, attribute_name) in table_attributes:
-            if index < len(property_detail_rows):
-                row = property_detail_rows[index]
-                attributes[attribute_name] = row.find_all("td")[1].get_text()
+        table_attributes = {
+            "Accommodates:": "person_capacity",
+            "Bedrooms:": "bedrooms",
+            "Bathrooms:": "bathrooms",
+            "Beds:": "beds",
+            "Check In:": "check_in_time",
+            "Check Out:": "check_out_time"
+        }
+
+        for (attribute_label, internal_name) in table_attributes.items():
+            label_element = soup.find("td", text=attribute_label)
+            if label_element:
+                value_element = label_element.find_next_sibling("td")
+                attributes[internal_name] = value_element.string
 
         meta_property_getter = self.meta_property_getter(soup)
         meta_properties = [
