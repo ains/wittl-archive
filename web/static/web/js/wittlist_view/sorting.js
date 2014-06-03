@@ -6,13 +6,13 @@ function WittlSorting(scoreDataURL) {
         var nanobar = new Nanobar({ "bg" : "#5cb4ff" });
 
         var percentage = 20;
-        var timeout = 1000;
+        var timeout = 25;
 
         var timeoutID;
 
         var increaseNanobar = function () {
             nanobar.go(percentage);
-            percentage += (100 - percentage) / 4;
+            percentage += (100 - percentage) / 160;
             timeoutID = setTimeout(increaseNanobar, timeout);
         };
 
