@@ -12,10 +12,18 @@ function WittlSorting(scoreDataURL) {
         });
     };
 
-    this.calculateScore = function (cardID) {
+    this.calculateScore = function (card) {
+        var cardID = $(card).data('list-item-id');
+
         var wittlOrder = $('.wittl').map(function (i, e) {
             return $(e).data('wittl-id');
         });
+
+        var topWittlCount = _.min([wittlOrder.length, 3]);
+        for (var i = 0; i < topWittlCount; i++) {
+            var wittlSummary = card.find(".wittl-data li")[i];
+            $(wittlSummary).text(scoringData[cardID][wittlOrder[i]]["summary"]);
+        }
 
         return _.reduce(wittlOrder, function (acc, wittl, index) {
             var totalScore = _.reduce(scoringData, function (acc, cardData, index) {
@@ -28,8 +36,7 @@ function WittlSorting(scoreDataURL) {
     };
 
     this.scoreCard = function (card) {
-        var cardID = $(card).data('list-item-id');
-        var newWeight = sorter.calculateScore(cardID);
+        var newWeight = sorter.calculateScore(card);
         $(card).data('wittl-weight', newWeight);
     };
 
@@ -38,7 +45,7 @@ function WittlSorting(scoreDataURL) {
         $wittlist.on("resort", function (event, param1, param2) {
             //Update cards with their new weights
             $(".card").each(function (i, card) {
-                sorter.scoreCard(card);
+                sorter.scoreCard($(card));
             });
 
             //Shuffle the deck!
