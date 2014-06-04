@@ -18,5 +18,5 @@ class NearbyComparator(BaseComparator):
 
         return {
             "score": score,
-            "Summary": "{} {}'s within 10KM"
+            "Summary": "{} {}'s within 10km".format(score, poi_name)
         }
