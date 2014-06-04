@@ -20,4 +20,8 @@ class WeatherComparator(BaseComparator):
     def score(self, latitude, longitude, ideal_temperature, date=datetime.datetime.now()):
         w = WundergroundAPI()
         weather_at_destination = w.get_weather(latitude, longitude, date)
-        return abs(weather_at_destination - int(ideal_temperature))
+        score = abs(weather_at_destination - int(ideal_temperature))
+        return {
+            "score": score,
+            "summary": u"<strong>{}\u2103</strong> from your ideal temperature on average".format(score)
+        }

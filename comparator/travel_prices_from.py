@@ -15,7 +15,7 @@ class TravelPricesFromComparator(BaseComparator):
 
     @staticmethod
     def get_route_data(route):
-        route_total = Money(0, currency="USD")
+        route_total = Money(0, currency="GBP")
 
         for segment in route["segments"]:
             segment_price = segment["indicativePrice"]
@@ -37,4 +37,11 @@ class TravelPricesFromComparator(BaseComparator):
         all_routes = map(self.get_route_data, trip_data["routes"])
 
         sorted_routes = sorted(all_routes, key=lambda x: x["total_price"])
-        return int(sorted_routes[0]["total_price"] * 2)
+        total_price = sorted_routes[0]["total_price"] * 2
+        score = int(total_price)
+
+        formatted_price = total_price.format('en_GB')
+        return {
+            "score": score,
+            "summary": u"Average cost of <strong>{}</strong> travelling from {}".format(formatted_price, origin_location)
+        }
