@@ -6,4 +6,4 @@ class BaseImporter():
         pass
 
     def get_attributes(self, url):
-        pass
+        raise NotImplementedError()
