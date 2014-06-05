@@ -1,7 +1,8 @@
 import re
 from airbnb import AirbnbImporter
+from zoopla import ZooplaImporter
 
-LOADED_IMPORTERS = [AirbnbImporter]
+LOADED_IMPORTERS = [AirbnbImporter, ZooplaImporter]
 IMPORTER_DICT = {importer.NAME: importer for importer in LOADED_IMPORTERS}
 
 
