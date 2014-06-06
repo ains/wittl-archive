@@ -33,4 +33,4 @@ class ZooplaImporter(BaseImporter):
 
         attributes["name"] = listing['num_bedrooms'] + ' bedroom property, ' + listing['street_name']
 
-        print attributes
+        return attributes

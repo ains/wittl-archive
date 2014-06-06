@@ -52,6 +52,8 @@ class AirbnbImporter(BaseImporter):
         ]
         attributes.update({key: meta_property_getter(property_name) for (property_name, key) in meta_properties})
 
+        attributes["subtitle"] = attributes["city"]
+
         return attributes
 
     def get_attributes(self, url):
