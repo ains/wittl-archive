@@ -104,10 +104,13 @@ class ListItemViewSet(viewsets.ViewSet):
             return HttpResponseServerError("Unrecognised URL")
 
     @action()
-    def add_favourite(self, request, pk=None):
+    def toggle_favourite(self, request, pk=None):
         list_item = get_object_or_404(ListItem, pk=pk)
         user = request.user
-        user.favourites.add(list_item)
+        if user.favourites.filter(pk=pk).exists():
+            user.favourites.remove(list_item)
+        else:
+            user.favourites.add(list_item)
         serializer = ListItemSerializer(user.favourites.all(), many=True, context={'request': request})
         return Response(serializer.data)
 
