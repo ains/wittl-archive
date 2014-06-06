@@ -3,33 +3,57 @@ function WittlSorting(scoreDataURL) {
     var scoringData = null;
 
     this.fetchScoreData = function (callback) {
+        var nanobar = new Nanobar({ "bg" : "#5cb4ff" });
+
+        var percentage = 20;
+        var timeout = 25;
+
+        var timeoutID;
+
+        var increaseNanobar = function () {
+            nanobar.go(percentage);
+            percentage += (100 - percentage) / 160;
+            timeoutID = setTimeout(increaseNanobar, timeout);
+        };
+
+        timeoutID = setTimeout(increaseNanobar, timeout);
+
         $.getJSON(scoreDataURL, function (data) {
             scoringData = data;
             if (!_.isUndefined(callback)) {
                 callback(data);
             }
             $(".wittlist").trigger('resort');
+            clearTimeout(timeoutID);
+            nanobar.go(100);
         });
     };
 
-    this.calculateScore = function (cardID) {
+    this.calculateScore = function (card) {
+        var cardID = $(card).data('list-item-id');
+
         var wittlOrder = $('.wittl').map(function (i, e) {
             return $(e).data('wittl-id');
         });
 
+        var topWittlCount = _.min([wittlOrder.length, 3]);
+        for (var i = 0; i < topWittlCount; i++) {
+            var wittlSummary = card.find(".wittl-data li")[i];
+            $(wittlSummary).html(scoringData[cardID][wittlOrder[i]]["summary"]);
+        }
+
         return _.reduce(wittlOrder, function (acc, wittl, index) {
             var totalScore = _.reduce(scoringData, function (acc, cardData, index) {
-                return acc + cardData[wittl];
+                return acc + cardData[wittl]["score"];
             }, 0);
-            var score = (wittl in scoringData[cardID]) ? scoringData[cardID][wittl] : 0;
+            var score = (wittl in scoringData[cardID]) ? scoringData[cardID][wittl]["score"] : 0;
             var normalisedScore = score / totalScore;
             return acc + (normalisedScore * (1 / Math.pow(8, index)));
         }, 0) * 100;
     };
 
     this.scoreCard = function (card) {
-        var cardID = $(card).data('list-item-id');
-        var newWeight = sorter.calculateScore(cardID);
+        var newWeight = sorter.calculateScore(card);
         $(card).data('wittl-weight', newWeight);
     };
 
@@ -38,7 +62,7 @@ function WittlSorting(scoreDataURL) {
         $wittlist.on("resort", function (event, param1, param2) {
             //Update cards with their new weights
             $(".card").each(function (i, card) {
-                sorter.scoreCard(card);
+                sorter.scoreCard($(card));
             });
 
             //Shuffle the deck!
@@ -55,7 +79,7 @@ $(function () {
 
     $('.wittlist').isotope({
         itemSelector: '.card-wrapper',
-        layoutMode: 'fitRows',
+        layoutMode: 'vertical',
         transitionDuration: '0.65s',
         getSortData: {
             wittlWeight: function (elem) {

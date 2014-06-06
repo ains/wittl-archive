@@ -42,17 +42,20 @@
 
                     <section class="available-wittls">
                         <header>
-                            <h3><strong class="wittl-color">WITTLs</strong> available for <small>{{ list.name|truncatechars:30 }}</small></h3>
-                        </header> 
+                            <h3><strong class="wittl-color">WITTLs</strong> available for
+                                <small>{{ list.name|truncatechars:30 }}</small>
+                            </h3>
+                        </header>
 
                         <ul class="browsable-wittls">
                             <li class="col-sm-6">
                                 <div class="browsable-wittl" data-selected="0">
                                     <h4 class="title">Travel Price From</h4>
-                                    
+
                                     <div class="more-info">
                                         <div class="description">
-                                            <p>Brief description about wittl, its primary and secondary params and what it can be used for.</p>
+                                            <p>Brief description about wittl, its primary and secondary params and what
+                                                it can be used for.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -60,19 +63,23 @@
                             <li class="col-sm-6">
                                 <div class="browsable-wittl" data-selected="0">
                                     <h4 class="title">Ideal Weather</h4>
+
                                     <div class="more-info">
                                         <div class="description">
-                                            <p>Brief description about wittl, its primary and secondary params and what it can be used for.</p>
+                                            <p>Brief description about wittl, its primary and secondary params and what
+                                                it can be used for.</p>
                                         </div>
-                                    </div>   
+                                    </div>
                                 </div>
                             </li>
                             <li class="col-sm-6">
                                 <div class="browsable-wittl" data-selected="0">
                                     <h4 class="title">Travel Time From</h4>
+
                                     <div class="more-info">
                                         <div class="description">
-                                            <p>Brief description about wittl, its primary and secondary params and what it can be used for.</p>
+                                            <p>Brief description about wittl, its primary and secondary params and what
+                                                it can be used for.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -80,16 +87,18 @@
                             <li class="col-sm-6">
                                 <div class="browsable-wittl" data-selected="0">
                                     <h4 class="title">Close To</h4>
+
                                     <div class="more-info">
                                         <div class="description">
-                                            <p>Brief description about wittl, its primary and secondary params and what it can be used for.</p>
+                                            <p>Brief description about wittl, its primary and secondary params and what
+                                                it can be used for.</p>
                                         </div>
                                     </div>
                                 </div>
                             </li>
                         </ul>
 
-                    </section>  
+                    </section>
 
                 </div>
 
@@ -173,15 +182,15 @@
 
     <script src="/static/web/js/vendor/isotope.pkgd.js"></script>
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/nanobar/0.2.0/nanobar.min.js"></script>
     <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgcL0rohxn0A99lQMRJ8WcN17NT_x9mf0&sensor=true"></script>
-    
+
     <script type="text/javascript" src="/static/web/js/vendor/ladda/spin.min.js"></script>
     <script type="text/javascript" src="/static/web/js/vendor/ladda/ladda.min.js"></script>
     <script type="text/javascript" src="/static/web/js/vendor/ladda/ladda.jquery.min.js"></script>
 
     <script type="text/javascript" src="/static/web/js/wittlist_view/modal.js"></script>
-    <script type="text/javascript" src="/static/web/js/wittlist_view/list_item_form.js"></script>
     <script type="text/javascript" src="/static/web/js/wittlist_view/sorting.js"></script>
 
 
@@ -205,6 +214,32 @@
                 });
             });
 
+            $("#new-list-item-form").submit(function (e) {
+                var form = $(this);
+
+                //Start loading indicator
+                var l = $('#new-list-item-submit').ladda();
+                l.ladda('start');
+
+                var resetForm = function () {
+                    form.find("input[name='url']").val("");
+                    l.ladda('stop');
+                };
+
+                var submitURL = form.attr("action");
+                $.post(submitURL, form.serialize())
+                        .done(function (data) {
+                            wittlSorting.fetchScoreData(function () {
+                                addItem(data);
+                                resetForm();
+                            });
+                        }).fail(function () {
+                            resetForm();
+                        });
+
+                e.preventDefault();
+            });
+
             $(".wittl")
                     .on("change", ":input", function () {
                         var serializedForm = {};
@@ -221,13 +256,9 @@
                             "comparator_id": comparatorID,
                             "configuration": JSON.stringify(serializedForm)
                         };
-                        $.post(
-                                "{% url "save_comparator_settings" %}",
-                                postData
-                        )
-                                .done(function () {
-                                    wittlSorting.fetchScoreData();
-                                });
+                        $.post("{% url "save_comparator_settings" %}", postData).done(function () {
+                            wittlSorting.fetchScoreData();
+                        });
                     });
 
             $(".wittls").on("sortupdate", function (event, ui) {
@@ -235,9 +266,9 @@
                 $.post("{% url "update_wittl_order" list.id %}", {wittl_ids: wittlIDs  });
             });
 
-            $('.browsable-wittls').on('click', '.browsable-wittl', function() {
+            $('.browsable-wittls').on('click', '.browsable-wittl', function () {
                 var selected = $(this).data('selected');
-                if(selected == 1) {
+                if (selected == 1) {
                     $(this).removeClass('selected')
                             .attr('data-selected', 0);
                 } else {

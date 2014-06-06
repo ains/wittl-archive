@@ -10,7 +10,7 @@ class Rome2RioAPI():
         pass
 
     def do_search(self, **kwargs):
-        params = {"key": self.API_KEY}
+        params = {"key": self.API_KEY, "currency": "GBP"}
         params.update(kwargs)
 
         r = requests.get(self.BASE_URL, params=params)
