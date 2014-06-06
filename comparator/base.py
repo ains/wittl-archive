@@ -13,3 +13,10 @@ class BaseComparator():
 
     def score(self, **kwargs):
         pass
+
+    @property
+    def data(self):
+        return {
+            "title": self.TITLE,
+            "description": self.DESCRIPTION
+        }

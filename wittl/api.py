@@ -8,6 +8,7 @@ from importer import get_importer_for_url
 from web.models import List, ListItem, User
 from rest_framework import viewsets, routers
 from rest_framework.serializers import HyperlinkedModelSerializer
+from comparator import all_comparators
 
 
 class UserSerializer(HyperlinkedModelSerializer):
@@ -102,7 +103,16 @@ class ListItemViewSet(viewsets.ViewSet):
         list_item = get_object_or_404(ListItem, pk=pk)
         return Response(list_item.comparator_data(request.user))
 
+
+class ComparatorViewSet(viewsets.ViewSet):
+    def list(self, request):
+        response_data = {
+            comparator_name: comparator().data for comparator_name, comparator in all_comparators.items()
+        }
+        return Response(response_data)
+
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'lists', ListViewSet, base_name="list")
 router.register(r'list-items', ListItemViewSet, base_name="listitem")
+router.register(r'comparators', ComparatorViewSet, base_name="comparator")
