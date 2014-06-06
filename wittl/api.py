@@ -86,6 +86,7 @@ class ListItemViewSet(viewsets.ViewSet):
 
             new_item = ListItem()
             new_item.name = attributes["name"]
+            new_item.subtitle = attributes["subtitle"]
             new_item.list = list
             new_item.card_image = attributes["image"]
             new_item.attributes = json.dumps(attributes)

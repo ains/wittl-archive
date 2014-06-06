@@ -49,6 +49,7 @@ class ZooplaImporter(BaseImporter):
         attributes["price_formatted"] = soup.find("div", class_="listing-details-price text-price").text.strip()
         attributes["name"] = soup.find("h1", class_="listing-details-h1").text
         attributes["description"] = soup.find("div", itemprop="description").text.strip()
+        attributes["subtitle"] = attributes["street_address"]
 
         #Get Lat Lon
         page_url = urlparse(url)
