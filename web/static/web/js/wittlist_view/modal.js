@@ -17,7 +17,6 @@ $(function () {
 
     var showModal = function (data) {
         var template = Handlebars.Templates['modal_template'];
-        ;
 
 
         var $modal = $('#card-detail');
