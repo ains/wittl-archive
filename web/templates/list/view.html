@@ -164,6 +164,21 @@
 
         <div class="wittl-wrapper">
             <ul class="wittls">
+                <li>
+                    <form class="nl-form wittl-form">
+                        Wittl by
+                        <select>
+                            <option value="1" selected>travel prices</option>
+                            <option value="2">Indian</option>
+                            <option value="3">French</option>
+                            <option value="4">Japanese</option>
+                            <option value="2">Italian</option>
+                        </select>
+                        <span class="preposition">from</span>
+                        <input type="text" value="" placeholder="London" data-subline="For example: <em>Los Angeles</em> or <em>Rome</em>"/>
+                        <div class="nl-overlay"></div>
+                    </form>
+                </li>
                 {% for comparator in comparators %}
                     {% include 'list/comparator.html' with comparator=comparator %}
                 {% endfor %}
@@ -179,6 +194,9 @@
     <script src="/static/web/js/handlebars_helpers.js" type="text/javascript"></script>
 
     <script type="text/javascript" src="/static/web/js/templates.js"></script>
+
+    <script type="text/javascript" src="/static/web/js/vendor/modernizr.custom.min.js"></script>
+    <script type="text/javascript" src="/static/web/js/vendor/nlform.js"></script>
 
     <script src="/static/web/js/vendor/isotope.pkgd.js"></script>
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
@@ -196,6 +214,11 @@
 
     <script type="text/javascript">
         $(function () {
+
+            $('.wittl-form').each(function() {
+                var nlform = new NLForm( $(this)[0] );
+            });
+
             var wittlSorting = new WittlSorting("{% url "list-score-data" list.id%}");
             var itemTemplate = Handlebars.Templates['item_template'];
             var addItem = function (item) {
