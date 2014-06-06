@@ -12,7 +12,7 @@ class BaseComparator():
         pass
 
     def score(self, **kwargs):
-        pass
+        raise NotImplementedError()
 
     @property
     def data(self):

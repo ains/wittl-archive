@@ -46,6 +46,7 @@ class ListForm(ModelForm):
 
 class ListItem(models.Model):
     name = models.CharField(max_length=256)
+    subtitle = models.CharField(max_length=512)
     card_image = models.CharField(max_length=256)
     list = models.ForeignKey(List, related_name="items")
     source = models.CharField(max_length=256) 
