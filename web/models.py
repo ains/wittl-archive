@@ -14,7 +14,7 @@ from importer import get_importer_by_name
 
 
 class User(AbstractUser):
-    pass
+    favourites = models.ManyToManyField('ListItem')
 
 
 @receiver(post_save, sender=User)

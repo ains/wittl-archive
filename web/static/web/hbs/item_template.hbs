@@ -2,7 +2,11 @@
     <div class="card">
         <div class="row">
             <div class="col-sm-1 pic">
-                <a class="favourite pull-right" href="#"><i class="icon_star_alt"></i></a>
+                {{#if favourited}}
+                    <a class="favourite pull-right" href="#"><i class="icon_star"></i></a>
+                {{else}}
+                    <a class="favourite pull-right" href="#"><i class="icon_star_alt"></i></a>
+                {{/if}}
                 <img src="{{ card_image }}" title="Name of thing here"/>
             </div>
 
