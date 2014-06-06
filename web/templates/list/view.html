@@ -95,7 +95,7 @@
 
                 <div class="modal-footer">
                     <div class="wittl-input-group pull-right">
-                        <button class="btn wittl-btn">Next</button>
+                        <button id="browse-next" class="btn wittl-btn">Next</button>
                     </div>
                 </div>
 
@@ -239,12 +239,17 @@
                 var selected = $(this).data('selected');
                 if(selected == 1) {
                     $(this).removeClass('selected')
-                            .data('selected', 0);
+                            .attr('data-selected', 0);
                 } else {
                     $(this).addClass('selected')
-                            .data('selected', 1);
+                            .attr('data-selected', 1);
                 }               
 
+            });
+
+            $('#browse-next').on('click', function(e) {
+                e.preventDefault();
+                console.log($('.browsable-wittl[data-selected="1"]'));
             });
         });
 

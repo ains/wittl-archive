@@ -141,7 +141,14 @@ body {
   height: 100%;
   float: left;
   padding-left: $sidebar-width;
+
+  &> .container {
+    @media (min-width: $screen-lg-min) {
+      width: $container-lg - $sidebar-width;
+    }
+  }
 }
+
 
 .page-header {
   float: left;
@@ -160,7 +167,6 @@ body {
 }
 
 .content {
-  padding: 0 30px;
   padding-top: $header-height + 30;
   overflow: auto;
 }
