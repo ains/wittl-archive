@@ -164,7 +164,7 @@
 
         <div class="wittl-wrapper">
 
-            <form class="nl-form wittl-form">
+            <form class="nl-form wittl-form loading">
                 <ul class="wittls">
                     <li class="wittl-clause">
                         <div class="wittl">
@@ -178,7 +178,6 @@
                         </div>
                         <span class="preposition">from</span>
                         <input type="text" value="" placeholder="London" data-subline="For example: <em>Los Angeles</em> or <em>Rome</em>"/>
-                        <div class="nl-overlay"></div>
                     </li>
                     <div class="wittl-conjunction">
                         and
@@ -195,12 +194,12 @@
                         </div>
                         <span class="preposition"></span>
                         <input type="text" value="" placeholder="supermarkets" data-subline="For example: <em>Los Angeles</em> or <em>Rome</em>"/>
-                        <div class="nl-overlay"></div>
                     </li>
                     {% for comparator in comparators %}
                         {% include 'list/comparator.html' with comparator=comparator %}
                     {% endfor %}
                 </ul>
+                <div class="nl-overlay"></div>  
             </form>
         </div>
 
@@ -234,9 +233,9 @@
     <script type="text/javascript">
         $(function () {
 
-            $('.wittl-form').each(function() {
-                var nlform = new NLForm( this );
-            });
+            var nlform = new NLForm( $('.wittl-form')[0] );
+            // Cloak until JS has done its magic
+            nlform.el.className = nlform.el.className.replace(' loading', '');
 
             var wittlSorting = new WittlSorting("{% url "list-score-data" list.id%}");
             var itemTemplate = Handlebars.Templates['item_template'];

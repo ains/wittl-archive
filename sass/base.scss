@@ -1239,7 +1239,13 @@ body.modal-open {
  
 .wittl-form { 
   color: #616161;
+  float: left;
+  padding-bottom: 100px;
+  opacity: 1;
 
+  &.loading {
+    opacity: 0;
+  }
 
   .wittl-clause {
     margin: 10px 0;
@@ -1248,7 +1254,7 @@ body.modal-open {
       display: inline-block;
 
       .nl-field-toggle,
-      .nl-form input,
+      .nl-form input, 
       .nl-form select {
         border-bottom: 1px dashed $wittl-color;
       }

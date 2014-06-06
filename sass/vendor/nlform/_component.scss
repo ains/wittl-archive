@@ -69,6 +69,7 @@
 /* drop-down list / text element */
 .nl-field ul {
 	position: absolute;
+	display: none;
 	visibility: hidden;
 	background: $wittl-color;
 	border-radius: 3px;
@@ -85,6 +86,7 @@
 }
 
 .nl-field.nl-field-open ul {
+	display: block;
 	visibility: visible;
 	opacity: 1;
 	-webkit-transform: translateY(-50%) scale(1);
@@ -275,7 +277,7 @@ input:focus::-ms-input-placeholder {
 	transition: visibility 0s 0.3s, opacity 0.3s;
 }
 
-.nl-field.nl-field-open ~ .nl-overlay {
+.nl-form.opened .nl-overlay {
 	opacity: 1;
 	visibility: visible;
 	-webkit-transition-delay: 0s;
