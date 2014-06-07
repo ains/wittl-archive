@@ -2,7 +2,7 @@
 
 {% block outsidewrapper %}
 
-    <div class="modal fade" id="newItemModal" role="dialog">
+    <div id="newItemModal" ng-controller="ListsQuickAddCtrl" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -12,12 +12,14 @@
                     <h4 class="modal-title">Add a new item</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="input-group wittl-input-group">
-                        <input class="form-control" type="text" placeholder="Add an item to your wittlist..." />
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn wittl-btn">Add</button>
-                        </span>
-                    </div>
+                    <form ng-submit="addItemToList()">
+                        <div class="input-group wittl-input-group">
+                            <input class="form-control" type="text" placeholder="Add an item to your wittlist..." />
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn wittl-btn">Add</button>
+                            </span>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -45,7 +47,7 @@
 
             </div>
         </div>
-        <section class="wittlist-list-wrapper pane col-sm-8">
+        <section ng-controller="ListsCtrl" class="wittlist-list-wrapper pane col-sm-8">
             <header>
                 <h2>My Wittlists</h2>
             </header>
@@ -60,23 +62,39 @@
                 </div>
             </form>
 
-            <!-- <ul class="wittlist-list row">
+            <ul class="wittlist-list row">
 
-            </ul> -->
+                <li ng-repeat="list in lists" class="col-sm-6">
+                {% verbatim %}
+                    
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <div class="cover">
+                                <a href="#" ng-click="selectList(list.id)" class="add-item" data-toggle="modal" data-target="#newItemModal"><i class="icon_plus"></i></a>
+                                <a href="/list/{{ list.id }}" class="cover-inner">
+                                    <img ng-src="{{ list.items[0].card_image | coverphoto }}" title="{{ list.name }}" alt="{{ list.name }}" />
+                                </a>
+                            </div>
+                            <div class="details">
+                                <h3 class="name">
+                                    <a href="/list/{{ list.id }}">{{ list.name }}</a>
+                                </h3>
+                                <div class="stats">
+                                    <span class="viewers">
+                                        <i class="icon_group"></i>&nbsp; {{ list.users.length }}
+                                    </span>
+                                    <span class="items">
+                                        <i class="icon_tags"></i>&nbsp; {{ list.items.length }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            <div ng-app="wittl">
-                <div ng-controller="ListsCtrl">
-                    <ul>
-                        <li ng-repeat="list in lists">
-                        {% verbatim %}
-                            
-                            <pre>{{ list }}</pre>
-                        
-                        {% endverbatim %}
-                        </li>
-                    </ul>
-                </div>
-            </div>
+                {% endverbatim %}
+                </li>
+
+            </ul>
 
         </div>
 
@@ -85,75 +103,12 @@
 
 {% block javascript %}
     
-    <script src="/static/web/js/vendor/handlebars.js"></script>
     <script src="/static/web/js/vendor/angular/angular.js"></script>
     <script src="/static/web/js/vendor/angular/angular-resource.js"></script>
+    <script src="/static/web/js/wittl/filters.js"></script>
+    <script src="/static/web/js/wittl/directives.js"></script>
     <script src="/static/web/js/wittl/controllers.js"></script>
     <script src="/static/web/js/wittl/services.js"></script>
     <script src="/static/web/js/wittl/app.js"></script>
-
-{% verbatim %}
-    <script id="lists-template" type="text/x-handlebars-template">
-        {{#each lists}}
-        <li class="col-sm-6">
-            <div class="row">
-                <div class="col-xs-8">
-                    <div class="cover">
-                        <a href="#" class="add-item" data-toggle="modal" data-target="#newItemModal"><i class="icon_plus"></i></a>
-                        <a href="/list/{{ id }}" class="cover-inner">
-                            <img src="{{ cover }}" title="{{ name }}" alt="{{ name }}" />
-                        </a>
-                    </div>
-                    <div class="details">
-                        <h3 class="name">
-                            <a href="/list/{{ id }}">{{ name }}</a>
-                        </h3>
-                        <div class="stats">
-                            <span class="viewers">
-                                <i class="icon_group"></i>&nbsp; {{ users }}
-                            </span>
-                            <span class="items">
-                                <i class="icon_tags"></i>&nbsp; {{ items }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        {{/each}}
-    </script>
-{% endverbatim %}
-
-    <script>
-
-        $(function() {
-
-            // Template that shit
-            // $.getJSON('/api/v1/lists', function(lists) {
-            //     var list_ctxs = [];
-
-            //     for(var i = 0; i < lists.length; i++) {
-            //         list_ctxs.push({
-            //             id: lists[i].id,
-            //             name: lists[i].name,
-            //             users: lists[i].users.length,
-            //             items: lists[i].items.length,
-            //             cover: (lists[i].items[0]) 
-            //                     ? lists[i].items[0].card_image 
-            //                     : "/static/web/images/emptywittlist.png"
-            //         }); 
-            //     }
-
-            //     var data = { lists: list_ctxs };
-
-            //     var lists_template = Handlebars.compile($('#lists-template').html());
-            //     $('.wittlist-list')
-            //         .empty()
-            //         .append(lists_template(data));
-            // });
-
-
-        });
-    </script>
 
 {% endblock %}
