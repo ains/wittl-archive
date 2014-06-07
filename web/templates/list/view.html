@@ -119,7 +119,7 @@
 {% block content %}
     <div ng-app="wittl">
 
-        <section class="wittlist-left pane">
+        <section class="wittlist-left pane" ng-controller="ListItemsCtrl">
             <header>
                 <h2>My Wittlist - {{ list.name }}</h2>
             </header>
@@ -141,39 +141,37 @@
 
             <!-- Wittlist -->
             <div class="wittlist row">
-                <div ng-controller="ListItemsCtrl">
-                    {% verbatim %}
+                {% verbatim %}
 
-                    <div class="col-sm-12 card-wrapper" ng-repeat="item in list.items">
-                        <div class="card">
-                            <div class="row">
-                                <div class="col-sm-1 pic">
-                                    <a class="favourite pull-right" ng-if="item.favourited" href="#"><i
-                                            class="icon_star"></i></a>
-                                    <a class="favourite pull-right" ng-if="!item.favourited" href="#"><i
-                                            class="icon_star_alt"></i></a>
-                                    <img src="{{ item.card_image }}" title="Name of thing here"/>
-                                </div>
-
-                                <div class="col-sm-4">
-                                    <h3 class="title"> {{ item.name | limitTo:20 }}</h3>
-
-                                    <p class="wittl-meta-description">{{ item.attributes.subtitle }}</p>
-                                </div>
-                                <div class="col-sm-7">
-                                    <ul class="wittl-data">
-                                        <li style="color: #e74c3c;"></li>
-                                        <li style="color: #2ecc71;"></li>
-                                        <li style="color: #9b59b6;"></li>
-                                    </ul>
-                                </div>
+                <div class="col-sm-12 card-wrapper" ng-repeat="item in list.items">
+                    <div class="card">
+                        <div class="row">
+                            <div class="col-sm-1 pic">
+                                <a class="favourite pull-right" ng-if="item.favourited" href="#"><i
+                                        class="icon_star"></i></a>
+                                <a class="favourite pull-right" ng-if="!item.favourited" href="#"><i
+                                        class="icon_star_alt"></i></a>
+                                <img src="{{ item.card_image }}" title="Name of thing here"/>
                             </div>
 
-                        </div>
-                    </div>
+                            <div class="col-sm-4">
+                                <h3 class="title"> {{ item.name | limitTo:20 }}</h3>
 
-                    {% endverbatim %}
+                                <p class="wittl-meta-description">{{ item.attributes.subtitle }}</p>
+                            </div>
+                            <div class="col-sm-7">
+                                <ul class="wittl-data">
+                                    <li style="color: #e74c3c;"></li>
+                                    <li style="color: #2ecc71;"></li>
+                                    <li style="color: #9b59b6;"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
+
+                {% endverbatim %}
             </div>
 
             <!-- End wittlist -->
@@ -253,9 +251,12 @@
 
     <script src="/static/web/js/vendor/angular/angular.js"></script>
     <script src="/static/web/js/vendor/angular/angular-resource.js"></script>
+    <script src="/static/web/js/wittl/filters.js"></script>
+    <script src="/static/web/js/wittl/directives.js"></script>
     <script src="/static/web/js/wittl/controllers.js"></script>
     <script src="/static/web/js/wittl/services.js"></script>
     <script src="/static/web/js/wittl/app.js"></script>
+
 
     {##}
     {#    <script type="text/javascript">#}
