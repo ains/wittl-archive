@@ -2,13 +2,15 @@ import json
 
 from django.http import HttpResponseForbidden, HttpResponseServerError
 from django.shortcuts import get_object_or_404
+
+from importer import get_importer_for_url
+from comparator import all_comparators
+from web.models import List, ListItem, User, ListComparator
+
 from rest_framework.decorators import link
 from rest_framework.response import Response
-from importer import get_importer_for_url
-from web.models import List, ListItem, User
 from rest_framework import viewsets, routers
 from rest_framework.serializers import HyperlinkedModelSerializer
-from comparator import all_comparators
 
 
 class UserSerializer(HyperlinkedModelSerializer):
@@ -34,8 +36,17 @@ class ListSerializer(HyperlinkedModelSerializer):
 
     class Meta:
         model = List
-        fields = ('name', 'id', 'users', 'items')
+        fields = ('name', 'id', 'users', 'items', 'url')
         depth = 1
+
+
+class ListComparatorSerializer(HyperlinkedModelSerializer):
+    def transform_configuration(self, obj, value):
+        return json.loads(value)
+    
+    class Meta:
+        model = ListComparator
+        fields = ('comparator_name', 'order', 'configuration')
 
 
 class ListViewSet(viewsets.ViewSet):
@@ -51,6 +62,13 @@ class ListViewSet(viewsets.ViewSet):
             return Response(serializer.data)
         else:
             return HttpResponseForbidden()
+
+    @link()
+    def wittls(self, request, pk=None):
+        list = get_object_or_404(List, pk=pk)
+        comparators = list.get_comparators_for_user(request.user)
+        serializer = ListComparatorSerializer(comparators, many=True, context={'request': request})
+        return Response(serializer.data)
 
     @link()
     def score_data(self, request, pk=None):
