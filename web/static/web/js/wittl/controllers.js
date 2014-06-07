@@ -1,4 +1,5 @@
 var listsController = angular.module('listsController', []);
+var listItemController = angular.module('listItemController', []);
 var wittlsController = angular.module('wittlsController', []);
 
 
@@ -14,8 +15,8 @@ listsController.controller('ListsCtrl', ['$scope', 'Lists', 'Broadcast',
 
 	}]);
 
-listsController.controller('ListsQuickAddCtrl', ['$scope', 'ListItems', 'Broadcast',
-	function($scope, ListItems, Broadcast) {
+listsController.controller('ListsQuickAddCtrl', ['$scope', 'ListItem', 'Broadcast',
+	function($scope, ListItem, Broadcast) {
 		
 		$scope.addItemToList = function() {
 			var data = Broadcast.getData();
@@ -35,6 +36,11 @@ listsController.controller('ListsQuickAddCtrl', ['$scope', 'ListItems', 'Broadca
 
 	}]);
 
+
+listItemController.controller('ListItemsCtrl', ['$scope', 'ListItem', 
+	function ($scope, ListItem) {
+    	$scope.items = ListItem.query({listID: 1});
+	}]);
 
 
 wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls',
