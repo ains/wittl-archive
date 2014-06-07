@@ -146,7 +146,7 @@
         <!-- End wittlist -->
     </section>
 
-    <section class="wittlist-right pane">
+    <section ng-controller="WittlsCtrl" class="wittlist-right pane">
         <header>
             <h2>Wittl By
                 <!-- <small class="browse"><a href="#" data-toggle="modal" data-target="#browse-wittls">Browse...</a></small> -->
@@ -164,16 +164,17 @@
 
         <div class="wittl-wrapper">
 
+        <!-- DEBUG -->
+        <pre ng-repeat="wittl in availableWittls">
+            [[ wittl ]]
+        </pre> 
+
             <form class="nl-form wittl-form loading">
                 <ul class="wittls">
                     <li class="wittl-clause">
                         <div class="wittl">
                             <select>
-                                <option value="1" selected>travel prices</option>
-                                <option value="2">Indian</option>
-                                <option value="3">French</option>
-                                <option value="4">Japanese</option>
-                                <option value="2">Italian</option>
+                                <option ng-repeat="wittl in availableWittls" value="1" selected>[[ wittl.display_name ]]</option>
                             </select>
                         </div>
                         <span class="preposition">from</span>
@@ -182,19 +183,6 @@
                     <div class="wittl-conjunction">
                         and
                     </div>
-                    <li class="wittl-clause">
-                        <div class="wittl">
-                            <select>
-                                <option value="1">travel prices</option>
-                                <option value="2">Indian</option>
-                                <option value="3" selected>nearby</option>
-                                <option value="4">Japanese</option>
-                                <option value="2">Italian</option>
-                            </select>
-                        </div>
-                        <span class="preposition"></span>
-                        <input type="text" value="" placeholder="supermarkets" data-subline="For example: <em>Los Angeles</em> or <em>Rome</em>"/>
-                    </li>
                     {% for comparator in comparators %}
                         {% include 'list/comparator.html' with comparator=comparator %}
                     {% endfor %}
@@ -214,7 +202,6 @@
     <script type="text/javascript" src="/static/web/js/templates.js"></script>
 
     <script type="text/javascript" src="/static/web/js/vendor/modernizr.custom.min.js"></script>
-    <script type="text/javascript" src="/static/web/js/vendor/nlform.js"></script>
 
     <script src="/static/web/js/vendor/isotope.pkgd.js"></script>
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
@@ -231,6 +218,16 @@
     <script type="text/javascript" src="/static/web/js/wittlist_view/favourite.js"></script>
     <script type="text/javascript" src="/static/web/js/wittlist_view/sorting.js"></script>
 
+    <script src="/static/web/js/vendor/angular/angular.js"></script>
+    <script src="/static/web/js/vendor/angular/angular-resource.js"></script>
+    <script src="/static/web/js/vendor/angular/angular-cookies.js"></script>
+    <script src="/static/web/js/wittl/filters.js"></script>
+    <script src="/static/web/js/wittl/directives.js"></script>
+    <script src="/static/web/js/wittl/controllers.js"></script>
+    <script src="/static/web/js/wittl/services.js"></script>
+    <script src="/static/web/js/wittl/app.js"></script>
+
+    <script type="text/javascript" src="/static/web/js/vendor/nlform.js"></script>
 
     <script type="text/javascript">
         $(function () {
@@ -328,4 +325,5 @@
         });
 
     </script>
+
 {% endblock %}

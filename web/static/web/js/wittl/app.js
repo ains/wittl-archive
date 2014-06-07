@@ -1,17 +1,29 @@
 var wittl = angular.module('wittl', [
 	'ngCookies',
-	
+
+	/* Lists
+	 * ------------------- */
 	'listsService',
 	'listsController',
-	'listsFilter'
+	'listsFilter',
+
+	/* List Items
+	 * ------------------- */
+	'listItemsService',
+
+	/* Wittls
+	 * ------------------- */
+	'wittlsService',
+	'wittlsController'
 ]);
 
-wittl.config(function($httpProvider, $interpolateProvider) {
+wittl.config(function($httpProvider, $interpolateProvider, $resourceProvider) {
 
         $interpolateProvider.startSymbol('[[');
         $interpolateProvider.endSymbol(']]');
 
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+        $resourceProvider.defaults.stripTrailingSlashes = false;
 
 	})
     .run(function($http, $cookies) {

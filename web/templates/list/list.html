@@ -12,9 +12,9 @@
                     <h4 class="modal-title">Add a new item</h4>
                 </div>
                 <div class="modal-body">
-                    <form ng-submit="addItemToList()" action="{% url 'listitem-list' %}">
+                    <form ng-submit="addItemToList()">
                         <div class="input-group wittl-input-group">
-                            <input class="form-control" type="text" placeholder="Add an item to your wittlist..." />
+                            <input name="url" ng-model="item.url" class="form-control" type="text" placeholder="Add an item to your wittlist..." />
                             <span class="input-group-btn">
                                 <button type="submit" class="btn wittl-btn">Add</button>
                             </span>

@@ -3,15 +3,13 @@ var api = '/api/v1';
 
 
 var listsService = angular.module('listsService', ['ngResource']);
+var listItemsService = angular.module('listItemsService', ['ngResource']);
+var wittlsService = angular.module('wittlsService', ['ngResource']);
+
 
 listsService.factory('Lists', ['$resource',
 	function($resource) {
-		return $resource(api + '/lists/:listID', {}, {
-			query: {
-				method: 'GET',
-				isArray: true
-			}
-		});
+		return $resource(api + '/lists/:listID/');
 	}]);
 
 listsService.factory('Broadcast', 
@@ -26,3 +24,23 @@ listsService.factory('Broadcast',
 			}
 		}
 	});
+
+
+
+listItemsService.factory('ListItems', ['$resource',
+	function($resource) {
+		return $resource(api + '/list-items/');
+	}]);
+
+
+
+wittlsService.factory('Wittls', ['$resource',
+	function($resource) {
+		return {
+			all: $resource(api + '/comparators/', {}, {
+				query: {
+					isArray: false
+				}
+			})
+		}
+	}]);
