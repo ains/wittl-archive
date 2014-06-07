@@ -6,12 +6,12 @@ from money import Money
 class TravelPricesFromComparator(BaseComparator):
     NAME = "travel_prices_from"
     TITLE = "Travel cost from"
-    PRIMARY_FIELD = "origin_location"
     DESCRIPTION = "The cost to get to your destination from your chosen start location"
+    REQUIRED_ATTRIBUTES = {"latitude", "longitude"}
 
-    REQUIRED_ATTRIBUTES = ("latitude", "longitude")
-    TRIGGERS = [r"travel prices from (?P<origin_location>.*)"]
-
+    DISPLAY_NAME = "travel prices"
+    PREPOSITION = "from"
+    FIELDS = [{"name": "origin_location", "type": "text"}]
 
     @staticmethod
     def get_route_data(route):
@@ -43,5 +43,6 @@ class TravelPricesFromComparator(BaseComparator):
         formatted_price = total_price.format('en_GB')
         return {
             "score": score,
-            "summary": u"Average cost of <strong>{}</strong> travelling from {}".format(formatted_price, origin_location)
+            "summary": u"Average cost of <strong>{}</strong> travelling from {}".format(formatted_price,
+                                                                                        origin_location)
         }

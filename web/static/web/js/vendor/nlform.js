@@ -41,6 +41,7 @@
 			this.overlay.addEventListener( 'touchstart', function(ev) { self._closeFlds(); } );
 		},
 		_closeFlds : function() {
+			this.el.className = this.el.className.replace(' opened', '');
 			if( this.fldOpen !== -1 ) {
 				this.fields[ this.fldOpen ].close();
 			}
@@ -118,8 +119,8 @@
 		},
 		_initEvents : function() {
 			var self = this;
-			this.toggle.addEventListener( 'click', function( ev ) { ev.preventDefault(); ev.stopPropagation(); self._open(); } );
-			this.toggle.addEventListener( 'touchstart', function( ev ) { ev.preventDefault(); ev.stopPropagation(); self._open(); } );
+			this.toggle.addEventListener( 'click', function( ev ) { ev.preventDefault(); ev.stopPropagation(); self.form.el.className += ' opened'; self._open(); } );
+			this.toggle.addEventListener( 'touchstart', function( ev ) { ev.preventDefault(); ev.stopPropagation(); self.form.el.className += ' opened'; self._open(); } );
 
 			if( this.type === 'dropdown' ) {
 				var opts = Array.prototype.slice.call( this.optionsList.querySelectorAll( 'li' ) );
@@ -174,6 +175,8 @@
 				this.toggle.innerHTML = this.getinput.value.trim() !== '' ? this.getinput.value : this.getinput.getAttribute( 'placeholder' );
 				this.elOriginal.value = this.getinput.value;
 			}
+
+			this.form.el.className = this.form.el.className.replace(' opened', '');
 		}
 	};
 
