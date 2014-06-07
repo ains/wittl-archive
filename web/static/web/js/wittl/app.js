@@ -1,14 +1,14 @@
 var wittl = angular.module('wittl', [
     'ngCookies',
-
     'listsService',
+    'listItemService',
     'listsController',
     'listsFilter'
 ]);
 
 
-wittl.controller('ListItemsCtrl', ['$scope', 'Lists', function ($scope, Lists) {
-    $scope.list = Lists.get({listID: 1});
+wittl.controller('ListItemsCtrl', ['$scope', 'ListItem', function ($scope, ListItem) {
+    $scope.items = ListItem.query({listID: 1});
 }]);
 
 wittl.config(function ($httpProvider, $interpolateProvider) {
