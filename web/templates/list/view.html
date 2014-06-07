@@ -148,41 +148,59 @@
 
     <section class="wittlist-right pane">
         <header>
-            <h2>Wittls
-                <small class="browse"><a href="#" data-toggle="modal" data-target="#browse-wittls">Browse...</a></small>
+            <h2>Wittl By
+                <!-- <small class="browse"><a href="#" data-toggle="modal" data-target="#browse-wittls">Browse...</a></small> -->
             </h2>
         </header>
 
-        <div class="query-wrapper">
+        <!-- <div class="query-wrapper">
             <div class="input-group wittl-input-group">
                 <input type="text" name="query-input" class="form-control" placeholder="Add a new Wittl here..."/>
               <span class="input-group-btn">
                 <button type="button" class="btn wittl-btn">WITTL</button>
               </span>
             </div>
-        </div>
+        </div> -->
 
         <div class="wittl-wrapper">
-            <ul class="wittls">
-                <li>
-                    <form class="nl-form wittl-form">
-                        Wittl by
-                        <select>
-                            <option value="1" selected>travel prices</option>
-                            <option value="2">Indian</option>
-                            <option value="3">French</option>
-                            <option value="4">Japanese</option>
-                            <option value="2">Italian</option>
-                        </select>
+
+            <form class="nl-form wittl-form loading">
+                <ul class="wittls">
+                    <li class="wittl-clause">
+                        <div class="wittl">
+                            <select>
+                                <option value="1" selected>travel prices</option>
+                                <option value="2">Indian</option>
+                                <option value="3">French</option>
+                                <option value="4">Japanese</option>
+                                <option value="2">Italian</option>
+                            </select>
+                        </div>
                         <span class="preposition">from</span>
                         <input type="text" value="" placeholder="London" data-subline="For example: <em>Los Angeles</em> or <em>Rome</em>"/>
-                        <div class="nl-overlay"></div>
-                    </form>
-                </li>
-                {% for comparator in comparators %}
-                    {% include 'list/comparator.html' with comparator=comparator %}
-                {% endfor %}
-            </ul>
+                    </li>
+                    <div class="wittl-conjunction">
+                        and
+                    </div>
+                    <li class="wittl-clause">
+                        <div class="wittl">
+                            <select>
+                                <option value="1">travel prices</option>
+                                <option value="2">Indian</option>
+                                <option value="3" selected>nearby</option>
+                                <option value="4">Japanese</option>
+                                <option value="2">Italian</option>
+                            </select>
+                        </div>
+                        <span class="preposition"></span>
+                        <input type="text" value="" placeholder="supermarkets" data-subline="For example: <em>Los Angeles</em> or <em>Rome</em>"/>
+                    </li>
+                    {% for comparator in comparators %}
+                        {% include 'list/comparator.html' with comparator=comparator %}
+                    {% endfor %}
+                </ul>
+                <div class="nl-overlay"></div>  
+            </form>
         </div>
 
     </section>
@@ -217,9 +235,9 @@
     <script type="text/javascript">
         $(function () {
 
-            $('.wittl-form').each(function() {
-                var nlform = new NLForm( $(this)[0] );
-            });
+            var nlform = new NLForm( $('.wittl-form')[0] );
+            // Cloak until JS has done its magic
+            nlform.el.className = nlform.el.className.replace(' loading', '');
 
             var wittlSorting = new WittlSorting("{% url "list-score-data" list.id%}");
             var itemTemplate = Handlebars.Templates['item_template'];

@@ -2,11 +2,11 @@ class BaseComparator():
     NAME = ""
     TITLE = ""
     DESCRIPTION = ""
-    PRIMARY_FIELD = None
-
     REQUIRED_ATTRIBUTES = set()
-    TRIGGERS = []
-    EXTRA_FIELDS = {}
+
+    DISPLAY_NAME = ""
+    PREPOSITION = ""
+    FIELDS = []
 
     def __init__(self):
         pass
@@ -18,5 +18,8 @@ class BaseComparator():
     def data(self):
         return {
             "title": self.TITLE,
-            "description": self.DESCRIPTION
+            "description": self.DESCRIPTION,
+            "display_name": self.DISPLAY_NAME,
+            "preposition": self.PREPOSITION,
+            "fields": self.FIELDS
         }

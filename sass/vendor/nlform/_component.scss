@@ -61,18 +61,18 @@
 .nl-form select  {
 	line-height: inherit;
 	display: inline-block;
-	color: #b14943;
+	color: #CCC;
 	cursor: pointer;
-	border-bottom: 1px dashed #b14943;
+	border-bottom: 1px dashed #CCC;
 }
 
 /* drop-down list / text element */
 .nl-field ul {
 	position: absolute;
+	display: none;
 	visibility: hidden;
 	background: $wittl-color;
 	border-radius: 3px;
-	padding: 5px 10px;
 	right: 0;
 	top: 50%;
 	font-size: 90%;
@@ -86,6 +86,7 @@
 }
 
 .nl-field.nl-field-open ul {
+	display: block;
 	visibility: visible;
 	opacity: 1;
 	-webkit-transform: translateY(-50%) scale(1);
@@ -96,19 +97,29 @@
 	transition: visibility 0s 0s, opacity 0.3s, transform 0.3s;
 }
 
+.nl-field a {
+
+	&:hover {
+		color: lighten(#CCC, 10%);
+		text-decoration: none;
+	}
+}
+
 .nl-field ul li {
 	color: #fff;
 	position: relative;
 }
 
 .nl-dd ul li {
-	padding: 0 1.5em 0 0.5em;
+	font-size: 90%;
+	padding: 0.6em 2em;
 	cursor: pointer;
 	white-space: nowrap;
+	//border-bottom: 1px dotted #FFF;
 }
 
 .nl-dd ul li.nl-dd-checked {
-	color: #478982;
+	color: #FFF;
 }
 
 .no-touch .nl-dd ul li:hover {
@@ -123,7 +134,7 @@
 .nl-dd ul li.nl-dd-checked:before,
 .nl-submit:before,
 .nl-field-go:before {
-	font-family: 'nlicons';
+	font-family: 'ElegantIcons';
 	speak: none;
 	font-style: normal;
 	font-weight: normal;
@@ -133,11 +144,11 @@
 }
 
 .nl-dd ul li.nl-dd-checked:before {
-	content: "\e000";
+	content: "\4e";
 	position: absolute;
 	right: 1em;
-	font-size: 50%;
-	line-height: 3;
+	font-size: 80%;
+	line-height: 2;
 }
 
 .nl-ti-text ul {
@@ -164,7 +175,7 @@
 }
 
 .nl-field-go:before {
-	content: "\e001";
+	content: "\4e";
 	font-size: 75%;
 	color: #fff;
 	width: 100%;
@@ -266,7 +277,7 @@ input:focus::-ms-input-placeholder {
 	transition: visibility 0s 0.3s, opacity 0.3s;
 }
 
-.nl-field.nl-field-open ~ .nl-overlay {
+.nl-form.opened .nl-overlay {
 	opacity: 1;
 	visibility: visible;
 	-webkit-transition-delay: 0s;
