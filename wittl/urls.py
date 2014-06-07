@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from api import router
+from api import router, lists_router
 
 admin.autodiscover()
 
@@ -24,4 +24,5 @@ urlpatterns = patterns('',
                        url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
                        url(r'^api/v1/token-auth/', 'rest_framework.authtoken.views.obtain_auth_token'),
                        url(r'^api/v1/', include(router.urls)),
+                       url(r'^api/v1/', include(lists_router.urls)),
 )

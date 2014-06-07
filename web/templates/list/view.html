@@ -118,30 +118,67 @@
 
 {% block content %}
 
-    <section class="wittlist-left pane">
-        <header>
-            <h2>My Wittlist - {{ list.name }}</h2>
-        </header>
+    <div ng-app="wittl">
+        <section class="wittlist-left pane" ng-controller="ListItemsCtrl">
+            <header>
+                <h2>My Wittlist - {{ list.name }}</h2>
+            </header>
 
-        <div class="add-new-card">
-            <form id="new-list-item-form" method="POST" action="{% url 'listitem-list' %}">
-                {% csrf_token %}
-                <div class="input-group wittl-input-group">
-                    <input type="text" name="url" class="form-control" placeholder="Add a new item to your Wittlist"/>
+            <div class="add-new-card">
+                <form id="new-list-item-form" method="POST" action="{% url 'listitem-list' list.id %}">
+                    {% csrf_token %}
+                    <div class="input-group wittl-input-group">
+                        <input type="text" name="url" class="form-control"
+                               placeholder="Add a new item to your Wittlist"/>
                     <span class="input-group-btn">
                         <button id="new-list-item-submit" class="ladda-button wittl-btn btn" type="submit"
                                 data-style="zoom-in"><span class="ladda-label">Insert</span></button>
                     </span>
+                    </div>
+                    <input type="hidden" name="list_id" value="{{ list.id }}"/>
+                </form>
+            </div>
+
+            <!-- Wittlist -->
+            <div class="wittlist row">
+                <div class="col-sm-12 card-wrapper">
+                    <div class="card" ng-repeat="item in items">
+                        <div class="row">
+                            <div class="col-sm-1 pic">
+                                <a class="favourite pull-right" ng-if="item.favourited" href="#"><i class="icon_star"></i></a>
+                                <a class="favourite pull-right" ng-if="!item.favourited" href="#"><i class="icon_star_alt"></i></a>
+
+                                <img src="[[ item.card_image ]]" title="Name of thing here"/>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <h3 class="title"> [[ item.name | limitTo: 20 ]]</h3>
+
+                                <p class="wittl-meta-description">[[ item.subtitle | limitTo:10 ]]</p>
+                            </div>
+                            <div class="col-sm-7">
+                                <ul class="wittl-data">
+                                    <li style="color: #e74c3c;"></li>
+                                    <li style="color: #2ecc71;"></li>
+                                    <li style="color: #9b59b6;"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-                <input type="hidden" name="list_id" value="{{ list.id }}"/>
-            </form>
-        </div>
 
-        <!-- Wittlist -->
-        <div class="wittlist row">
+            </div>
 
+            <!-- End wittlist -->
+        </section>
 
-        </div>
+        <section class="wittlist-right pane">
+            <header>
+                <h2>Wittl By
+                    <!-- <small class="browse"><a href="#" data-toggle="modal" data-target="#browse-wittls">Browse...</a></small> -->
+                </h2>
+            </header>
 
         <!-- End wittlist -->
     </section>
@@ -193,6 +230,8 @@
 
     </section>
 
+
+   </div>
 {% endblock %}
 
 {% block javascript %}
@@ -232,27 +271,9 @@
     <script type="text/javascript">
         $(function () {
 
-            var nlform = new NLForm( $('.wittl-form')[0] );
+            var nlform = new NLForm($('.wittl-form')[0]);
             // Cloak until JS has done its magic
             nlform.el.className = nlform.el.className.replace(' loading', '');
-
-            var wittlSorting = new WittlSorting("{% url "list-score-data" list.id%}");
-            var itemTemplate = Handlebars.Templates['item_template'];
-            var addItem = function (item) {
-                var $newItem = $(itemTemplate(item));
-                var $card = $newItem.find('.card');
-                $card.data('list-item-id', item.id);
-                $card.data('modal-data', item.attributes);
-                wittlSorting.scoreCard($card);
-
-                $('.wittlist').isotope('insert', $newItem);
-            };
-
-            wittlSorting.fetchScoreData(function () {
-                $.getJSON("{% url 'list-detail' list.id %}", function (data) {
-                    _.each(data.items, addItem);
-                });
-            });
 
             $("#new-list-item-form").submit(function (e) {
                 var form = $(this);
@@ -314,11 +335,11 @@
                 } else {
                     $(this).addClass('selected')
                             .attr('data-selected', 1);
-                }               
+                }
 
             });
 
-            $('#browse-next').on('click', function(e) {
+            $('#browse-next').on('click', function (e) {
                 e.preventDefault();
                 console.log($('.browsable-wittl[data-selected="1"]'));
             });
