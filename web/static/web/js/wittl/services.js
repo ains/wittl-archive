@@ -13,3 +13,16 @@ listsService.factory('Lists', ['$resource',
 			}
 		});
 	}]);
+
+listsService.factory('Broadcast', 
+	function() {
+		var data = {};
+		return {
+			getData: function() {
+				return data;
+			},
+			addData: function(k, v) {
+				data[k] = v;
+			}
+		}
+	});

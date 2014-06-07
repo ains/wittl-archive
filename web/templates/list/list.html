@@ -2,7 +2,7 @@
 
 {% block outsidewrapper %}
 
-    <div class="modal fade" id="newItemModal" role="dialog">
+    <div id="newItemModal" ng-controller="ListsQuickAddCtrl" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -12,12 +12,14 @@
                     <h4 class="modal-title">Add a new item</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="input-group wittl-input-group">
-                        <input class="form-control" type="text" placeholder="Add an item to your wittlist..." />
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn wittl-btn">Add</button>
-                        </span>
-                    </div>
+                    <form ng-submit="addItemToList()">
+                        <div class="input-group wittl-input-group">
+                            <input class="form-control" type="text" placeholder="Add an item to your wittlist..." />
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn wittl-btn">Add</button>
+                            </span>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -45,7 +47,7 @@
 
             </div>
         </div>
-        <section class="wittlist-list-wrapper pane col-sm-8">
+        <section ng-controller="ListsCtrl" class="wittlist-list-wrapper pane col-sm-8">
             <header>
                 <h2>My Wittlists</h2>
             </header>
@@ -60,7 +62,7 @@
                 </div>
             </form>
 
-            <ul ng-controller="ListsCtrl" class="wittlist-list row">
+            <ul class="wittlist-list row">
 
                 <li ng-repeat="list in lists" class="col-sm-6">
                 {% verbatim %}
@@ -68,7 +70,7 @@
                     <div class="row">
                         <div class="col-xs-8">
                             <div class="cover">
-                                <a href="#" class="add-item" data-toggle="modal" data-target="#newItemModal"><i class="icon_plus"></i></a>
+                                <a href="#" ng-click="selectList(list.id)" class="add-item" data-toggle="modal" data-target="#newItemModal"><i class="icon_plus"></i></a>
                                 <a href="/list/{{ list.id }}" class="cover-inner">
                                     <img ng-src="{{ list.items[0].card_image | coverphoto }}" title="{{ list.name }}" alt="{{ list.name }}" />
                                 </a>
