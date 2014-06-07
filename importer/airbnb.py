@@ -6,8 +6,8 @@ from importer.base import BaseImporter
 
 class AirbnbImporter(BaseImporter):
     NAME = "airbnb"
-    URL_PATTERNS = ("https?:\/\/(www.)?airbnb.([a-zA-Z.]+)\/rooms\/[0-9]+",)
-    SORTABLE_ATTRS = {'bathrooms' : 'Bathrooms', 'person_capacity' : 'Guests', 'bedrooms' : 'Bedrooms', 'beds' : 'Beds'}
+    URL_PATTERNS = [r"https?:\/\/(www.)?airbnb.([a-zA-Z.]+)\/rooms\/[0-9]+"]
+    SORTABLE_ATTRS = {'bathrooms': 'Bathrooms', 'person_capacity': 'Guests', 'bedrooms': 'Bedrooms', 'beds': 'Beds'}
 
     @staticmethod
     def meta_property_getter(soup):
@@ -51,6 +51,8 @@ class AirbnbImporter(BaseImporter):
             ("og:image", "image")
         ]
         attributes.update({key: meta_property_getter(property_name) for (property_name, key) in meta_properties})
+
+        attributes["subtitle"] = attributes["city"]
 
         return attributes
 

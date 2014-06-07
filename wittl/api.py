@@ -2,12 +2,13 @@ import json
 
 from django.http import HttpResponseForbidden, HttpResponseServerError
 from django.shortcuts import get_object_or_404
-from rest_framework.decorators import link
+from rest_framework.decorators import link, action
 from rest_framework.response import Response
 from importer import get_importer_for_url
 from web.models import List, ListItem, User
 from rest_framework import viewsets, routers
-from rest_framework.serializers import HyperlinkedModelSerializer
+from comparator import all_comparators
+from rest_framework.serializers import HyperlinkedModelSerializer, SerializerMethodField
 
 
 class UserSerializer(HyperlinkedModelSerializer):
@@ -17,14 +18,20 @@ class UserSerializer(HyperlinkedModelSerializer):
 
 
 class ListItemSerializer(HyperlinkedModelSerializer):
+    favourited = SerializerMethodField("is_favourited")
+
     def transform_attributes(self, obj, value):
         decoded_attrs = json.loads(value)
         decoded_attrs["sortable_attrs"] = obj.sortable_attrs
         return decoded_attrs
 
+    def is_favourited(self, obj):
+        user = self.context['request'].user
+        return user.favourites.filter(pk=obj.pk).exists()
+
     class Meta:
         model = ListItem
-        fields = ('name', 'attributes', 'url', 'id', 'card_image')
+        fields = ('name', 'attributes', 'url', 'id', 'card_image', 'favourited')
 
 
 class ListSerializer(HyperlinkedModelSerializer):
@@ -86,6 +93,7 @@ class ListItemViewSet(viewsets.ViewSet):
 
             new_item = ListItem()
             new_item.name = attributes["name"]
+            new_item.subtitle = attributes["subtitle"]
             new_item.list = list
             new_item.card_image = attributes["image"]
             new_item.attributes = json.dumps(attributes)
@@ -97,12 +105,32 @@ class ListItemViewSet(viewsets.ViewSet):
         else:
             return HttpResponseServerError("Unrecognised URL")
 
+    @action()
+    def toggle_favourite(self, request, pk=None):
+        list_item = get_object_or_404(ListItem, pk=pk)
+        user = request.user
+        if user.favourites.filter(pk=pk).exists():
+            user.favourites.remove(list_item)
+        else:
+            user.favourites.add(list_item)
+        serializer = ListItemSerializer(user.favourites.all(), many=True, context={'request': request})
+        return Response(serializer.data)
+
     @link()
     def score_data(self, request, pk=None):
         list_item = get_object_or_404(ListItem, pk=pk)
         return Response(list_item.comparator_data(request.user))
 
+
+class ComparatorViewSet(viewsets.ViewSet):
+    def list(self, request):
+        response_data = {
+            comparator_name: comparator().data for comparator_name, comparator in all_comparators.items()
+        }
+        return Response(response_data)
+
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'lists', ListViewSet, base_name="list")
 router.register(r'list-items', ListItemViewSet, base_name="listitem")
+router.register(r'comparators', ComparatorViewSet, base_name="comparator")

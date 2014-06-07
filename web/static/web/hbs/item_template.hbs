@@ -2,14 +2,18 @@
     <div class="card">
         <div class="row">
             <div class="col-sm-1 pic">
-                <a class="favourite pull-right" href="#"><i class="icon_star_alt"></i></a>
+                {{#if favourited}}
+                    <a class="favourite pull-right" href="#"><i class="icon_star"></i></a>
+                {{else}}
+                    <a class="favourite pull-right" href="#"><i class="icon_star_alt"></i></a>
+                {{/if}}
                 <img src="{{ card_image }}" title="Name of thing here"/>
             </div>
 
             <div class="col-sm-4">
                 <h3 class="title"> {{ truncate name 20 }}</h3>
 
-                <p class="wittl-meta-description">{{ truncate attributes.city 15 }}</p>
+                <p class="wittl-meta-description">{{ truncate attributes.subtitle 15 }}</p>
             </div>
             <div class="col-sm-7">
                 <ul class="wittl-data">
