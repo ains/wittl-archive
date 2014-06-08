@@ -45,5 +45,30 @@ listItemController.controller('ListItemsCtrl', ['$scope', 'ListItem',
 
 wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls',
 	function($scope, Wittls) {
-		$scope.availableWittls = Wittls.all.query();
+
+		$scope.availableWittls = [];
+		$scope.wittlOptions = [];
+
+		Wittls.all.query().$promise.then(function(data) {
+			$scope.availableWittls = data;
+
+			_.each(data, function(wittl) {
+				$scope.wittlOptions.push({
+					text: wittl.display_name,
+					wittl: wittl,
+					fields: {}
+				});
+			});
+		});
+
+		$scope.clauses = [{ text: 'any wittl', fields: {} }];
+
+		/* DEBUG */
+		$scope.$watch('clauses', function(newVal, oldVal) {
+			if(newVal != oldVal) {
+				console.log('New:\n');
+				console.log(newVal);
+			}
+		}, true);
+
 	}]);

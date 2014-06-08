@@ -1,6 +1,7 @@
 var wittl = angular.module('wittl', [
 	'ngCookies',
-
+	'ngDropdowns',
+	
 	/* Lists
 	 * ------------------- */
 	'listsService',
@@ -15,7 +16,8 @@ var wittl = angular.module('wittl', [
 	/* Wittls
 	 * ------------------- */
 	'wittlsService',
-	'wittlsController'
+	'wittlsController',
+	'wittlsDirective'
 ]);
 
 wittl.config(function ($httpProvider, $interpolateProvider, $resourceProvider) {

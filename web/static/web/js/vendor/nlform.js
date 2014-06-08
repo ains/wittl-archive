@@ -76,7 +76,9 @@
 			this.optionsList = document.createElement( 'ul' );
 			var ihtml = '';
 			Array.prototype.slice.call( this.elOriginal.querySelectorAll( 'option' ) ).forEach( function( el, i ) {
-				ihtml += self.elOriginal.selectedIndex === i ? '<li class="nl-dd-checked">' + el.innerHTML + '</li>' : '<li>' + el.innerHTML + '</li>';
+				ihtml += self.elOriginal.selectedIndex === i 
+					? '<li class="nl-dd-checked">' + el.innerHTML + '</li>' 
+					: '<li>' + el.innerHTML + '</li>';
 				// selected index value
 				if( self.elOriginal.selectedIndex === i ) {
 					self.selectedIdx = i;
@@ -168,6 +170,7 @@
 					this.selectedIdx = idx;
 					// update original select element´s value
 					this.elOriginal.value = this.elOriginal.children[ this.selectedIdx ].value;
+					this.elOriginal.children[ this.selectedIdx ].setAttribute('selected', 'selected');
 				}
 			}
 			else if( this.type === 'input' ) {

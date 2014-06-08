@@ -42,7 +42,7 @@ wittlsService.factory('Wittls', ['$resource',
 		return {
 			all: $resource(api + '/comparators/', {}, {
 				query: {
-					isArray: false
+					isArray: true
 				}
 			})
 		}

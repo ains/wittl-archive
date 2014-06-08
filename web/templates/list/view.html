@@ -118,67 +118,66 @@
 
 {% block content %}
 
-    <div ng-app="wittl">
-        <section class="wittlist-left pane" ng-controller="ListItemsCtrl">
-            <header>
-                <h2>My Wittlist - {{ list.name }}</h2>
-            </header>
+    <section class="wittlist-left pane" ng-controller="ListItemsCtrl">
+        <header>
+            <h2>My Wittlist - {{ list.name }}</h2>
+        </header>
 
-            <div class="add-new-card">
-                <form id="new-list-item-form" method="POST" action="{% url 'listitem-list' list.id %}">
-                    {% csrf_token %}
-                    <div class="input-group wittl-input-group">
-                        <input type="text" name="url" class="form-control"
-                               placeholder="Add a new item to your Wittlist"/>
-                    <span class="input-group-btn">
-                        <button id="new-list-item-submit" class="ladda-button wittl-btn btn" type="submit"
-                                data-style="zoom-in"><span class="ladda-label">Insert</span></button>
-                    </span>
-                    </div>
-                    <input type="hidden" name="list_id" value="{{ list.id }}"/>
-                </form>
-            </div>
+        <div class="add-new-card">
+            <form id="new-list-item-form" method="POST" action="{% url 'listitem-list' list.id %}">
+                {% csrf_token %}
+                <div class="input-group wittl-input-group">
+                    <input type="text" name="url" class="form-control"
+                           placeholder="Add a new item to your Wittlist"/>
+                <span class="input-group-btn">
+                    <button id="new-list-item-submit" class="ladda-button wittl-btn btn" type="submit"
+                            data-style="zoom-in"><span class="ladda-label">Insert</span></button>
+                </span>
+                </div>
+                <input type="hidden" name="list_id" value="{{ list.id }}"/>
+            </form>
+        </div>
 
-            <!-- Wittlist -->
-            <div class="wittlist row">
-                <div class="col-sm-12 card-wrapper">
-                    <div class="card" ng-repeat="item in items">
-                        <div class="row">
-                            <div class="col-sm-1 pic">
-                                <a class="favourite pull-right" ng-if="item.favourited" href="#"><i class="icon_star"></i></a>
-                                <a class="favourite pull-right" ng-if="!item.favourited" href="#"><i class="icon_star_alt"></i></a>
+        <!-- Wittlist -->
+        <div class="wittlist row">
+            <div class="col-sm-12 card-wrapper">
+                <div class="card" ng-repeat="item in items">
+                    <div class="row">
+                        <div class="col-sm-1 pic">
+                            <a class="favourite pull-right" ng-if="item.favourited" href="#"><i class="icon_star"></i></a>
+                            <a class="favourite pull-right" ng-if="!item.favourited" href="#"><i class="icon_star_alt"></i></a>
 
-                                <img src="[[ item.card_image ]]" title="Name of thing here"/>
-                            </div>
-
-                            <div class="col-sm-4">
-                                <h3 class="title"> [[ item.name | limitTo: 20 ]]</h3>
-
-                                <p class="wittl-meta-description">[[ item.subtitle | limitTo:10 ]]</p>
-                            </div>
-                            <div class="col-sm-7">
-                                <ul class="wittl-data">
-                                    <li style="color: #e74c3c;"></li>
-                                    <li style="color: #2ecc71;"></li>
-                                    <li style="color: #9b59b6;"></li>
-                                </ul>
-                            </div>
+                            <img ng-src="[[ item.card_image ]]" title="Name of thing here"/>
                         </div>
 
-                    </div>
-                </div>
+                        <div class="col-sm-4">
+                            <h3 class="title"> [[ item.name | limitTo: 20 ]]</h3>
 
+                            <p class="wittl-meta-description">[[ item.subtitle | limitTo:10 ]]</p>
+                        </div>
+                        <div class="col-sm-7">
+                            <ul class="wittl-data">
+                                <li style="color: #e74c3c;"></li>
+                                <li style="color: #2ecc71;"></li>
+                                <li style="color: #9b59b6;"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
-            <!-- End wittlist -->
-        </section>
+        </div>
 
-        <section class="wittlist-right pane">
-            <header>
-                <h2>Wittl By
-                    <!-- <small class="browse"><a href="#" data-toggle="modal" data-target="#browse-wittls">Browse...</a></small> -->
-                </h2>
-            </header>
+        <!-- End wittlist -->
+    </section>
+
+    <section class="wittlist-right pane">
+        <header>
+            <h2>Wittl By
+                <!-- <small class="browse"><a href="#" data-toggle="modal" data-target="#browse-wittls">Browse...</a></small> -->
+            </h2>
+        </header>
 
         <!-- End wittlist -->
     </section>
@@ -199,27 +198,14 @@
             </div>
         </div> -->
 
-        <div class="wittl-wrapper">
-
-        <!-- DEBUG -->
-        <pre ng-repeat="wittl in availableWittls">
-            [[ wittl ]]
-        </pre> 
-
-            <form class="nl-form wittl-form loading">
+        <div class="wittl-wrapper"> 
+            <form wittl-nlform class="nl-form wittl-form">
                 <ul class="wittls">
-                    <li class="wittl-clause">
+                    <li class="wittl-clause" new-wittl>
                         <div class="wittl">
-                            <select>
-                                <option ng-repeat="wittl in availableWittls" value="1" selected>[[ wittl.display_name ]]</option>
-                            </select>
+                            <div dropdown-select="wittlOptions" dropdown-model="clauses[0]"></div>
                         </div>
-                        <span class="preposition">from</span>
-                        <input type="text" value="" placeholder="London" data-subline="For example: <em>Los Angeles</em> or <em>Rome</em>"/>
                     </li>
-                    <div class="wittl-conjunction">
-                        and
-                    </div>
                     {% for comparator in comparators %}
                         {% include 'list/comparator.html' with comparator=comparator %}
                     {% endfor %}
@@ -231,7 +217,6 @@
     </section>
 
 
-   </div>
 {% endblock %}
 
 {% block javascript %}
@@ -271,10 +256,6 @@
     <script type="text/javascript">
         $(function () {
 
-            var nlform = new NLForm($('.wittl-form')[0]);
-            // Cloak until JS has done its magic
-            nlform.el.className = nlform.el.className.replace(' loading', '');
-
             $("#new-list-item-form").submit(function (e) {
                 var form = $(this);
 
@@ -301,26 +282,26 @@
                 e.preventDefault();
             });
 
-            $(".wittl")
-                    .on("change", ":input", function () {
-                        var serializedForm = {};
-                        $(this).parents("li").find("input").each(function (i, field) {
-                            var name = $(field).attr("name");
-                            var value = $(field).val();
+            // $(".wittl")
+            //         .on("change", ":input", function () {
+            //             var serializedForm = {};
+            //             $(this).parents("li").find("input").each(function (i, field) {
+            //                 var name = $(field).attr("name");
+            //                 var value = $(field).val();
 
-                            serializedForm[field["name"]] = field["value"];
-                        });
+            //                 serializedForm[field["name"]] = field["value"];
+            //             });
 
-                        var comparatorID = serializedForm["comparator_id"];
-                        delete serializedForm["comparator_id"];
-                        var postData = {
-                            "comparator_id": comparatorID,
-                            "configuration": JSON.stringify(serializedForm)
-                        };
-                        $.post("{% url "save_comparator_settings" %}", postData).done(function () {
-                            wittlSorting.fetchScoreData();
-                        });
-                    });
+            //             var comparatorID = serializedForm["comparator_id"];
+            //             delete serializedForm["comparator_id"];
+            //             var postData = {
+            //                 "comparator_id": comparatorID,
+            //                 "configuration": JSON.stringify(serializedForm)
+            //             };
+            //             $.post("{% url "save_comparator_settings" %}", postData).done(function () {
+            //                 wittlSorting.fetchScoreData();
+            //             });
+            //         });
 
             $(".wittls").on("sortupdate", function (event, ui) {
                 var wittlIDs = $(".wittls").sortable("toArray", {attribute: "data-wittl-id"});

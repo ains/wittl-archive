@@ -1253,15 +1253,96 @@ body.modal-open {
     .wittl {
       display: inline-block;
 
-      .nl-field-toggle,
-      .nl-form input, 
-      .nl-form select {
-        border-bottom: 1px dashed $wittl-color;
+      .selected {
+        color: $wittl-color;
+
+        &:hover {
+          color: lighten(#CCC, 10%);
+          text-decoration: none;
+        }
       }
 
-      a {
-        color: $wittl-color;
+      .wrap-dd-select {
+        display: inline-block;
+        position: relative;
+        border-bottom: 1px dashed $wittl-color;
+        line-height: inherit;
+        display: inline-block;
+        color: #CCC;
+        cursor: pointer;
+        border-bottom: 1px dashed #CCC;
+
+        .dropdown {
+          position: absolute;
+          display: none;
+          visibility: hidden;
+          background: $wittl-color;
+          border-radius: 3px;
+          right: 0;
+          top: 50%;
+          font-size: 90%;
+          opacity: 0;
+          -webkit-transform: translateY(-40%) scale(0.9);
+          -moz-transform: translateY(-40%) scale(0.9);
+          transform: translateY(-40%) scale(0.9);
+          -webkit-transition: visibility 0s 0.3s, opacity 0.3s, -webkit-transform 0.3s;
+          -moz-transition: visibility 0s 0.3s, opacity 0.3s, -moz-transform 0.3s;
+          transition: visibility 0s 0.3s, opacity 0.3s, transform 0.3s;
+
+
+          li {
+            color: #fff;
+            position: relative;
+            font-size: 90%;
+            padding: 1em 2em;
+            cursor: pointer;
+            white-space: nowrap;
+
+            &:hover {
+              background: rgba(0,0,0,0.05);
+            }
+
+            &.checked:before {
+              font-family: 'ElegantIcons';
+              color: #FFF;
+              speak: none;
+              font-style: normal;
+              font-weight: normal;
+              font-variant: normal;
+              text-transform: none;
+              -webkit-font-smoothing: antialiased;
+              content: "\4e";
+              position: absolute;
+              right: 1em;
+              font-size: 80%;
+              line-height: 2;
+            }
+
+            a {
+              color: #FFF;
+              text-decoration: none;
+            }
+
+          }
+        }
+
+        &.active {
+
+          .dropdown {
+            z-index: 10000;
+            display: block;
+            visibility: visible;
+            opacity: 1;
+            -webkit-transform: translateY(-50%) scale(1);
+            -moz-transform: translateY(-50%) scale(1);
+            transform: translateY(-50%) scale(1);
+            -webkit-transition: visibility 0s 0s, opacity 0.3s, -webkit-transform 0.3s;
+            -moz-transition: visibility 0s 0s, opacity 0.3s, -moz-transform 0.3s;
+            transition: visibility 0s 0s, opacity 0.3s, transform 0.3s;
+          }
+        }
       }
+
     }
   }
 
