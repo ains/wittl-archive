@@ -172,16 +172,6 @@
         <!-- End wittlist -->
     </section>
 
-    <section class="wittlist-right pane">
-        <header>
-            <h2>Wittl By
-                <!-- <small class="browse"><a href="#" data-toggle="modal" data-target="#browse-wittls">Browse...</a></small> -->
-            </h2>
-        </header>
-
-        <!-- End wittlist -->
-    </section>
-
     <section ng-controller="WittlsCtrl" class="wittlist-right pane">
         <header>
             <h2>Wittl By
@@ -201,14 +191,14 @@
         <div class="wittl-wrapper"> 
             <form wittl-nlform class="nl-form wittl-form">
                 <ul class="wittls">
-                    <li class="wittl-clause" new-wittl>
+                    <li class="wittl-clause" ng-repeat="clause in clauses">
+                        <div class="wittl-conjunction">
+                            and
+                        </div>
                         <div class="wittl">
-                            <div dropdown-select="wittlOptions" dropdown-model="clauses[0]"></div>
+                            <div dropdown-select="wittlOptions" dropdown-model="clause"></div>
                         </div>
                     </li>
-                    {% for comparator in comparators %}
-                        {% include 'list/comparator.html' with comparator=comparator %}
-                    {% endfor %}
                 </ul>
                 <div class="nl-overlay"></div>  
             </form>

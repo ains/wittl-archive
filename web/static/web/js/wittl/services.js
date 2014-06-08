@@ -40,7 +40,7 @@ listItemService.factory('ListItem', ['$resource',
 wittlsService.factory('Wittls', ['$resource',
 	function($resource) {
 		return {
-			all: $resource(api + '/comparators/', {}, {
+			all: $resource(api + '/wittls/', {}, {
 				query: {
 					isArray: true
 				}

@@ -33,7 +33,7 @@
 				self.fldOpen++;
 				self.fields.push( new NLField( self, el, 'dropdown', self.fldOpen ) );
 			} );
-			Array.prototype.slice.call( this.el.querySelectorAll( 'input:not([type="hidden"])' ) ).forEach( function( el, i ) {
+			Array.prototype.slice.call( this.el.querySelectorAll( 'input.nl-input:not(.rendered)' ) ).forEach( function( el, i ) {
 				self.fldOpen++;
 				self.fields.push( new NLField( self, el, 'input', self.fldOpen ) );
 			} );
@@ -117,6 +117,7 @@
 			this.fld.appendChild( this.toggle );
 			this.fld.appendChild( this.optionsList );
 			this.elOriginal.parentNode.insertBefore( this.fld, this.elOriginal );
+			this.elOriginal.className += ' rendered';
 			this.elOriginal.style.display = 'none';
 		},
 		_initEvents : function() {
@@ -150,6 +151,7 @@
 			this.form.fldOpen = this.pos;
 			var self = this;
 			this.fld.className += ' nl-field-open';
+			this.fld.querySelector('.nl-ti-input input').focus();
 		},
 		close : function( opt, idx ) {
 			if( !this.open ) {
@@ -177,6 +179,7 @@
 				this.getinput.blur();
 				this.toggle.innerHTML = this.getinput.value.trim() !== '' ? this.getinput.value : this.getinput.getAttribute( 'placeholder' );
 				this.elOriginal.value = this.getinput.value;
+				this.elOriginal.setAttribute('value', this.getinput.value);
 			}
 
 			this.form.el.className = this.form.el.className.replace(' opened', '');

@@ -54,7 +54,7 @@ class ListComparatorSerializer(ModelSerializer):
 
     class Meta:
         model = ListComparator
-        fields = ('comparator_name', 'order', 'configuration')
+        fields = ('comparator_name', 'id', 'order', 'configuration')
 
 
 class ListViewSet(viewsets.ViewSet):
@@ -149,7 +149,7 @@ class ComparatorViewSet(viewsets.ViewSet):
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'lists', ListViewSet, base_name="list")
-router.register(r'comparators', ComparatorViewSet, base_name="comparator")
+router.register(r'wittls', ComparatorViewSet, base_name="comparator")
 
 lists_router = NestedSimpleRouter(router, r'lists', lookup='list')
 lists_router.register(r'items', ListItemViewSet, base_name='listitem')
