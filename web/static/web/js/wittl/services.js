@@ -47,15 +47,14 @@ listItemService.service('Sorting', ['$rootScope', '$http', function ($rootScope,
                 });
         },
         getScoreByID: function (cardID) {
-            var wittlOrder = $('.wittl').map(function (i, e) {
-                return $(e).data('wittl-id');
-            });
-
+            var wittlOrder = [1];
             return _.reduce(wittlOrder, function (acc, wittl, index) {
-                var totalScore = _.reduce(scoringData, function (acc, cardData, index) {
+                var totalScore = _.reduce(service.scoringData, function (acc, cardData, index) {
                     return acc + cardData[wittl]["score"];
                 }, 0);
-                var score = (wittl in scoringData[cardID]) ? scoringData[cardID][wittl]["score"] : 0;
+
+                var cardData = service.scoringData[cardID];
+                var score = (wittl in cardData) ? cardData[wittl].score : 0;
                 var normalisedScore = score / totalScore;
                 return acc + (normalisedScore * (1 / Math.pow(8, index)));
             }, 0) * 100;
