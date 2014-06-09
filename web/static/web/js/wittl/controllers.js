@@ -37,7 +37,9 @@ listsController.controller('ListsQuickAddCtrl', ['$scope', 'ListItem', 'Broadcas
 
 listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', 'Sorting',
     function ($scope, $http, ListItem, Sorting) {
-        $scope.$on('sorting.update', function (e) {
+        $scope.items = [];
+
+        var resort = function () {
             $scope.$emit('iso-option', {
                 getSortData: {
                     wittlWeight: function (elem) {
@@ -49,9 +51,14 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', '
 
             $scope.$emit('iso-method', {name: 'updateSortData', params: null});
             $scope.$emit('iso-option', {sortBy: 'wittlWeight'});
+        };
+
+        $scope.$on('sorting.update', resort);
+
+        Sorting.updateScores(function () {
+            $scope.items = ListItem.query({listID: 1});
         });
 
-        $scope.items = ListItem.query({listID: 1});
 
         $scope.createListItem = function (e) {
             e.preventDefault();
@@ -64,8 +71,10 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', '
             this.newItemURL = '';
 
             var onSuccess = function (data) {
-                $scope.items.push(data);
-                l.ladda('stop');
+                Sorting.updateScores(function () {
+                    $scope.items.push(data);
+                    l.ladda('stop');
+                });
             };
 
             var onEror = function () {

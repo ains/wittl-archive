@@ -139,7 +139,7 @@
         </div>
 
         <!-- Wittlist -->
-        <div class="wittlist row" isotope-container="isotope-container" iso-options="{layoutMode: 'vertical', transitionDuration: '0.65s'}">
+        <div class="wittlist row" isotope-container="isotope-container" iso-options="{layoutMode: 'vertical', transitionDuration: '0.65s'}" ng-cloak>
             <div class="col-sm-12 card-wrapper" ng-repeat="item in items track by item.id" isotope-item="isotope-item">
                 <div class="card" data-id="[[item.id]]">
                     <div class="row">
@@ -188,7 +188,7 @@
             </div>
         </div> -->
 
-        <div class="wittl-wrapper"> 
+        <div class="wittl-wrapper">
             <form wittl-nlform class="nl-form wittl-form">
                 <ul class="wittls">
                     <li class="wittl-clause" ng-repeat="clause in clauses">
@@ -200,7 +200,7 @@
                         </div>
                     </li>
                 </ul>
-                <div class="nl-overlay"></div>  
+                <div class="nl-overlay"></div>
             </form>
         </div>
 

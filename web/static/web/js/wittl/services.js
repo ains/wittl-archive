@@ -36,12 +36,12 @@ listItemService.factory('ListItem', ['$resource',
 
 listItemService.service('Sorting', ['$rootScope', '$http', function ($rootScope, $http) {
     var service = {
-        updateScores: function () {
+        updateScores: function (callback) {
             $http.get(api + '/lists/1/score_data').
                 success(function (data) {
                     service.scoringData = data;
-                    console.log(service.scoringData);
                     $rootScope.$broadcast('sorting.update');
+                    callback(data);
                 }).
                 error(function (data) {
                 });
@@ -60,8 +60,6 @@ listItemService.service('Sorting', ['$rootScope', '$http', function ($rootScope,
             }, 0) * 100;
         }
     };
-
-    service.updateScores();
 
     return service;
 }]);
