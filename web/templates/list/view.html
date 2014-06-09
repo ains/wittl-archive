@@ -147,9 +147,9 @@
                 <div class="card" data-id="[[item.id]]" ng-click="showModal(item)">
                     <div class="row">
                         <div class="col-sm-1 pic">
-                            <a class="favourite pull-right" ng-if="item.favourited" href="#"><i
+                            <a class="favourite pull-right" ng-click="toggleFavourite($event, item)" ng-if="item.favourited" href="#"><i
                                     class="icon_star"></i></a>
-                            <a class="favourite pull-right" ng-if="!item.favourited" href="#"><i
+                            <a class="favourite pull-right" ng-click="toggleFavourite($event, item)" ng-if="!item.favourited" href="#"><i
                                     class="icon_star_alt"></i></a>
 
                             <img ng-src="[[ item.card_image ]]" title="Name of thing here"/>

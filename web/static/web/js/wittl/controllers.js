@@ -84,6 +84,14 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', '
             };
 
 
+            $scope.toggleFavourite = function (e, item) {
+                e.stopPropagation();
+                $http.post(api + '/lists/' + listID + '/items/' + item.id + "/toggle_favourite/", {})
+                    .success(function () {
+                        item.favourited = !item.favourited;
+                    });
+            };
+
             $scope.showModal = function (item) {
                 var data = item.attributes;
                 var renderMap = function (lat, long) {
