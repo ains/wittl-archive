@@ -37,52 +37,52 @@ listsController.controller('ListsQuickAddCtrl', ['$scope', 'ListItem', 'Broadcas
 
 listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', 'Sorting',
     function ($scope, $http, ListItem, Sorting) {
-        $scope.items = [];
+        $scope.$watch("listID", function () {
+            var listID = $scope.listID;
+            $scope.items = [];
 
-        var resort = function () {
-            $scope.$emit('iso-option', {
-                getSortData: {
-                    wittlWeight: function (elem) {
-                        var itemID = $(elem).children('.card').data('id');
-                        return Sorting.getScoreByID(itemID);
+            var resort = function () {
+                $scope.$emit('iso-option', {
+                    getSortData: {
+                        wittlWeight: function (elem) {
+                            var itemID = $(elem).children('.card').data('id');
+                            return Sorting.getScoreByID(itemID);
+                        }
                     }
-                }
+                });
+
+                $scope.$emit('iso-method', {name: 'updateSortData', params: null});
+                $scope.$emit('iso-option', {sortBy: 'wittlWeight'});
+            };
+            $scope.$on('sorting.update', resort);
+
+            Sorting.updateScores(listID, function () {
+                $scope.items = ListItem.query({listID: 1});
             });
 
-            $scope.$emit('iso-method', {name: 'updateSortData', params: null});
-            $scope.$emit('iso-option', {sortBy: 'wittlWeight'});
-        };
+            $scope.createListItem = function (e) {
+                e.preventDefault();
 
-        $scope.$on('sorting.update', resort);
+                var l = $('#new-list-item-submit').ladda();
+                l.ladda('start');
 
-        Sorting.updateScores(function () {
-            $scope.items = ListItem.query({listID: 1});
-        });
+                var url = this.newItemURL;
+                this.newItemURL = '';
 
+                var onSuccess = function (data) {
+                    Sorting.updateScores(listID, function () {
+                        $scope.items.push(data);
+                        l.ladda('stop');
+                    });
+                };
 
-        $scope.createListItem = function (e) {
-            e.preventDefault();
-
-            var l = $('#new-list-item-submit').ladda();
-            l.ladda('start');
-
-            var listID = this.listID;
-            var url = this.newItemURL;
-            this.newItemURL = '';
-
-            var onSuccess = function (data) {
-                Sorting.updateScores(function () {
-                    $scope.items.push(data);
+                var onEror = function () {
                     l.ladda('stop');
-                });
-            };
-
-            var onEror = function () {
-                l.ladda('stop');
-            };
-            $http.post(api + '/lists/' + listID + '/items/', {url: url, list_id: listID})
-                .success(onSuccess).error(onEror);
-        }
+                };
+                $http.post(api + '/lists/' + listID + '/items/', {url: url, list_id: listID})
+                    .success(onSuccess).error(onEror);
+            }
+        });
     }]);
 
 

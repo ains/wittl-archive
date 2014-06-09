@@ -36,8 +36,8 @@ listItemService.factory('ListItem', ['$resource',
 
 listItemService.service('Sorting', ['$rootScope', '$http', function ($rootScope, $http) {
     var service = {
-        updateScores: function (callback) {
-            $http.get(api + '/lists/1/score_data').
+        updateScores: function (listID, callback) {
+            $http.get(api + '/lists/' + listID + '/score_data/').
                 success(function (data) {
                     service.scoringData = data;
                     $rootScope.$broadcast('sorting.update');

@@ -124,7 +124,8 @@
         </header>
 
         <div class="add-new-card">
-            <form id="new-list-item-form" method="POST" ng-submit="createListItem($event)" action="{% url 'listitem-list' list.id %}">
+            <form id="new-list-item-form" method="POST" ng-submit="createListItem($event)"
+                  action="{% url 'listitem-list' list.id %}">
                 {% csrf_token %}
                 <div class="input-group wittl-input-group">
                     <input type="text" name="url" ng-model="newItemURL" class="form-control"
@@ -134,18 +135,22 @@
                             data-style="zoom-in"><span class="ladda-label">Insert</span></button>
                 </span>
                 </div>
-                <input type="hidden" name="list_id" ng-model="listID" ng-init="listID={{ list.id }}" value="{{ list.id }}"/>
+                <input type="hidden" name="list_id" ng-model="listID" ng-init="listID={{ list.id }}"
+                       value="{{ list.id }}"/>
             </form>
         </div>
 
         <!-- Wittlist -->
-        <div class="wittlist row" isotope-container="isotope-container" iso-options="{layoutMode: 'vertical', transitionDuration: '0.65s'}" ng-cloak>
+        <div class="wittlist row" isotope-container="isotope-container"
+             iso-options="{layoutMode: 'vertical', transitionDuration: '0.65s'}" ng-cloak>
             <div class="col-sm-12 card-wrapper" ng-repeat="item in items track by item.id" isotope-item="isotope-item">
                 <div class="card" data-id="[[item.id]]">
                     <div class="row">
                         <div class="col-sm-1 pic">
-                            <a class="favourite pull-right" ng-if="item.favourited" href="#"><i class="icon_star"></i></a>
-                            <a class="favourite pull-right" ng-if="!item.favourited" href="#"><i class="icon_star_alt"></i></a>
+                            <a class="favourite pull-right" ng-if="item.favourited" href="#"><i
+                                    class="icon_star"></i></a>
+                            <a class="favourite pull-right" ng-if="!item.favourited" href="#"><i
+                                    class="icon_star_alt"></i></a>
 
                             <img ng-src="[[ item.card_image ]]" title="Name of thing here"/>
                         </div>
@@ -235,6 +240,7 @@
     <script src="/static/web/js/vendor/angular/angular-resource.js"></script>
     <script src="/static/web/js/vendor/angular/angular-cookies.js"></script>
     <script src="/static/web/js/vendor/angular/angular-isotope.min.js"></script>
+
     <script src="/static/web/js/wittl/filters.js"></script>
     <script src="/static/web/js/wittl/directives.js"></script>
     <script src="/static/web/js/wittl/controllers.js"></script>
@@ -246,31 +252,31 @@
     <script type="text/javascript">
         $(function () {
 
-{#            $("#new-list-item-form").submit(function (e) {#}
-{#                var form = $(this);#}
-{##}
-{#                //Start loading indicator#}
-{#                var l = $('#new-list-item-submit').ladda();#}
-{#                l.ladda('start');#}
-{##}
-{#                var resetForm = function () {#}
-{#                    form.find("input[name='url']").val("");#}
-{#                    l.ladda('stop');#}
-{#                };#}
-{##}
-{#                var submitURL = form.attr("action");#}
-{#                $.post(submitURL, form.serialize())#}
-{#                        .done(function (data) {#}
-{#                            wittlSorting.fetchScoreData(function () {#}
-{#                                addItem(data);#}
-{#                                resetForm();#}
-{#                            });#}
-{#                        }).fail(function () {#}
-{#                            resetForm();#}
-{#                        });#}
-{##}
-{#                e.preventDefault();#}
-{#            });#}
+            {#            $("#new-list-item-form").submit(function (e) {#}
+            {#                var form = $(this);#}
+            {##}
+            {#                //Start loading indicator#}
+            {#                var l = $('#new-list-item-submit').ladda();#}
+            {#                l.ladda('start');#}
+            {##}
+            {#                var resetForm = function () {#}
+            {#                    form.find("input[name='url']").val("");#}
+            {#                    l.ladda('stop');#}
+            {#                };#}
+            {##}
+            {#                var submitURL = form.attr("action");#}
+            {#                $.post(submitURL, form.serialize())#}
+            {#                        .done(function (data) {#}
+            {#                            wittlSorting.fetchScoreData(function () {#}
+            {#                                addItem(data);#}
+            {#                                resetForm();#}
+            {#                            });#}
+            {#                        }).fail(function () {#}
+            {#                            resetForm();#}
+            {#                        });#}
+            {##}
+            {#                e.preventDefault();#}
+            {#            });#}
 
             // $(".wittl")
             //         .on("change", ":input", function () {
