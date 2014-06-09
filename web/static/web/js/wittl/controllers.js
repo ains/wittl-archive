@@ -81,6 +81,39 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', '
                 };
                 $http.post(api + '/lists/' + listID + '/items/', {url: url, list_id: listID})
                     .success(onSuccess).error(onEror);
+            };
+
+
+            $scope.showModal = function (item) {
+                var data = item.attributes;
+                var renderMap = function (lat, long) {
+                    var latLng = new google.maps.LatLng(parseFloat(lat), parseFloat(long));
+                    var mapOptions = {
+                        center: latLng,
+                        zoom: 8,
+                        disableDefaultUI: true
+                    };
+
+                    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+                    var marker = new google.maps.Marker({
+                        position: latLng,
+                        map: map
+                    });
+                };
+
+                var template = Handlebars.Templates['modal_template'];
+
+
+                var $modal = $('#card-detail');
+                $modal.find('.modal-content')
+                    .empty()
+                    .append(template(data));
+
+                $modal.on('shown.bs.modal', function (e) {
+                    renderMap(data.latitude, data.longitude);
+
+                }).modal('show');
             }
         });
     }]);

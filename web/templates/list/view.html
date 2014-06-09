@@ -144,7 +144,7 @@
         <div class="wittlist row" isotope-container="isotope-container"
              iso-options="{layoutMode: 'vertical', transitionDuration: '0.65s'}" ng-cloak>
             <div class="col-sm-12 card-wrapper" ng-repeat="item in items track by item.id" isotope-item="isotope-item">
-                <div class="card" data-id="[[item.id]]">
+                <div class="card" data-id="[[item.id]]" ng-click="showModal(item)">
                     <div class="row">
                         <div class="col-sm-1 pic">
                             <a class="favourite pull-right" ng-if="item.favourited" href="#"><i
@@ -233,7 +233,6 @@
     <script type="text/javascript" src="/static/web/js/vendor/ladda/ladda.jquery.min.js"></script>
     <script type="text/javascript" src="/static/web/js/vendor/jquery.cookie.js"></script>
 
-    <script type="text/javascript" src="/static/web/js/wittlist_view/modal.js"></script>
     <script type="text/javascript" src="/static/web/js/wittlist_view/favourite.js"></script>
 
     <script src="/static/web/js/vendor/angular/angular.js"></script>
