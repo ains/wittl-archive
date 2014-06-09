@@ -14,7 +14,8 @@
                 <div class="modal-body">
                     <form ng-submit="addItemToList()">
                         <div class="input-group wittl-input-group">
-                            <input name="url" ng-model="item.url" class="form-control" type="text" placeholder="Add an item to your wittlist..." />
+                            <input name="url" ng-model="item.url" class="form-control" type="text"
+                                   placeholder="Add an item to your wittlist..."/>
                             <span class="input-group-btn">
                                 <button type="submit" class="btn wittl-btn">Add</button>
                             </span>
@@ -29,81 +30,91 @@
 {% endblock %}
 
 {% block content %}
-        <div class="col-sm-4">
-            <div class="profile-wrapper">
-                <div class="profile-pic">
-                    <img src="/static/web/images/liam.jpg" />
-                </div>
-                <div class="user-details">
-                    <h3 class="username">
-                        <a href="">{{ user.username }}</a>
-                    </h3>
-                    <p class="fullname">
-                        {{ user.first_name }} {{ user.last_name }}
-                    </p>
-                    <hr />
-                    <p class="other">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                </div>
-
+    <div class="col-sm-4">
+        <div class="profile-wrapper">
+            <div class="profile-pic">
+                <img src="/static/web/images/liam.jpg"/>
             </div>
+            <div class="user-details">
+                <h3 class="username">
+                    <a href="">{{ user.username }}</a>
+                </h3>
+
+                <p class="fullname">
+                    {{ user.first_name }} {{ user.last_name }}
+                </p>
+                <hr/>
+                <p class="other">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+                    has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
+                    galley of type and scrambled it to make a type specimen book.</p>
+            </div>
+
         </div>
-        <section ng-controller="ListsCtrl" class="wittlist-list-wrapper pane col-sm-8">
-            <header>
-                <h2>My Wittlists</h2>
-            </header>
-            
-            <form class="create-wittlist" action="{% url 'list_create' %}" method="post">
-                  {% csrf_token %}
-                <div class="input-group wittl-input-group">
-                    <input name="{{ create_form.name.name }}" class="form-control" type="text" placeholder="Name your new wittlist..." />
+    </div>
+    <section ng-controller="ListsCtrl" class="wittlist-list-wrapper pane col-sm-8">
+    <header>
+        <h2>My Wittlists</h2>
+    </header>
+
+    <form class="create-wittlist" action="{% url 'list_create' %}" method="post">
+        {% csrf_token %}
+        <div class="input-group wittl-input-group">
+            <input name="{{ create_form.name.name }}" class="form-control" type="text"
+                   placeholder="Name your new wittlist..."/>
                     <span class="input-group-btn">
                         <button type="submit" class="btn wittl-btn">Create</button>
                     </span>
-                </div>
-            </form>
+        </div>
+    </form>
 
-            <ul class="wittlist-list row">
+    <ul class="wittlist-list row">
 
-                <li ng-repeat="list in lists" class="col-sm-6">
-                    
-                    <div class="row">
-                        <div class="col-xs-8">
-                            <div class="cover">
-                                <a href="#" ng-click="selectList(list.id)" class="add-item" data-toggle="modal" data-target="#newItemModal"><i class="icon_plus"></i></a>
-                                <a href="/list/[[ list.id ]]" class="cover-inner">
-                                    <img ng-src="[[ list.items[0].card_image | coverphoto ]]" title="[[ list.name ]]" alt="[[ list.name ]]" />
-                                </a>
-                            </div>
-                            <div class="details">
-                                <h3 class="name">
-                                    <a href="/list/[[ list.id ]]">[[ list.name ]]</a>
-                                </h3>
-                                <div class="stats">
+        <li ng-repeat="list in lists" class="col-sm-6">
+
+            <div class="row">
+                <div class="col-xs-8">
+                    <div class="cover">
+                        <a href="#" ng-click="selectList(list.id)" class="add-item" data-toggle="modal"
+                           data-target="#newItemModal"><i class="icon_plus"></i></a>
+                        <a href="/list/[[ list.id ]]" class="cover-inner">
+                            <img ng-src="[[ list.items[0].card_image | coverphoto ]]" title="[[ list.name ]]"
+                                 alt="[[ list.name ]]"/>
+                        </a>
+                    </div>
+                    <div class="details">
+                        <h3 class="name">
+                            <a href="/list/[[ list.id ]]">[[ list.name ]]</a>
+                        </h3>
+
+                        <div class="stats">
                                     <span class="viewers">
                                         <i class="icon_group"></i>&nbsp; [[ list.users.length ]]
                                     </span>
                                     <span class="items">
                                         <i class="icon_tags"></i>&nbsp; [[ list.items.length ]]
                                     </span>
-                                </div>
-                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                </li>
+        </li>
 
-            </ul>
+    </ul>
 
-        </div>
+    </div>
 
 
 {% endblock %}
 
 {% block javascript %}
-    
+
     <script src="/static/web/js/vendor/angular/angular.js"></script>
     <script src="/static/web/js/vendor/angular/angular-resource.js"></script>
     <script src="/static/web/js/vendor/angular/angular-cookies.js"></script>
+    <script src="/static/web/js/vendor/angular/angular-isotope.min.js"></script>
+    <script src="/static/web/js/vendor/angular/angular-nanobar.js"></script>
+
     <script src="/static/web/js/wittl/filters.js"></script>
     <script src="/static/web/js/wittl/directives.js"></script>
     <script src="/static/web/js/wittl/controllers.js"></script>
