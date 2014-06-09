@@ -117,7 +117,6 @@
 {% endblock %}
 
 {% block content %}
-
     <section class="wittlist-left pane" ng-controller="ListItemsCtrl">
         <header>
             <h2>My Wittlist - {{ list.name }}</h2>
@@ -147,9 +146,11 @@
                 <div class="card" data-id="[[item.id]]" ng-click="showModal(item)">
                     <div class="row">
                         <div class="col-sm-1 pic">
-                            <a class="favourite pull-right" ng-click="toggleFavourite($event, item)" ng-if="item.favourited" href="#"><i
+                            <a class="favourite pull-right" ng-click="toggleFavourite($event, item)"
+                               ng-if="item.favourited" href="#"><i
                                     class="icon_star"></i></a>
-                            <a class="favourite pull-right" ng-click="toggleFavourite($event, item)" ng-if="!item.favourited" href="#"><i
+                            <a class="favourite pull-right" ng-click="toggleFavourite($event, item)"
+                               ng-if="!item.favourited" href="#"><i
                                     class="icon_star_alt"></i></a>
 
                             <img ng-src="[[ item.card_image ]]" title="Name of thing here"/>
@@ -236,6 +237,7 @@
     <script src="/static/web/js/vendor/angular/angular-resource.js"></script>
     <script src="/static/web/js/vendor/angular/angular-cookies.js"></script>
     <script src="/static/web/js/vendor/angular/angular-isotope.min.js"></script>
+    <script src="/static/web/js/vendor/angular/angular-nanobar.js"></script>
 
     <script src="/static/web/js/wittl/filters.js"></script>
     <script src="/static/web/js/wittl/directives.js"></script>

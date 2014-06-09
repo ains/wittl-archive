@@ -37,10 +37,12 @@ listItemService.factory('ListItem', ['$resource',
 listItemService.service('Sorting', ['$rootScope', '$http', function ($rootScope, $http) {
     var service = {
         updateScores: function (listID, callback) {
+            $rootScope.startNanobar();
             $http.get(api + '/lists/' + listID + '/score_data/').
                 success(function (data) {
                     service.scoringData = data;
                     $rootScope.$broadcast('sorting.update');
+                    $rootScope.finishNanobar();
                     callback(data);
                 }).
                 error(function (data) {

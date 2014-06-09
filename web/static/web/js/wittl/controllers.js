@@ -1,5 +1,5 @@
 var listsController = angular.module('listsController', []);
-var listItemController = angular.module('listItemController', ['iso']);
+var listItemController = angular.module('listItemController', ['iso', 'nanobar']);
 var wittlsController = angular.module('wittlsController', []);
 
 
