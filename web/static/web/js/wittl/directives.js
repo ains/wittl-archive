@@ -10,9 +10,6 @@ wittlsDirective.directive('wittlNlform', function() {
 						var nlform = new NLForm(el[0]);						
 					}
 				});
-			},
-			controller: function($scope) {
-				console.log('hi');
 			}
 		}
 });
@@ -41,7 +38,7 @@ wittlsDirective.directive('newWittl', ['$compile',
                     						 + '</div>'
                     						 + '<li class="wittl-clause" new-wittl>'
 							                 +     '<div class="wittl">'
-							                 +         '<div dropdown-select="wittlOptions" dropdown-model="clauses[' + newClauseIndex + ']"></div>'
+							                 +         '<div dropdown-select="wittlOptions" dropdown-model="clauses[' + newClauseIndex + ']" ng-model="foo"></div>'
 							                 +      '</div>'
 							                 + '</li>';
 
@@ -55,6 +52,20 @@ wittlsDirective.directive('newWittl', ['$compile',
 		}
 }]);
 
+wittlsDirective.directive('nlBind', function() {
+	return {
+		restrict: 'A',
+		require: 'ngModel',
+		link: function(scope, el, attr, ngModel) {
+			scope.$watch(function() { return el.attr('value'); },
+				function(newVal, oldVal) {
+					if(newVal != oldVal) {
+						ngModel.$setViewValue(newVal);
+					}
+				}, true);
+		}
+	}
+});
 
 
 ngDropdowns.directive('dropdownSelect', ['$document', '$compile', 
@@ -66,6 +77,31 @@ ngDropdowns.directive('dropdownSelect', ['$document', '$compile',
 	        dropdownSelect: '=',
 	        dropdownModel: '=',
 	        dropdownOnchange: '&'
+	      },
+	      link: function(scope, elem, attr) {
+	      		scope.$watch('dropdownModel.wittl', function(newVal, oldVal) {		
+	      			if(newVal != oldVal) {
+	      				var wittl = newVal;
+					
+						var preposition = '<span class="preposition"> ' + wittl.preposition + ' </span>\n';
+		                var fields = '';
+		                for(var i = 0; i < wittl.fields.length; i++) {
+		                	var field = wittl.fields[i];
+		                	fields += '<input class="nl-input" type="' + field.type 
+		                			+ '" ng-model="clause.fields.' + field.name + '" nl-bind '
+		                			+ 'value="" placeholder="placeholder" '
+		                			+ 'name="' + field.name + '" data-subline="Enter a field specific hint here."/>\n';
+		                }
+						
+		                
+		                elem.siblings().remove();
+
+		                var el = $compile(preposition + fields)( scope );
+		                elem.parent().append(el);
+
+		                var nlform = new NLForm(elem.closest('.nl-form')[0]);
+		            }
+		        }, true);
 	      },
 	      controller: [
 	        '$scope', '$element', '$attrs', function($scope, $element, $attrs) {
@@ -88,29 +124,31 @@ ngDropdowns.directive('dropdownSelect', ['$document', '$compile',
 	            $element.toggleClass('active');
 	          });
 
+	          	var first = true;
+
 		        /* Build nl clause */
 		        $scope.$watch('dropdownModel', function(newVal, oldVal) {
 					if(newVal != oldVal) {
-						var wittl = newVal.wittl;
-					
-						var preposition = '<span class="preposition">' + wittl.preposition + '</span>\n';
-		                var fields = '';
-		                for(var i = 0; i < wittl.fields.length; i++) {
-		                	var field = wittl.fields[i];
-		                	fields += '<input type="' + field.type 
-		                			+ '" ng-model="' + $attrs.dropdownModel + '.fields.' + field.name + '"'
-		                			+ 'value="" placeholder="placeholder" '
-		                			+ 'name="' + field.name + '" data-subline="Enter a field specific hint here."/>\n';
-		                }
 
-		                $element.siblings().remove();
+						// Only exec once per dropdown
+						if(first) {
+							$scope.$parent.clauses.push({
+								text: 'any wittl'
+							});
+							first = false;
+						}
 
-		                var el = $compile(preposition + fields)( $scope );
-		                $element.parent().append(el);
-
-		                var nlform = new NLForm($element.closest('.nl-form')[0]);
 		            }
 				}, true);
+
+		        /* Automagic binding to parent scope */
+				$scope.$watchCollection('clause.fields', function(newVal, oldVal) {
+					if(newVal != oldVal) {
+						for(key in newVal) {
+							$scope.$parent.clause.fields[key] = newVal[key];
+						}
+					}
+				});
 	        }
 	      ],
 	      template: "<div class='wrap-dd-select'>\n    <span class='selected'>[[ dropdownModel[labelField] ]]</span>\n    <ul class='dropdown'>\n        <li ng-repeat='item in dropdownSelect'\n            class='dropdown-item'\n            dropdown-select-item='item'\n            dropdown-item-label='labelField'>\n        </li>\n    </ul>\n</div>"

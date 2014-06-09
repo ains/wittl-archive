@@ -58,9 +58,9 @@ body {
   background-color: $sidebar-color;
   display: none;
 
-  &.sidr {
-    display: block;
-  }
+  // &.sidr {
+  //   display: block;
+  // }
 
   header {
     background-color: $wittl-color;
@@ -1250,6 +1250,15 @@ body.modal-open {
   .wittl-clause {
     margin: 10px 0;
 
+    // HACK
+    &:first-child {
+        
+      .wittl-conjunction {
+        display: none;
+        visibility: hidden;
+      }
+    }
+
     .wittl {
       display: inline-block;
 
@@ -1307,7 +1316,7 @@ body.modal-open {
               color: #FFF;
               speak: none;
               font-style: normal;
-              font-weight: normal;
+              font-weight: normal; 
               font-variant: normal;
               text-transform: none;
               -webkit-font-smoothing: antialiased;

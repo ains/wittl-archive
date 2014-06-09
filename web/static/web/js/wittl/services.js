@@ -69,12 +69,12 @@ listItemService.service('Sorting', ['$rootScope', '$http', function ($rootScope,
 
 
 wittlsService.factory('Wittls', ['$resource',
-    function ($resource) {
-        return {
-            all: $resource(api + '/comparators/', {}, {
-                query: {
-                    isArray: true
-                }
-            })
-        }
-    }]);
+	function($resource) {
+		return {
+			all: $resource(api + '/wittls/', {}, {
+				query: {
+					isArray: true
+				}
+			})
+		}
+	}]);

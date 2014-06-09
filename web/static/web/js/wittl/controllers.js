@@ -79,7 +79,6 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', '
 
 wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls',
     function ($scope, Wittls) {
-
         $scope.availableWittls = [];
         $scope.wittlOptions = [];
 
@@ -87,24 +86,22 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls',
             $scope.availableWittls = data;
 
             _.each(data, function (wittl) {
+                var transFields = {};
+                for (var i = 0; i < wittl.fields.length; i++) {
+                    if (wittl.fields[i].type == 'text') {
+                        transFields[wittl.fields[i].name] = '';
+                    }
+                }
                 $scope.wittlOptions.push({
                     text: wittl.display_name,
                     wittl: wittl,
-                    fields: {}
+                    fields: transFields
                 });
             });
         });
 
         $scope.clauses = [
-            { text: 'any wittl', fields: {} }
+            { text: 'any wittl' }
         ];
-
-        /* DEBUG */
-        $scope.$watch('clauses', function (newVal, oldVal) {
-            if (newVal != oldVal) {
-                console.log('New:\n');
-                console.log(newVal);
-            }
-        }, true);
 
     }]);
