@@ -249,74 +249,9 @@
 
     <script type="text/javascript">
         $(function () {
-
-            {#            $("#new-list-item-form").submit(function (e) {#}
-            {#                var form = $(this);#}
-            {##}
-            {#                //Start loading indicator#}
-            {#                var l = $('#new-list-item-submit').ladda();#}
-            {#                l.ladda('start');#}
-            {##}
-            {#                var resetForm = function () {#}
-            {#                    form.find("input[name='url']").val("");#}
-            {#                    l.ladda('stop');#}
-            {#                };#}
-            {##}
-            {#                var submitURL = form.attr("action");#}
-            {#                $.post(submitURL, form.serialize())#}
-            {#                        .done(function (data) {#}
-            {#                            wittlSorting.fetchScoreData(function () {#}
-            {#                                addItem(data);#}
-            {#                                resetForm();#}
-            {#                            });#}
-            {#                        }).fail(function () {#}
-            {#                            resetForm();#}
-            {#                        });#}
-            {##}
-            {#                e.preventDefault();#}
-            {#            });#}
-
-            // $(".wittl")
-            //         .on("change", ":input", function () {
-            //             var serializedForm = {};
-            //             $(this).parents("li").find("input").each(function (i, field) {
-            //                 var name = $(field).attr("name");
-            //                 var value = $(field).val();
-
-            //                 serializedForm[field["name"]] = field["value"];
-            //             });
-
-            //             var comparatorID = serializedForm["comparator_id"];
-            //             delete serializedForm["comparator_id"];
-            //             var postData = {
-            //                 "comparator_id": comparatorID,
-            //                 "configuration": JSON.stringify(serializedForm)
-            //             };
-            //             $.post("{% url "save_comparator_settings" %}", postData).done(function () {
-            //                 wittlSorting.fetchScoreData();
-            //             });
-            //         });
-
             $(".wittls").on("sortupdate", function (event, ui) {
                 var wittlIDs = $(".wittls").sortable("toArray", {attribute: "data-wittl-id"});
                 $.post("{% url "update_wittl_order" list.id %}", {wittl_ids: wittlIDs  });
-            });
-
-            $('.browsable-wittls').on('click', '.browsable-wittl', function () {
-                var selected = $(this).data('selected');
-                if (selected == 1) {
-                    $(this).removeClass('selected')
-                            .attr('data-selected', 0);
-                } else {
-                    $(this).addClass('selected')
-                            .attr('data-selected', 1);
-                }
-
-            });
-
-            $('#browse-next').on('click', function (e) {
-                e.preventDefault();
-                console.log($('.browsable-wittl[data-selected="1"]'));
             });
         });
 
