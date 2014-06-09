@@ -246,15 +246,4 @@
     <script src="/static/web/js/wittl/app.js"></script>
 
     <script type="text/javascript" src="/static/web/js/vendor/nlform.js"></script>
-
-    <script type="text/javascript">
-        $(function () {
-            $(".wittls").on("sortupdate", function (event, ui) {
-                var wittlIDs = $(".wittls").sortable("toArray", {attribute: "data-wittl-id"});
-                $.post("{% url "update_wittl_order" list.id %}", {wittl_ids: wittlIDs  });
-            });
-        });
-
-    </script>
-
 {% endblock %}
