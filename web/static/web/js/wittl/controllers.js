@@ -133,9 +133,9 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls',
         $scope.clauses = [];
 
         // Must happen after $scope.wittlOptions request returned
-        var searchForWittl = function(name) {
-            for(var i = 0; i < $scope.wittlOptions.length; i++) {
-                if($scope.wittlOptions[i].model.name == name) {
+        var searchForWittl = function (name) {
+            for (var i = 0; i < $scope.wittlOptions.length; i++) {
+                if ($scope.wittlOptions[i].model.name == name) {
                     return $scope.wittlOptions[i];
                 }
             }
@@ -163,20 +163,17 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls',
             });
         });
 
-        $scope.$watch('listID', function(newId) {
+        $scope.$watch('listID', function (newId) {
 
-            Wittls.list.query({listID: newId}, function(response) {
+            Wittls.list.query({listID: newId}, function (response) {
                 var activeWittls = response;
-                for(var i = 0; i < activeWittls.length; i++) {
+                for (var i = 0; i < activeWittls.length; i++) {
                     var wittl = searchForWittl(activeWittls[i].comparator_name);
-                    
-                    if(wittl) { 
+
+                    if (wittl) {
                         /* Transform result fields */
-                        var fields = [];
-                        _.each(activeWittls[i].configuration, function(option) {
-                            var key = Object.keys(option)[0];
-                            var val = option[key];
-                            fields.push({ name: key, val: val });
+                        var fields = _.map(activeWittls[i].configuration, function (val, key) {
+                            return { name: key, val: val };
                         });
 
                         $scope.clauses.unshift({
@@ -186,13 +183,13 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls',
                             fields: fields
                         });
                     }
-                }  
+                }
             });
 
-        }); 
+        });
 
         $scope.clauses = [
-            { 
+            {
                 text: 'any wittl',
                 model: {},
                 fields: []
