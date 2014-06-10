@@ -13,4 +13,15 @@ $(function () {
         }
     });
 
+    var resizeInput = function() {
+        $(this).attr('size', $(this).val().length);
+    };
+
+    $('.wittl-form')
+        .on('keyup', 'input.param-field', resizeInput);
+        
+    setTimeout(function() {
+        $('.wittl-form input.param-field').each(resizeInput);
+    }, 250);
+
 });

@@ -1,6 +1,5 @@
 var wittl = angular.module('wittl', [
 	'ngCookies',
-	'ngDropdowns',
 	
 	/* Lists
 	 * ------------------- */

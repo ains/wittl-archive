@@ -129,29 +129,74 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', '
 
 wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls',
     function ($scope, Wittls) {
-        $scope.availableWittls = [];
         $scope.wittlOptions = [];
+        $scope.clauses = [];
+
+        // Must happen after $scope.wittlOptions request returned
+        var searchForWittl = function(name) {
+            for(var i = 0; i < $scope.wittlOptions.length; i++) {
+                if($scope.wittlOptions[i].model.name == name) {
+                    return $scope.wittlOptions[i];
+                }
+            }
+            return false;
+        };
 
         Wittls.all.query().$promise.then(function (data) {
-            $scope.availableWittls = data;
 
             _.each(data, function (wittl) {
-                var transFields = {};
+                var transFields = [];
                 for (var i = 0; i < wittl.fields.length; i++) {
                     if (wittl.fields[i].type == 'text') {
-                        transFields[wittl.fields[i].name] = '';
+                        var field = {
+                            name: wittl.fields[i].name,
+                            val: ''
+                        };
+                        transFields.push(field);
                     }
                 }
                 $scope.wittlOptions.push({
                     text: wittl.display_name,
-                    wittl: wittl,
+                    model: wittl,
                     fields: transFields
                 });
             });
         });
 
+        $scope.$watch('listID', function(newId) {
+
+            Wittls.list.query({listID: newId}, function(response) {
+                var activeWittls = response;
+                for(var i = 0; i < activeWittls.length; i++) {
+                    var wittl = searchForWittl(activeWittls[i].comparator_name);
+                    
+                    if(wittl) { 
+                        /* Transform result fields */
+                        var fields = [];
+                        _.each(activeWittls[i].configuration, function(option) {
+                            var key = Object.keys(option)[0];
+                            var val = option[key];
+                            fields.push({ name: key, val: val });
+                        });
+
+                        $scope.clauses.unshift({
+                            text: wittl.text,
+                            model: wittl.model,
+                            id: activeWittls[i].id,
+                            fields: fields
+                        });
+                    }
+                }  
+            });
+
+        }); 
+
         $scope.clauses = [
-            { text: 'any wittl' }
+            { 
+                text: 'any wittl',
+                model: {},
+                fields: []
+            }
         ];
 
     }]);

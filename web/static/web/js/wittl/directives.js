@@ -1,74 +1,52 @@
 var wittlsDirective = angular.module('wittlsDirective', []);
 var ngDropdowns = angular.module('ngDropdowns', []);
 
-wittlsDirective.directive('wittlNlform', function() {
+
+wittlsDirective.directive('wittlParams', ['$compile',
+	function($compile) {
+		var matchFieldToValue = function(fieldname, wittl) {
+			for(i in wittl.fields) { 
+				if(wittl.fields[i].name == fieldname) {
+					return wittl.fields[i].val;
+				}
+			}
+			return false;
+		};
+
+		var renderDirective = function(scope, el) {
+			var model = scope.wittl.model;
+			
+			var prepositionHtml = '<span class="preposition">[[ wittl.model.preposition ]]</span>\n';
+			var paramsHtml = "";
+
+			// TODO: make ngRepeat instead
+			for(i in model.fields) {
+				// var key = model.fields[i].name;
+				// var type = model.fields[i].type;
+				// var val = matchFieldToValue(key, scope.wittl) || ""; 
+
+				paramsHtml += '<input type="[[ wittl.model.fields[' + i + '].type ]]" ' 
+							+ 'ng-model="wittl.fields[0].val" class="param-field" value="[[ wittl.fields[0].val ]]" placeholder="placeholder"/>\n'; 
+			}
+
+			el.replaceWith($compile(prepositionHtml + paramsHtml)(scope));
+		};
+
 		return {
-			restrict: 'A',
-			link: function(scope, el, attrs) {
-				scope.$watch('availableWittls', function(newVal, oldVal) {
-					if(newVal != oldVal) {
-						var nlform = new NLForm(el[0]);						
-					}
-				});
+			restrict: 'E',
+			scope: {
+				wittl: '='
+			},
+			link: function(scope, el, attr) {
+				if(Object.keys(scope.wittl.model).length === 0) return;
+
+				renderDirective(scope, el);
 			}
 		}
-});
-
-wittlsDirective.directive('newWittl', ['$compile', 
-	function($compile) {
-		return {
-			restrict: 'A',
-			controller: ['$scope', '$element', '$attrs',
-				function($scope, $element, $attrs) {
-					var model = $element.find('[dropdown-select]').attr('dropdown-model'); 
-					// SUPER HACK.
-					var clauseIndex = parseInt( model.replace('clauses[', '').replace(']', '') );
-					var newClauseIndex = clauseIndex + 1;
-
-					var unregister = $scope.$watch(
-						model, 
-						function(newVal, oldVal) {
-							if(newVal != oldVal) {
-								$element.removeAttr('new-wittl');
-
-								$scope.clauses[newClauseIndex] = { text: 'any wittl', fields: {} };
-
-								var newWittl = '<div class="wittl-conjunction">'
-                        					 + 		'and'
-                    						 + '</div>'
-                    						 + '<li class="wittl-clause" new-wittl>'
-							                 +     '<div class="wittl">'
-							                 +         '<div dropdown-select="wittlOptions" dropdown-model="clauses[' + newClauseIndex + ']" ng-model="foo"></div>'
-							                 +      '</div>'
-							                 + '</li>';
-
-								var el = $compile(newWittl)( $scope );
-								$element.parent().append(el);
-
-								unregister();
-							}
-						}, true);
-				}]
-		}
-}]);
-
-wittlsDirective.directive('nlBind', function() {
-	return {
-		restrict: 'A',
-		require: 'ngModel',
-		link: function(scope, el, attr, ngModel) {
-			scope.$watch(function() { return el.attr('value'); },
-				function(newVal, oldVal) {
-					if(newVal != oldVal) {
-						ngModel.$setViewValue(newVal);
-					}
-				}, true);
-		}
-	}
-});
+	}]);
 
 
-ngDropdowns.directive('dropdownSelect', ['$document', '$compile', 
+wittlsDirective.directive('dropdownSelect', ['$document', '$compile', 
 	function($document, $compile) {
 	    return {
 	      restrict: 'A',
@@ -77,31 +55,6 @@ ngDropdowns.directive('dropdownSelect', ['$document', '$compile',
 	        dropdownSelect: '=',
 	        dropdownModel: '=',
 	        dropdownOnchange: '&'
-	      },
-	      link: function(scope, elem, attr) {
-	      		scope.$watch('dropdownModel.wittl', function(newVal, oldVal) {		
-	      			if(newVal != oldVal) {
-	      				var wittl = newVal;
-					
-						var preposition = '<span class="preposition"> ' + wittl.preposition + ' </span>\n';
-		                var fields = '';
-		                for(var i = 0; i < wittl.fields.length; i++) {
-		                	var field = wittl.fields[i];
-		                	fields += '<input class="nl-input" type="' + field.type 
-		                			+ '" ng-model="clause.fields.' + field.name + '" nl-bind '
-		                			+ 'value="" placeholder="placeholder" '
-		                			+ 'name="' + field.name + '" data-subline="Enter a field specific hint here."/>\n';
-		                }
-						
-		                
-		                elem.siblings().remove();
-
-		                var el = $compile(preposition + fields)( scope );
-		                elem.parent().append(el);
-
-		                var nlform = new NLForm(elem.closest('.nl-form')[0]);
-		            }
-		        }, true);
 	      },
 	      controller: [
 	        '$scope', '$element', '$attrs', function($scope, $element, $attrs) {
@@ -129,26 +82,22 @@ ngDropdowns.directive('dropdownSelect', ['$document', '$compile',
 		        /* Build nl clause */
 		        $scope.$watch('dropdownModel', function(newVal, oldVal) {
 					if(newVal != oldVal) {
-
 						// Only exec once per dropdown
 						if(first) {
-							$scope.$parent.clauses.push({
-								text: 'any wittl'
-							});
-							first = false;
+							if(Object.keys($scope.$parent.clauses[$scope.$parent.clauses.length - 1].model).length !== 0) {
+								$scope.$parent.clauses.push({
+									text: 'any wittl',
+									model: {},
+									fields: []
+								});
+								
+								first = false;
+							}
 						}
 
+						$compile($element.siblings()[0])($scope.$parent);
 		            }
 				}, true);
-
-		        /* Automagic binding to parent scope */
-				$scope.$watchCollection('clause.fields', function(newVal, oldVal) {
-					if(newVal != oldVal) {
-						for(key in newVal) {
-							$scope.$parent.clause.fields[key] = newVal[key];
-						}
-					}
-				});
 	        }
 	      ],
 	      template: "<div class='wrap-dd-select'>\n    <span class='selected'>[[ dropdownModel[labelField] ]]</span>\n    <ul class='dropdown'>\n        <li ng-repeat='item in dropdownSelect'\n            class='dropdown-item'\n            dropdown-select-item='item'\n            dropdown-item-label='labelField'>\n        </li>\n    </ul>\n</div>"
@@ -177,69 +126,6 @@ ngDropdowns.directive('dropdownSelect', ['$document', '$compile',
         };
       },
       template: "<li ng-class='{divider: dropdownSelectItem.divider}' ng-click='selectItem()'>\n    <a href='' class='dropdown-item'\n        ng-if='!dropdownSelectItem.divider'\n        ng-href='[[ dropdownSelectItem.href ]]'>\n        [[ dropdownSelectItem[dropdownItemLabel] ]]\n    </a>\n</li>"
-    };
-  }
-]).directive('dropdownMenu', [
-  '$parse', '$compile', '$document', function($parse, $compile, $document) {
-    var template;
-    template = "<ul class='dropdown'>\n    <li ng-repeat='item in dropdownMenu'\n        class='dropdown-item'\n        dropdown-item-label='labelField'\n        dropdown-menu-item='item'>\n    </li>\n</ul>";
-    return {
-      restrict: 'A',
-      replace: false,
-      scope: {
-        dropdownMenu: '=',
-        dropdownModel: '=',
-        dropdownOnchange: '&'
-      },
-      controller: [
-        '$scope', '$element', '$attrs', function($scope, $element, $attrs) {
-          var $template, $wrap, body, tpl;
-          $scope.labelField = $attrs.dropdownItemLabel != null ? $attrs.dropdownItemLabel : 'text';
-          $template = angular.element(template);
-          $template.data('$dropdownMenuController', this);
-          tpl = $compile($template)($scope);
-          $wrap = angular.element("<div class='wrap-dd-menu'></div>");
-          $element.replaceWith($wrap);
-          $wrap.append($element);
-          $wrap.append(tpl);
-          this.select = function(selected) {
-            if (selected !== $scope.dropdownModel) {
-              angular.copy(selected, $scope.dropdownModel);
-            }
-            $scope.dropdownOnchange({
-              selected: selected
-            });
-          };
-          body = $document.find("body");
-          body.bind("click", function() {
-            tpl.removeClass('active');
-          });
-          $element.bind("click", function(event) {
-            event.stopPropagation();
-            tpl.toggleClass('active');
-          });
-        }
-      ]
-    };
-  }
-]).directive('dropdownMenuItem', [
-  function() {
-    return {
-      require: '^dropdownMenu',
-      replace: true,
-      scope: {
-        dropdownMenuItem: '=',
-        dropdownItemLabel: '='
-      },
-      link: function(scope, element, attrs, dropdownMenuCtrl) {
-        scope.selectItem = function() {
-          if (scope.dropdownMenuItem.href) {
-            return;
-          }
-          dropdownMenuCtrl.select(scope.dropdownMenuItem);
-        };
-      },
-      template: "<li ng-class='{divider: dropdownMenuItem.divider}'>\n    <a href='' class='dropdown-item'\n        ng-if='!dropdownMenuItem.divider'\n        ng-href='[[ dropdownMenuItem.href ]]'\n        ng-click='selectItem()'>\n        [[ dropdownMenuItem[dropdownItemLabel] ]]\n    </a>\n</li>"
     };
   }
 ]);

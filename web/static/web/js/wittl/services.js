@@ -74,6 +74,7 @@ wittlsService.factory('Wittls', ['$resource',
 				query: {
 					isArray: true
 				}
-			})
+			}),
+            list: $resource(api + '/lists/:listID/wittls/')
 		}
 	}]);

@@ -17,6 +17,7 @@ class BaseComparator():
     @property
     def data(self):
         return {
+            "name": self.NAME,
             "title": self.TITLE,
             "description": self.DESCRIPTION,
             "display_name": self.DISPLAY_NAME,

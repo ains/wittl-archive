@@ -195,21 +195,22 @@
         </div> -->
 
         <div class="wittl-wrapper">
-            <form wittl-nlform class="nl-form wittl-form">
+            <form class="nl-form wittl-form">
+                <input type="hidden" ng-model="listId" value="{{ list.id }}" ng-init="listID={{ list.id }}" />
                 <ul class="wittls">
                     <li class="wittl-clause" ng-repeat="clause in clauses">
                         <div class="wittl-conjunction">
-                            and
+                            and 
                         </div>
                         <div class="wittl">
                             <div dropdown-select="wittlOptions" dropdown-model="clause"></div>
+                            <wittl-params wittl="clause"></wittl-params>
                         </div>
                     </li>
                 </ul>
                 <div class="nl-overlay"></div>
             </form>
         </div>
-
     </section>
 
 
@@ -245,5 +246,5 @@
     <script src="/static/web/js/wittl/services.js"></script>
     <script src="/static/web/js/wittl/app.js"></script>
 
-    <script type="text/javascript" src="/static/web/js/vendor/nlform.js"></script>
+    <!-- <script type="text/javascript" src="/static/web/js/vendor/nlform.js"></script> -->
 {% endblock %}
