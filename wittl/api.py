@@ -150,6 +150,7 @@ class ListComparatorViewset(viewsets.ViewSet):
         serializer = ListComparatorSerializer(comparator, context={'request': request})
         return Response(serializer.data)
 
+
 class ComparatorViewSet(viewsets.ViewSet):
     def list(self, request):
         response_data = [comparator().data for comparator_name, comparator in all_comparators.items()]
