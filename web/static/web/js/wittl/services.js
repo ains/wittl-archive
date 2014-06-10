@@ -78,3 +78,16 @@ wittlsService.factory('Wittls', ['$resource',
             list: $resource(api + '/lists/:listID/wittls/')
 		}
 	}]);
+
+wittlsService.factory('WittlOrder', 
+    function() {
+        var wittls = {};
+        return {
+            update: function(updatedWittls) {
+                wittls = updatedWittls;
+            },
+            get: function() {
+                return wittls;
+            }
+        };
+    });

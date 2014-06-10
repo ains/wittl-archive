@@ -197,7 +197,7 @@
         <div class="wittl-wrapper">
             <form class="nl-form wittl-form">
                 <input type="hidden" ng-model="listId" value="{{ list.id }}" ng-init="listID={{ list.id }}" />
-                <ul class="wittls" ui-sortable ng-model="clauses">
+                <ul class="wittls" ui-sortable="sortableWittlsOptions" ng-model="clauses">
                     <li class="wittl-clause" ng-repeat="clause in clauses">
                         <div class="wittl-conjunction">
                             and 

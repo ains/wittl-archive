@@ -127,8 +127,8 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', '
     }]);
 
 
-wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls',
-    function ($scope, Wittls) {
+wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls', 'WittlOrder',
+    function ($scope, Wittls, WittlOrder) {
         $scope.wittlOptions = [];
         $scope.clauses = [];
 
@@ -195,5 +195,11 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls',
                 fields: []
             }
         ];
+
+        $scope.sortableWittlsOptions = {
+            update: function(e, ui) {
+                WittlOrder.update($scope.clauses);
+            }
+          };
 
     }]);
