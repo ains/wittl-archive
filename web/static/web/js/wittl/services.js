@@ -34,62 +34,67 @@ listItemService.factory('ListItem', ['$resource',
     }]);
 
 
-listItemService.service('Sorting', ['$rootScope', '$http', function ($rootScope, $http) {
-    var service = {
-        updateScores: function (listID, callback) {
-            $rootScope.startNanobar();
-            $http.get(api + '/lists/' + listID + '/score_data/').
-                success(function (data) {
-                    service.scoringData = data;
-                    $rootScope.$broadcast('sorting.update');
-                    $rootScope.finishNanobar();
-                    callback(data);
-                }).
-                error(function (data) {
-                });
-        },
-        getScoreByID: function (cardID) {
-            var wittlOrder = [1];
-            return _.reduce(wittlOrder, function (acc, wittl, index) {
-                var totalScore = _.reduce(service.scoringData, function (acc, cardData, index) {
-                    return acc + cardData[wittl]["score"];
-                }, 0);
+listItemService.service('Sorting', ['$rootScope', '$http',
+    function ($rootScope, $http) {
+        var service = {
+            updateScores: function (listID, callback) {
+                $rootScope.startNanobar();
+                $http.get(api + '/lists/' + listID + '/score_data/').
+                    success(function (data) {
+                        service.scoringData = data;
+                        $rootScope.$broadcast('sorting.update');
+                        $rootScope.finishNanobar();
+                        callback(data);
+                    }).
+                    error(function (data) {
+                    });
+            },
+            getScoreByID: function (wittlOrder, cardID) {
+                return _.reduce(wittlOrder, function (acc, wittl, index) {
+                    var totalScore = _.reduce(service.scoringData, function (acc, cardData, index) {
+                        return acc + cardData[wittl]["score"];
+                    }, 0);
 
-                var cardData = service.scoringData[cardID];
-                var score = (wittl in cardData) ? cardData[wittl].score : 0;
-                var normalisedScore = score / totalScore;
-                return acc + (normalisedScore * (1 / Math.pow(8, index)));
-            }, 0) * 100;
+                    var cardData = service.scoringData[cardID];
+                    var score = (wittl in cardData) ? cardData[wittl].score : 0;
+                    var normalisedScore = score / totalScore;
+                    return acc + (normalisedScore * (1 / Math.pow(8, index)));
+                }, 0) * 100;
+            }
+        };
+
+        return service;
+    }]);
+
+
+wittlsService.factory('Wittls', ['$resource',
+    function ($resource) {
+        return {
+            all: $resource(api + '/wittls/', {}, {
+                query: {
+                    isArray: true
+                }
+            }),
+            list: $resource(api + '/lists/:listID/wittls/:wittlID/', {wittlID: "@id", listID: "@list"}, {
+                'update': {method: 'PUT'}
+            })
+        }
+    }]);
+
+wittlsService.factory('WittlOrder', [function () {
+    var service = {
+        wittls: [],
+        getOrder: function () {
+            var hasID = function (object) {
+                return _.has(object, "id");
+            };
+
+            return _.map(_.filter(service.wittls, hasID), function(x) { return x.id });
+        },
+        update: function (updatedWittls) {
+            service.wittls = updatedWittls;
         }
     };
 
     return service;
 }]);
-
-
-wittlsService.factory('Wittls', ['$resource',
-	function($resource) {
-		return {
-			all: $resource(api + '/wittls/', {}, {
-				query: {
-					isArray: true
-				}
-			}),
-            list: $resource(api + '/lists/:listID/wittls/:wittlID/', {wittlID: "@id", listID:"@list"}, {
-                'update': {method: 'PUT'}
-            })
-		}
-	}]);
-
-wittlsService.factory('WittlOrder', 
-    function() {
-        var wittls = {};
-        return {
-            update: function(updatedWittls) {
-                wittls = updatedWittls;
-            },
-            get: function() {
-                return wittls;
-            }
-        };
-    });

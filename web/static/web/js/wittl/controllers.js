@@ -35,18 +35,19 @@ listsController.controller('ListsQuickAddCtrl', ['$scope', 'ListItem', 'Broadcas
     }]);
 
 
-listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', 'Sorting',
-    function ($scope, $http, ListItem, Sorting) {
+listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', 'WittlOrder', 'Sorting',
+    function ($scope, $http, ListItem, WittlOrder, Sorting) {
         $scope.$watch("listID", function () {
             var listID = $scope.listID;
             $scope.items = [];
+            $scope.wittlOrder = WittlOrder;
 
             var resort = function () {
                 $scope.$emit('iso-option', {
                     getSortData: {
                         wittlWeight: function (elem) {
                             var itemID = $(elem).children('.card').data('id');
-                            return Sorting.getScoreByID(itemID);
+                            return Sorting.getScoreByID(WittlOrder.getOrder(), itemID);
                         }
                     }
                 });
@@ -55,6 +56,12 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', '
                 $scope.$emit('iso-option', {sortBy: 'wittlWeight'});
             };
             $scope.$on('sorting.update', resort);
+            $scope.$watch('wittlOrder.wittls', function (newVal, oldVal, scope) {
+                if (newVal) {
+                    resort();
+                }
+            }, true);
+
 
             Sorting.updateScores(listID, function () {
                 $scope.items = ListItem.query({listID: 1});
@@ -168,7 +175,8 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls', 'WittlOrder',
             Wittls.list.query({listID: newId}, function (response) {
                 var activeWittls = response;
 
-                for (var i = 0; i < activeWittls.length; i++) {
+                //Insert in reverse order as we're unshifting
+                for (var i = activeWittls.length - 1; i >= 0; i--) {
                     var wittl = searchForWittl(activeWittls[i].comparator_name);
                     if (wittl) {
                         /* Transform result fields */
@@ -184,6 +192,8 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls', 'WittlOrder',
                         });
                     }
                 }
+
+                WittlOrder.update($scope.clauses);
             });
 
         });
@@ -197,9 +207,9 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls', 'WittlOrder',
         ];
 
         $scope.sortableWittlsOptions = {
-            update: function(e, ui) {
+            update: function (e, ui) {
                 WittlOrder.update($scope.clauses);
             }
-          };
+        };
 
     }]);
