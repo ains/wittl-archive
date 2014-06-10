@@ -75,7 +75,9 @@ wittlsService.factory('Wittls', ['$resource',
 					isArray: true
 				}
 			}),
-            list: $resource(api + '/lists/:listID/wittls/')
+            list: $resource(api + '/lists/:listID/wittls/:wittlID/', {wittlID: "@id", listID:"@list"}, {
+                'update': {method: 'PUT'}
+            })
 		}
 	}]);
 

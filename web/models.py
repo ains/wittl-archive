@@ -49,7 +49,7 @@ class ListItem(models.Model):
     subtitle = models.CharField(max_length=512)
     card_image = models.CharField(max_length=256)
     list = models.ForeignKey(List, related_name="items")
-    source = models.CharField(max_length=256) 
+    source = models.CharField(max_length=256)
     # JSON of object attributes
     attributes = models.TextField()
 
@@ -62,11 +62,14 @@ class ListItem(models.Model):
 
     @property
     def sortable_attrs(self):
+        decoded_attributes = self.decoded_attributes
+
         importer = get_importer_by_name(self.source)
-        attrs = importer.SORTABLE_ATTRS
+        sortable_attrs = importer.SORTABLE_ATTRS
         ext_sortable = {}
-        for (key, value) in attrs.items():
-            ext_sortable[value] = self.decoded_attributes[key] 
+        for (key, value) in sortable_attrs.items():
+            if key in decoded_attributes:
+                ext_sortable[value] = decoded_attributes[key]
         return ext_sortable
 
     def comparator_data(self, user):
