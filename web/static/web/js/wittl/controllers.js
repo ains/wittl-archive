@@ -65,7 +65,7 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', '
 
 
             Sorting.updateScores(listID, function () {
-                $scope.items = ListItem.query({listID: 1}, function() {
+                $scope.items = ListItem.query({listID: 1}, function () {
                     resort();
                 });
             });
@@ -139,37 +139,20 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', '
 
 wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls', 'WittlOrder',
     function ($scope, Wittls, WittlOrder) {
-        $scope.wittlOptions = [];
+        $scope.wittlOptions = {};
         $scope.clauses = [];
 
-        // Must happen after $scope.wittlOptions request returned
-        var searchForWittl = function (name) {
-            for (var i = 0; i < $scope.wittlOptions.length; i++) {
-                if ($scope.wittlOptions[i].model.name == name) {
-                    return $scope.wittlOptions[i];
-                }
-            }
-            return false;
-        };
-
-        Wittls.all.query().$promise.then(function (data) {
-
-            _.each(data, function (wittl) {
-                var transFields = [];
+        Wittls.getConfiguration().then(function (response) {
+            angular.forEach(response.data, function (wittl, key) {
+                var fields = {};
                 for (var i = 0; i < wittl.fields.length; i++) {
-                    if (wittl.fields[i].type == 'text') {
-                        var field = {
-                            name: wittl.fields[i].name,
-                            val: ''
-                        };
-                        transFields.push(field);
-                    }
+                    fields[wittl.fields[i].name] = '';
                 }
-                $scope.wittlOptions.push({
+                $scope.wittlOptions[key] = {
                     text: wittl.display_name,
                     model: wittl,
-                    fields: transFields
-                });
+                    fields: fields
+                };
             });
         });
 
@@ -180,18 +163,13 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls', 'WittlOrder',
 
                 //Insert in reverse order as we're unshifting
                 for (var i = activeWittls.length - 1; i >= 0; i--) {
-                    var wittl = searchForWittl(activeWittls[i].comparator_name);
+                    var wittl = $scope.wittlOptions[activeWittls[i].comparator_name];
                     if (wittl) {
-                        /* Transform result fields */
-                        var fields = _.map(activeWittls[i].configuration, function (val, key) {
-                            return { name: key, val: val };
-                        });
-
                         $scope.clauses.unshift({
                             text: wittl.text,
                             model: wittl.model,
                             id: activeWittls[i].id,
-                            fields: fields
+                            fields: activeWittls[i].configuration
                         });
                     }
                 }
@@ -205,7 +183,7 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls', 'WittlOrder',
             {
                 text: 'any wittl',
                 model: {},
-                fields: []
+                fields: {}
             }
         ];
 
@@ -213,6 +191,9 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls', 'WittlOrder',
             update: function (e, ui) {
                 WittlOrder.update($scope.clauses);
             }
+        };
+
+        $scope.save = function () {
         };
 
     }]);

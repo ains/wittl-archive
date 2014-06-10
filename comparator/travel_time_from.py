@@ -12,7 +12,9 @@ class TravelTimeFromComparator(BaseComparator):
 
     DISPLAY_NAME = "travel time"
     PREPOSITION = "from"
-    FIELDS = [{"name": "origin_location", "type": "text"}]
+    FIELDS = {
+        "origin_location": {"type": "text"}
+    }
 
     @staticmethod
     def get_route_data(route):

@@ -153,7 +153,8 @@ class ListComparatorViewset(viewsets.ViewSet):
 
 class ComparatorViewSet(viewsets.ViewSet):
     def list(self, request):
-        response_data = [comparator().data for comparator_name, comparator in all_comparators.items()]
+        response_data = {comparator_name: comparator().data
+                         for comparator_name, comparator in all_comparators.items()}
         return Response(response_data)
 
 # Routers provide an easy way of automatically determining the URL conf.

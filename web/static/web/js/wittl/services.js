@@ -50,10 +50,10 @@ listItemService.service('Sorting', ['$rootScope', 'WittlOrder', '$http',
                     error(function (data) {
                     });
             },
-            getSummariesById: function(cardID, n) {
+            getSummariesById: function (cardID, n) {
                 var wittlOrder = _.take(WittlOrder.getOrder(), n);
-                return _.map(wittlOrder, function(wittlID) {
-                   return service.scoringData[cardID][wittlID]["summary"]
+                return _.map(wittlOrder, function (wittlID) {
+                    return service.scoringData[cardID][wittlID]["summary"]
                 });
             },
             getScoreByID: function (cardID) {
@@ -75,14 +75,12 @@ listItemService.service('Sorting', ['$rootScope', 'WittlOrder', '$http',
     }]);
 
 
-wittlsService.factory('Wittls', ['$resource',
-    function ($resource) {
+wittlsService.factory('Wittls', ['$http', '$resource',
+    function ($http, $resource) {
         return {
-            all: $resource(api + '/wittls/', {}, {
-                query: {
-                    isArray: true
-                }
-            }),
+            getConfiguration: function () {
+                return $http.get(api + '/wittls/', {})
+            },
             list: $resource(api + '/lists/:listID/wittls/:wittlID/', {wittlID: "@id", listID: "@list"}, {
                 'update': {method: 'PUT'}
             })
@@ -97,7 +95,9 @@ wittlsService.factory('WittlOrder', [function () {
                 return _.has(object, "id");
             };
 
-            return _.map(_.filter(service.wittls, hasID), function(x) { return x.id });
+            return _.map(_.filter(service.wittls, hasID), function (x) {
+                return x.id
+            });
         },
         update: function (updatedWittls) {
             service.wittls = updatedWittls;

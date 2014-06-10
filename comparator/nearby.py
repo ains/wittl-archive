@@ -11,7 +11,7 @@ class NearbyComparator(BaseComparator):
 
     DISPLAY_NAME = "ideal temperature"
     PREPOSITION = "of"
-    FIELDS = [{"name": "ideal_temperature", "type": "text"}]
+    FIELDS = {"ideal_temperature": {"type": "text"}}
 
     def score(self, latitude, longitude, radius, poi_name):
         f = FactualAPI()

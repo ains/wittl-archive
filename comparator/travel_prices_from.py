@@ -11,7 +11,9 @@ class TravelPricesFromComparator(BaseComparator):
 
     DISPLAY_NAME = "travel prices"
     PREPOSITION = "from"
-    FIELDS = [{"name": "origin_location", "type": "text"}]
+    FIELDS = {
+        "origin_location": {"type": "text"}
+    }
 
     @staticmethod
     def get_route_data(route):

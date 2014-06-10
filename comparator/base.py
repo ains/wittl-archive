@@ -6,7 +6,7 @@ class BaseComparator():
 
     DISPLAY_NAME = ""
     PREPOSITION = ""
-    FIELDS = []
+    FIELDS = {}
 
     def __init__(self):
         pass

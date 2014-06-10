@@ -13,7 +13,7 @@ class WeatherComparator(BaseComparator):
 
     DISPLAY_NAME = "ideal temperature"
     PREPOSITION = "of around"
-    FIELDS = [{"name": "ideal_temperature", "type": "text"}]
+    FIELDS = {"ideal_temperature": {"type": "text"}}
 
     def score(self, latitude, longitude, ideal_temperature, date=datetime.datetime.now()):
         w = WundergroundAPI()
