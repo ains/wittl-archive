@@ -157,26 +157,26 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls', 'WittlOrder',
         });
 
         $scope.$watch('listID', function (newId) {
+            if (newId) {
+                Wittls.list.query({listID: newId}, function (response) {
+                    var activeWittls = response;
 
-            Wittls.list.query({listID: newId}, function (response) {
-                var activeWittls = response;
-
-                //Insert in reverse order as we're unshifting
-                for (var i = activeWittls.length - 1; i >= 0; i--) {
-                    var wittl = $scope.wittlOptions[activeWittls[i].comparator_name];
-                    if (wittl) {
-                        $scope.clauses.unshift({
-                            text: wittl.text,
-                            model: wittl.model,
-                            id: activeWittls[i].id,
-                            fields: activeWittls[i].configuration
-                        });
+                    //Insert in reverse order as we're unshifting
+                    for (var i = activeWittls.length - 1; i >= 0; i--) {
+                        var wittl = $scope.wittlOptions[activeWittls[i].comparator_name];
+                        if (wittl) {
+                            $scope.clauses.unshift({
+                                text: wittl.text,
+                                model: wittl.model,
+                                id: activeWittls[i].id,
+                                fields: activeWittls[i].configuration
+                            });
+                        }
                     }
-                }
 
-                WittlOrder.update($scope.clauses);
-            });
-
+                    WittlOrder.update($scope.clauses);
+                });
+            }
         });
 
         $scope.clauses = [
@@ -194,6 +194,7 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls', 'WittlOrder',
         };
 
         $scope.save = function () {
+            console.log('bluur');
         };
 
     }]);
