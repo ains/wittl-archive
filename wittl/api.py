@@ -54,7 +54,7 @@ class ListComparatorSerializer(ModelSerializer):
 
     class Meta:
         model = ListComparator
-        fields = ('comparator_name', 'id', 'order', 'configuration')
+        fields = ('comparator_name', 'id', 'order', 'configuration', 'list')
 
 
 class ListViewSet(viewsets.ViewSet):
@@ -70,13 +70,6 @@ class ListViewSet(viewsets.ViewSet):
             return Response(serializer.data)
         else:
             return HttpResponseForbidden()
-
-    @link()
-    def wittls(self, request, pk=None):
-        list = get_object_or_404(List, pk=pk)
-        comparators = list.get_comparators_for_user(request.user)
-        serializer = ListComparatorSerializer(comparators, many=True, context={'request': request})
-        return Response(serializer.data)
 
     @link()
     def score_data(self, request, pk=None):
@@ -141,6 +134,22 @@ class ListItemViewSet(viewsets.ViewSet):
         return Response(list_item.comparator_data(request.user))
 
 
+class ListComparatorViewset(viewsets.ViewSet):
+    def list(self, request, list_pk=None):
+        list = get_object_or_404(List, pk=list_pk)
+        comparators = list.get_comparators_for_user(request.user)
+        serializer = ListComparatorSerializer(comparators, many=True, context={'request': request})
+        return Response(serializer.data)
+
+    def update(self, request, pk=None, list_pk=None):
+        comparator = get_object_or_404(ListComparator, pk=list_pk)
+        comparator.order = request.DATA["id"]
+        comparator.configuration = json.dumps(request.DATA["configuration"])
+        comparator.save()
+
+        serializer = ListComparatorSerializer(comparator, context={'request': request})
+        return Response(serializer.data)
+
 class ComparatorViewSet(viewsets.ViewSet):
     def list(self, request):
         response_data = [comparator().data for comparator_name, comparator in all_comparators.items()]
@@ -153,3 +162,4 @@ router.register(r'wittls', ComparatorViewSet, base_name="comparator")
 
 lists_router = NestedSimpleRouter(router, r'lists', lookup='list')
 lists_router.register(r'items', ListItemViewSet, base_name='listitem')
+lists_router.register(r'wittls', ListComparatorViewset, base_name='listwittl')

@@ -167,9 +167,9 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittls',
 
             Wittls.list.query({listID: newId}, function (response) {
                 var activeWittls = response;
+
                 for (var i = 0; i < activeWittls.length; i++) {
                     var wittl = searchForWittl(activeWittls[i].comparator_name);
-
                     if (wittl) {
                         /* Transform result fields */
                         var fields = _.map(activeWittls[i].configuration, function (val, key) {
