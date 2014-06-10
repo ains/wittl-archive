@@ -16,7 +16,11 @@ var wittl = angular.module('wittl', [
 	 * ------------------- */
 	'wittlsService',
 	'wittlsController',
-	'wittlsDirective'
+	'wittlsDirective',
+
+	 /* Vendor
+	 * ------------------- */
+	 'ui.sortable'
 ]);
 
 wittl.config(function ($httpProvider, $interpolateProvider, $resourceProvider) {
