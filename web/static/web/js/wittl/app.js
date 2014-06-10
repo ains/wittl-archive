@@ -33,4 +33,8 @@ wittl.config(function ($httpProvider, $interpolateProvider, $resourceProvider) {
 }).run(function ($http, $cookies) {
     $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
     $http.defaults.headers.put['X-CSRFToken'] = $cookies.csrftoken;
+}).filter('unsafe', function($sce) {
+    return function(val) {
+        return $sce.trustAsHtml(val);
+    };
 });

@@ -47,24 +47,27 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', '
                     getSortData: {
                         wittlWeight: function (elem) {
                             var itemID = $(elem).children('.card').data('id');
-                            return Sorting.getScoreByID(WittlOrder.getOrder(), itemID);
+                            return Sorting.getScoreByID(itemID);
                         }
                     }
                 });
 
                 $scope.$emit('iso-method', {name: 'updateSortData', params: null});
                 $scope.$emit('iso-option', {sortBy: 'wittlWeight'});
+
+                //Update summaries
+                angular.forEach($scope.items, function (item) {
+                    item.summary = Sorting.getSummariesById(item.id, 3);
+                });
             };
             $scope.$on('sorting.update', resort);
-            $scope.$watch('wittlOrder.wittls', function (newVal, oldVal, scope) {
-                if (newVal) {
-                    resort();
-                }
-            }, true);
+            $scope.$watch('wittlOrder.wittls', resort, true);
 
 
             Sorting.updateScores(listID, function () {
-                $scope.items = ListItem.query({listID: 1});
+                $scope.items = ListItem.query({listID: 1}, function() {
+                    resort();
+                });
             });
 
             $scope.createListItem = function (e) {

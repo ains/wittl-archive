@@ -34,9 +34,10 @@ listItemService.factory('ListItem', ['$resource',
     }]);
 
 
-listItemService.service('Sorting', ['$rootScope', '$http',
-    function ($rootScope, $http) {
+listItemService.service('Sorting', ['$rootScope', 'WittlOrder', '$http',
+    function ($rootScope, WittlOrder, $http) {
         var service = {
+            scoringData: {},
             updateScores: function (listID, callback) {
                 $rootScope.startNanobar();
                 $http.get(api + '/lists/' + listID + '/score_data/').
@@ -49,7 +50,14 @@ listItemService.service('Sorting', ['$rootScope', '$http',
                     error(function (data) {
                     });
             },
-            getScoreByID: function (wittlOrder, cardID) {
+            getSummariesById: function(cardID, n) {
+                var wittlOrder = _.take(WittlOrder.getOrder(), n);
+                return _.map(wittlOrder, function(wittlID) {
+                   return service.scoringData[cardID][wittlID]["summary"]
+                });
+            },
+            getScoreByID: function (cardID) {
+                var wittlOrder = WittlOrder.getOrder();
                 return _.reduce(wittlOrder, function (acc, wittl, index) {
                     var totalScore = _.reduce(service.scoringData, function (acc, cardData, index) {
                         return acc + cardData[wittl]["score"];

@@ -163,9 +163,9 @@
                         </div>
                         <div class="col-sm-7">
                             <ul class="wittl-data">
-                                <li style="color: #e74c3c;"></li>
-                                <li style="color: #2ecc71;"></li>
-                                <li style="color: #9b59b6;"></li>
+                                <li style="color: #e74c3c;" ng-bind-html="item.summary[0] | unsafe"></li>
+                                <li style="color: #2ecc71;" ng-bind-html="item.summary[1] | unsafe"></li>
+                                <li style="color: #9b59b6;" ng-bind-html="item.summary[2] | unsafe"></li>
                             </ul>
                         </div>
                     </div>
