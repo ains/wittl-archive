@@ -110,6 +110,7 @@ class ListItemViewSet(viewsets.ViewSet):
             new_item.card_image = attributes["image"]
             new_item.attributes = json.dumps(attributes)
             new_item.source = importer.NAME
+            new_item.url = import_url
             new_item.save()
 
             serializer = ListItemSerializer(new_item, context={'request': request})
