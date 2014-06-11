@@ -175,7 +175,13 @@ wittlsController.controller('WittlsCtrl', ['$scope', '$q', 'Wittl', 'Sorting',
         });
 
         $scope.sortableWittlsOptions = {
-            update: function (e, ui) {
+            stop: function (e, ui) {
+                angular.forEach($scope.clauses, function (wittl, i) {
+                    wittl.order = i;
+                    if (!angular.isUndefined(wittl.$update)) {
+                        wittl.$update();
+                    }
+                });
             }
         };
 

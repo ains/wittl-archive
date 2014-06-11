@@ -143,7 +143,7 @@ class ListComparatorViewset(viewsets.ViewSet):
 
     def update(self, request, pk=None, list_pk=None):
         comparator = get_object_or_404(ListComparator, pk=pk)
-        comparator.order = request.DATA["id"]
+        comparator.order = request.DATA["order"]
         comparator.configuration = json.dumps(request.DATA["configuration"])
         comparator.save()
 
