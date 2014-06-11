@@ -6,3 +6,4 @@ factual-api
 requests_oauthlib
 djangorestframework
 Babel==1.3
+drf-nested-routers

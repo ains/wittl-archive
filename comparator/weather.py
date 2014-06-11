@@ -8,14 +8,12 @@ from django import forms
 class WeatherComparator(BaseComparator):
     NAME = "weather"
     TITLE = "Weather at location"
-    PRIMARY_FIELD = None
     DESCRIPTION = "Compare locations by how close the temperature is to your ideal temperature."
+    REQUIRED_ATTRIBUTES = {"latitude", "longitude"}
 
-    REQUIRED_ATTRIBUTES = ("latitude", "longitude")
-    TRIGGERS = [r"weather at destination"]
-    EXTRA_FIELDS = {
-        'ideal_temperature': forms.CharField()
-    }
+    DISPLAY_NAME = "ideal temperature"
+    PREPOSITION = "of around"
+    FIELDS = {"ideal_temperature": {"type": "text"}}
 
     def score(self, latitude, longitude, ideal_temperature, date=datetime.datetime.now()):
         w = WundergroundAPI()

@@ -2,22 +2,26 @@ import json
 
 from django.http import HttpResponseForbidden, HttpResponseServerError
 from django.shortcuts import get_object_or_404
+
+from importer import get_importer_for_url
+from comparator import all_comparators
+from web.models import List, ListItem, User, ListComparator
+
 from rest_framework.decorators import link, action
 from rest_framework.response import Response
-from importer import get_importer_for_url
-from web.models import List, ListItem, User
 from rest_framework import viewsets, routers
-from comparator import all_comparators
-from rest_framework.serializers import HyperlinkedModelSerializer, SerializerMethodField
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
+
+from rest_framework_nested.routers import NestedSimpleRouter
 
 
-class UserSerializer(HyperlinkedModelSerializer):
+class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name')
 
 
-class ListItemSerializer(HyperlinkedModelSerializer):
+class ListItemSerializer(ModelSerializer):
     favourited = SerializerMethodField("is_favourited")
 
     def transform_attributes(self, obj, value):
@@ -31,10 +35,10 @@ class ListItemSerializer(HyperlinkedModelSerializer):
 
     class Meta:
         model = ListItem
-        fields = ('name', 'attributes', 'url', 'id', 'card_image', 'favourited')
+        fields = ('name', 'attributes', 'id', 'card_image', 'favourited')
 
 
-class ListSerializer(HyperlinkedModelSerializer):
+class ListSerializer(ModelSerializer):
     items = ListItemSerializer()
     users = UserSerializer()
 
@@ -42,6 +46,15 @@ class ListSerializer(HyperlinkedModelSerializer):
         model = List
         fields = ('name', 'id', 'users', 'items')
         depth = 1
+
+
+class ListComparatorSerializer(ModelSerializer):
+    def transform_configuration(self, obj, value):
+        return json.loads(value)
+
+    class Meta:
+        model = ListComparator
+        fields = ('comparator_name', 'id', 'order', 'configuration', 'list')
 
 
 class ListViewSet(viewsets.ViewSet):
@@ -69,12 +82,12 @@ class ListViewSet(viewsets.ViewSet):
 
 
 class ListItemViewSet(viewsets.ViewSet):
-    def list(self, request):
-        queryset = ListItem.objects.filter(list__users=request.user).all()
+    def list(self, request, list_pk=None):
+        queryset = get_object_or_404(List, pk=list_pk).items.all()
         serializer = ListItemSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
-    def retrieve(self, request, pk=None):
+    def retrieve(self, request, pk=None, list_pk=None):
         list_item = get_object_or_404(ListItem, pk=pk)
         if list_item.list.user_invited(request.user):
             serializer = ListItemSerializer(list_item, context={'request': request})
@@ -82,9 +95,8 @@ class ListItemViewSet(viewsets.ViewSet):
         else:
             return HttpResponseForbidden()
 
-    def create(self, request):
-        list_id = request.DATA['list_id']
-        list = get_object_or_404(List, id=list_id)
+    def create(self, request, list_pk=None):
+        list = get_object_or_404(List, id=list_pk)
 
         import_url = request.DATA["url"]
         importer = get_importer_for_url(import_url)
@@ -106,7 +118,7 @@ class ListItemViewSet(viewsets.ViewSet):
             return HttpResponseServerError("Unrecognised URL")
 
     @action()
-    def toggle_favourite(self, request, pk=None):
+    def toggle_favourite(self, request, pk=None, list_pk=None):
         list_item = get_object_or_404(ListItem, pk=pk)
         user = request.user
         if user.favourites.filter(pk=pk).exists():
@@ -117,20 +129,53 @@ class ListItemViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
     @link()
-    def score_data(self, request, pk=None):
+    def score_data(self, request, pk=None, list_pk=None):
         list_item = get_object_or_404(ListItem, pk=pk)
         return Response(list_item.comparator_data(request.user))
 
 
+class ListComparatorViewset(viewsets.ViewSet):
+    def list(self, request, list_pk=None):
+        list = get_object_or_404(List, pk=list_pk)
+        comparators = list.get_comparators_for_user(request.user)
+        serializer = ListComparatorSerializer(comparators, many=True, context={'request': request})
+        return Response(serializer.data)
+
+    def update(self, request, pk=None, list_pk=None):
+        comparator = get_object_or_404(ListComparator, pk=pk)
+        comparator.order = request.DATA["order"]
+        comparator.configuration = json.dumps(request.DATA["configuration"])
+        comparator.save()
+
+        serializer = ListComparatorSerializer(comparator, context={'request': request})
+        return Response(serializer.data)
+
+    def create(self, request, list_pk=None):
+        list = get_object_or_404(List, pk=list_pk)
+
+        comparator = ListComparator()
+        comparator.user = request.user
+        comparator.list = list
+        comparator.comparator_name = request.DATA["comparator_name"]
+        comparator.configuration = json.dumps(request.DATA["configuration"])
+        comparator.order = 10
+        comparator.save()
+
+        serializer = ListComparatorSerializer(comparator, context={'request': request})
+        return Response(serializer.data)
+
+
 class ComparatorViewSet(viewsets.ViewSet):
     def list(self, request):
-        response_data = {
-            comparator_name: comparator().data for comparator_name, comparator in all_comparators.items()
-        }
+        response_data = {comparator_name: comparator().data
+                         for comparator_name, comparator in all_comparators.items()}
         return Response(response_data)
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'lists', ListViewSet, base_name="list")
-router.register(r'list-items', ListItemViewSet, base_name="listitem")
-router.register(r'comparators', ComparatorViewSet, base_name="comparator")
+router.register(r'wittls', ComparatorViewSet, base_name="comparator")
+
+lists_router = NestedSimpleRouter(router, r'lists', lookup='list')
+lists_router.register(r'items', ListItemViewSet, base_name='listitem')
+lists_router.register(r'wittls', ListComparatorViewset, base_name='listwittl')

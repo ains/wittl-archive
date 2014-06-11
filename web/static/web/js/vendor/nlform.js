@@ -33,7 +33,7 @@
 				self.fldOpen++;
 				self.fields.push( new NLField( self, el, 'dropdown', self.fldOpen ) );
 			} );
-			Array.prototype.slice.call( this.el.querySelectorAll( 'input:not([type="hidden"])' ) ).forEach( function( el, i ) {
+			Array.prototype.slice.call( this.el.querySelectorAll( 'input.nl-input:not(.rendered)' ) ).forEach( function( el, i ) {
 				self.fldOpen++;
 				self.fields.push( new NLField( self, el, 'input', self.fldOpen ) );
 			} );
@@ -41,6 +41,7 @@
 			this.overlay.addEventListener( 'touchstart', function(ev) { self._closeFlds(); } );
 		},
 		_closeFlds : function() {
+			this.el.className = this.el.className.replace(' opened', '');
 			if( this.fldOpen !== -1 ) {
 				this.fields[ this.fldOpen ].close();
 			}
@@ -75,7 +76,9 @@
 			this.optionsList = document.createElement( 'ul' );
 			var ihtml = '';
 			Array.prototype.slice.call( this.elOriginal.querySelectorAll( 'option' ) ).forEach( function( el, i ) {
-				ihtml += self.elOriginal.selectedIndex === i ? '<li class="nl-dd-checked">' + el.innerHTML + '</li>' : '<li>' + el.innerHTML + '</li>';
+				ihtml += self.elOriginal.selectedIndex === i 
+					? '<li class="nl-dd-checked">' + el.innerHTML + '</li>' 
+					: '<li>' + el.innerHTML + '</li>';
 				// selected index value
 				if( self.elOriginal.selectedIndex === i ) {
 					self.selectedIdx = i;
@@ -114,12 +117,13 @@
 			this.fld.appendChild( this.toggle );
 			this.fld.appendChild( this.optionsList );
 			this.elOriginal.parentNode.insertBefore( this.fld, this.elOriginal );
+			this.elOriginal.className += ' rendered';
 			this.elOriginal.style.display = 'none';
 		},
 		_initEvents : function() {
 			var self = this;
-			this.toggle.addEventListener( 'click', function( ev ) { ev.preventDefault(); ev.stopPropagation(); self._open(); } );
-			this.toggle.addEventListener( 'touchstart', function( ev ) { ev.preventDefault(); ev.stopPropagation(); self._open(); } );
+			this.toggle.addEventListener( 'click', function( ev ) { ev.preventDefault(); ev.stopPropagation(); self.form.el.className += ' opened'; self._open(); } );
+			this.toggle.addEventListener( 'touchstart', function( ev ) { ev.preventDefault(); ev.stopPropagation(); self.form.el.className += ' opened'; self._open(); } );
 
 			if( this.type === 'dropdown' ) {
 				var opts = Array.prototype.slice.call( this.optionsList.querySelectorAll( 'li' ) );
@@ -147,6 +151,7 @@
 			this.form.fldOpen = this.pos;
 			var self = this;
 			this.fld.className += ' nl-field-open';
+			this.fld.querySelector('.nl-ti-input input').focus();
 		},
 		close : function( opt, idx ) {
 			if( !this.open ) {
@@ -167,13 +172,17 @@
 					this.selectedIdx = idx;
 					// update original select element´s value
 					this.elOriginal.value = this.elOriginal.children[ this.selectedIdx ].value;
+					this.elOriginal.children[ this.selectedIdx ].setAttribute('selected', 'selected');
 				}
 			}
 			else if( this.type === 'input' ) {
 				this.getinput.blur();
 				this.toggle.innerHTML = this.getinput.value.trim() !== '' ? this.getinput.value : this.getinput.getAttribute( 'placeholder' );
 				this.elOriginal.value = this.getinput.value;
+				this.elOriginal.setAttribute('value', this.getinput.value);
 			}
+
+			this.form.el.className = this.form.el.className.replace(' opened', '');
 		}
 	};
 

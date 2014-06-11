@@ -117,75 +117,102 @@
 {% endblock %}
 
 {% block content %}
-
-    <section class="wittlist-left pane">
+    <section class="wittlist-left pane" ng-controller="ListItemsCtrl">
         <header>
             <h2>My Wittlist - {{ list.name }}</h2>
         </header>
 
         <div class="add-new-card">
-            <form id="new-list-item-form" method="POST" action="{% url 'listitem-list' %}">
+            <form id="new-list-item-form" method="POST" ng-submit="createListItem($event)"
+                  action="{% url 'listitem-list' list.id %}">
                 {% csrf_token %}
                 <div class="input-group wittl-input-group">
-                    <input type="text" name="url" class="form-control" placeholder="Add a new item to your Wittlist"/>
-                    <span class="input-group-btn">
-                        <button id="new-list-item-submit" class="ladda-button wittl-btn btn" type="submit"
-                                data-style="zoom-in"><span class="ladda-label">Insert</span></button>
-                    </span>
+                    <input type="text" name="url" ng-model="newItemURL" class="form-control"
+                           placeholder="Add a new item to your Wittlist"/>
+                <span class="input-group-btn">
+                    <button id="new-list-item-submit" class="ladda-button wittl-btn btn" type="submit"
+                            data-style="zoom-in"><span class="ladda-label">Insert</span></button>
+                </span>
                 </div>
-                <input type="hidden" name="list_id" value="{{ list.id }}"/>
+                <input type="hidden" name="list_id" ng-model="listID" ng-init="listID={{ list.id }}"
+                       value="{{ list.id }}"/>
             </form>
         </div>
 
         <!-- Wittlist -->
-        <div class="wittlist row">
+        <div class="wittlist row" isotope-container="isotope-container"
+             iso-options="{layoutMode: 'vertical', transitionDuration: '0.65s'}" ng-cloak>
+            <div class="col-sm-12 card-wrapper" ng-repeat="item in items track by item.id" isotope-item="isotope-item">
+                <div class="card" data-id="[[item.id]]" ng-click="showModal(item)">
+                    <div class="row">
+                        <div class="col-sm-1 pic">
+                            <a class="favourite pull-right" ng-click="toggleFavourite($event, item)"
+                               ng-if="item.favourited" href="#"><i
+                                    class="icon_star"></i></a>
+                            <a class="favourite pull-right" ng-click="toggleFavourite($event, item)"
+                               ng-if="!item.favourited" href="#"><i
+                                    class="icon_star_alt"></i></a>
 
+                            <img ng-src="[[ item.card_image ]]" title="Name of thing here"/>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <h3 class="title"> [[ item.name | limitTo: 20 ]]</h3>
+
+                            <p class="wittl-meta-description">[[ item.subtitle | limitTo:10 ]]</p>
+                        </div>
+                        <div class="col-sm-7">
+                            <ul class="wittl-data">
+                                <li style="color: #e74c3c;" ng-bind-html="item.summary[0] | unsafe"></li>
+                                <li style="color: #2ecc71;" ng-bind-html="item.summary[1] | unsafe"></li>
+                                <li style="color: #9b59b6;" ng-bind-html="item.summary[2] | unsafe"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 
         </div>
 
         <!-- End wittlist -->
     </section>
 
-    <section class="wittlist-right pane">
+    <section ng-controller="WittlsCtrl" class="wittlist-right pane">
         <header>
-            <h2>Wittls
-                <small class="browse"><a href="#" data-toggle="modal" data-target="#browse-wittls">Browse...</a></small>
+            <h2>Wittl By
+                <!-- <small class="browse"><a href="#" data-toggle="modal" data-target="#browse-wittls">Browse...</a></small> -->
             </h2>
         </header>
 
-        <div class="query-wrapper">
+        <!-- <div class="query-wrapper">
             <div class="input-group wittl-input-group">
                 <input type="text" name="query-input" class="form-control" placeholder="Add a new Wittl here..."/>
               <span class="input-group-btn">
                 <button type="button" class="btn wittl-btn">WITTL</button>
               </span>
             </div>
-        </div>
+        </div> -->
 
         <div class="wittl-wrapper">
-            <ul class="wittls">
-                <li>
-                    <form class="nl-form wittl-form">
-                        Wittl by
-                        <select>
-                            <option value="1" selected>travel prices</option>
-                            <option value="2">Indian</option>
-                            <option value="3">French</option>
-                            <option value="4">Japanese</option>
-                            <option value="2">Italian</option>
-                        </select>
-                        <span class="preposition">from</span>
-                        <input type="text" value="" placeholder="London" data-subline="For example: <em>Los Angeles</em> or <em>Rome</em>"/>
-                        <div class="nl-overlay"></div>
-                    </form>
-                </li>
-                {% for comparator in comparators %}
-                    {% include 'list/comparator.html' with comparator=comparator %}
-                {% endfor %}
-            </ul>
+            <form class="nl-form wittl-form">
+                <input type="hidden" ng-model="listId" value="{{ list.id }}" ng-init="listID={{ list.id }}" />
+                <ul class="wittls" ui-sortable="sortableWittlsOptions" ng-model="clauses">
+                    <li class="wittl-clause" ng-repeat="clause in clauses">
+                        <div class="wittl-conjunction">
+                            and 
+                        </div>
+                        <div class="wittl">
+                            <div dropdown-select="wittlOptions" dropdown-model="clause"></div>
+                            <wittl-params wittl="clause"></wittl-params>
+                        </div>
+                    </li>
+                </ul>
+                <div class="nl-overlay"></div>
+            </form>
         </div>
-
     </section>
+
 
 {% endblock %}
 
@@ -196,7 +223,6 @@
     <script type="text/javascript" src="/static/web/js/templates.js"></script>
 
     <script type="text/javascript" src="/static/web/js/vendor/modernizr.custom.min.js"></script>
-    <script type="text/javascript" src="/static/web/js/vendor/nlform.js"></script>
 
     <script src="/static/web/js/vendor/isotope.pkgd.js"></script>
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
@@ -207,107 +233,19 @@
     <script type="text/javascript" src="/static/web/js/vendor/ladda/spin.min.js"></script>
     <script type="text/javascript" src="/static/web/js/vendor/ladda/ladda.min.js"></script>
     <script type="text/javascript" src="/static/web/js/vendor/ladda/ladda.jquery.min.js"></script>
-    <script type="text/javascript" src="/static/web/js/vendor/jquery.cookie.js"></script>
 
-    <script type="text/javascript" src="/static/web/js/wittlist_view/modal.js"></script>
-    <script type="text/javascript" src="/static/web/js/wittlist_view/favourite.js"></script>
-    <script type="text/javascript" src="/static/web/js/wittlist_view/sorting.js"></script>
+    <script src="/static/web/js/vendor/angular/angular.js"></script>
+    <script src="/static/web/js/vendor/angular/angular-resource.js"></script>
+    <script src="/static/web/js/vendor/angular/angular-cookies.js"></script>
+    <script src="/static/web/js/vendor/angular/angular-isotope.min.js"></script>
+    <script src="/static/web/js/vendor/angular/angular-nanobar.js"></script>
+    <script src="/static/web/js/vendor/angular/angular-sortable.js"></script>
 
+    <script src="/static/web/js/wittl/filters.js"></script>
+    <script src="/static/web/js/wittl/directives.js"></script>
+    <script src="/static/web/js/wittl/controllers.js"></script>
+    <script src="/static/web/js/wittl/services.js"></script>
+    <script src="/static/web/js/wittl/app.js"></script>
 
-    <script type="text/javascript">
-        $(function () {
-
-            $('.wittl-form').each(function() {
-                var nlform = new NLForm( $(this)[0] );
-            });
-
-            var wittlSorting = new WittlSorting("{% url "list-score-data" list.id%}");
-            var itemTemplate = Handlebars.Templates['item_template'];
-            var addItem = function (item) {
-                var $newItem = $(itemTemplate(item));
-                var $card = $newItem.find('.card');
-                $card.data('list-item-id', item.id);
-                $card.data('modal-data', item.attributes);
-                wittlSorting.scoreCard($card);
-
-                $('.wittlist').isotope('insert', $newItem);
-            };
-
-            wittlSorting.fetchScoreData(function () {
-                $.getJSON("{% url 'list-detail' list.id %}", function (data) {
-                    _.each(data.items, addItem);
-                });
-            });
-
-            $("#new-list-item-form").submit(function (e) {
-                var form = $(this);
-
-                //Start loading indicator
-                var l = $('#new-list-item-submit').ladda();
-                l.ladda('start');
-
-                var resetForm = function () {
-                    form.find("input[name='url']").val("");
-                    l.ladda('stop');
-                };
-
-                var submitURL = form.attr("action");
-                $.post(submitURL, form.serialize())
-                        .done(function (data) {
-                            wittlSorting.fetchScoreData(function () {
-                                addItem(data);
-                                resetForm();
-                            });
-                        }).fail(function () {
-                            resetForm();
-                        });
-
-                e.preventDefault();
-            });
-
-            $(".wittl")
-                    .on("change", ":input", function () {
-                        var serializedForm = {};
-                        $(this).parents("li").find("input").each(function (i, field) {
-                            var name = $(field).attr("name");
-                            var value = $(field).val();
-
-                            serializedForm[field["name"]] = field["value"];
-                        });
-
-                        var comparatorID = serializedForm["comparator_id"];
-                        delete serializedForm["comparator_id"];
-                        var postData = {
-                            "comparator_id": comparatorID,
-                            "configuration": JSON.stringify(serializedForm)
-                        };
-                        $.post("{% url "save_comparator_settings" %}", postData).done(function () {
-                            wittlSorting.fetchScoreData();
-                        });
-                    });
-
-            $(".wittls").on("sortupdate", function (event, ui) {
-                var wittlIDs = $(".wittls").sortable("toArray", {attribute: "data-wittl-id"});
-                $.post("{% url "update_wittl_order" list.id %}", {wittl_ids: wittlIDs  });
-            });
-
-            $('.browsable-wittls').on('click', '.browsable-wittl', function () {
-                var selected = $(this).data('selected');
-                if (selected == 1) {
-                    $(this).removeClass('selected')
-                            .attr('data-selected', 0);
-                } else {
-                    $(this).addClass('selected')
-                            .attr('data-selected', 1);
-                }               
-
-            });
-
-            $('#browse-next').on('click', function(e) {
-                e.preventDefault();
-                console.log($('.browsable-wittl[data-selected="1"]'));
-            });
-        });
-
-    </script>
+    <!-- <script type="text/javascript" src="/static/web/js/vendor/nlform.js"></script> -->
 {% endblock %}

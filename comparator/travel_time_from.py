@@ -7,11 +7,14 @@ from partner_api.rome2rio import Rome2RioAPI
 class TravelTimeFromComparator(BaseComparator):
     NAME = "travel_time_from"
     TITLE = "Travel time from"
-    PRIMARY_FIELD = "origin_location"
     DESCRIPTION = "The total time to get to your destination from your chosen start location"
+    REQUIRED_ATTRIBUTES = {"latitude", "longitude"}
 
-    REQUIRED_ATTRIBUTES = ("latitude", "longitude")
-    TRIGGERS = [r"travel time from (?P<origin_location>.*)"]
+    DISPLAY_NAME = "travel time"
+    PREPOSITION = "from"
+    FIELDS = {
+        "origin_location": {"type": "text"}
+    }
 
     @staticmethod
     def get_route_data(route):
@@ -39,7 +42,6 @@ class TravelTimeFromComparator(BaseComparator):
         if h > 0:
             duration_string += "{} Hours ".format(h)
         duration_string += "{} Minutes".format(m)
-
 
         return {
             "score": shortest_duration,
