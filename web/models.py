@@ -50,6 +50,7 @@ class ListItem(models.Model):
     card_image = models.CharField(max_length=256)
     list = models.ForeignKey(List, related_name="items")
     source = models.CharField(max_length=256)
+    url = models.TextField()
     # JSON of object attributes
     attributes = models.TextField()
 
