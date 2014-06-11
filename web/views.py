@@ -92,3 +92,7 @@ def update_wittl_order(request, list_id):
         return HttpResponse("ok")
 
     return HttpResponseForbidden()
+
+@login_required
+def favourite_list(request):
+    return render(request, "list/favourites.html")

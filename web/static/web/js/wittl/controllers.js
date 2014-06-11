@@ -1,6 +1,7 @@
 var listsController = angular.module('listsController', []);
 var listItemController = angular.module('listItemController', ['iso', 'nanobar']);
 var wittlsController = angular.module('wittlsController', []);
+var favouritesController = angular.module('favouritesController', []);
 
 
 listsController.controller('ListsCtrl', ['$scope', 'Lists', 'Broadcast',
@@ -208,4 +209,9 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittl', 'Sorting',
             }
         };
 
+    }]);
+
+favouritesController.controller('FavouritesCtrl', ['$scope', 'Wittl',
+    function ($scope, Wittl) {
+        $scope.items = Wittl.favourites.query();
     }]);

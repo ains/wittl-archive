@@ -18,6 +18,10 @@ var wittl = angular.module('wittl', [
 	'wittlsController',
 	'wittlsDirective',
 
+	/* Favourites
+	 * ------------------- */
+	'favouritesController',
+
 	 /* Vendor
 	 * ------------------- */
 	 'ui.sortable'
