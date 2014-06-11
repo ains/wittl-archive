@@ -32,12 +32,12 @@ listsController.controller('ListsQuickAddCtrl', ['$scope', 'ListItem', 'Broadcas
     }]);
 
 
-listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', 'WittlOrder', 'Sorting',
-    function ($scope, $http, ListItem, WittlOrder, Sorting) {
+listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', 'Wittl', 'Sorting',
+    function ($scope, $http, ListItem, Wittl, Sorting) {
         $scope.$watch("listID", function () {
             var listID = $scope.listID;
             $scope.items = [];
-            $scope.wittlOrder = WittlOrder;
+            $scope.wittlOrder = Wittl;
 
             var resort = function () {
                 $scope.$emit('iso-option', {
@@ -134,12 +134,12 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', '
     }]);
 
 
-wittlsController.controller('WittlsCtrl', ['$scope', '$q', 'Wittls', 'WittlOrder', 'Sorting',
-    function ($scope, $q, Wittls, WittlOrder, Sorting) {
+wittlsController.controller('WittlsCtrl', ['$scope', '$q', 'Wittl', 'Sorting',
+    function ($scope, $q, Wittl, Sorting) {
         $scope.wittlOptions = {};
-        $scope.clauses = WittlOrder.wittls;
+        $scope.clauses = Wittl.wittls;
 
-        Wittls.getConfiguration().then(function (response) {
+        Wittl.getConfiguration().then(function (response) {
             angular.forEach(response.data, function (wittl, key) {
                 var fields = {};
                 for (var i = 0; i < wittl.fields.length; i++) {
@@ -155,13 +155,11 @@ wittlsController.controller('WittlsCtrl', ['$scope', '$q', 'Wittls', 'WittlOrder
 
         $scope.$watch('listID', function (newId) {
             if (newId) {
-                Wittls.list.listID = newId;
-                Wittls.list.query({listID: newId}, function (response) {
-                    var activeWittls = response;
-
+                Wittl.list.listID = newId;
+                Wittl.list.query({listID: newId}, function (response) {
                     //Insert in reverse order as we're unshifting
-                    for (var i = activeWittls.length - 1; i >= 0; i--) {
-                        var activeWittl = activeWittls[i];
+                    for (var i = response.length - 1; i >= 0; i--) {
+                        var activeWittl = response[i];
                         var wittl = $scope.wittlOptions[activeWittl.comparator_name];
                         if (wittl) {
                             var newWittl = angular.copy(activeWittl);
@@ -183,10 +181,10 @@ wittlsController.controller('WittlsCtrl', ['$scope', '$q', 'Wittls', 'WittlOrder
 
         $scope.save = function (updatedWittl) {
             if (updatedWittl.canSave) {
-                var listID = Wittls.list.listID;
+                var listID = Wittl.list.listID;
                 var request;
                 if (angular.isUndefined(updatedWittl.$save)) {
-                    var persistedWittl = new Wittls.list(updatedWittl);
+                    var persistedWittl = new Wittl.list(updatedWittl);
                     persistedWittl.list = listID;
 
                     request = persistedWittl.$save(function (savedWittl) {

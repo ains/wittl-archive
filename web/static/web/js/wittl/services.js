@@ -34,8 +34,8 @@ listItemService.factory('ListItem', ['$resource',
     }]);
 
 
-listItemService.service('Sorting', ['$rootScope', 'WittlOrder', '$http',
-    function ($rootScope, WittlOrder, $http) {
+listItemService.service('Sorting', ['$rootScope', 'Wittl', '$http',
+    function ($rootScope, Wittl, $http) {
         var service = {
             scoringData: {},
             updateScores: function (listID, callback) {
@@ -46,7 +46,7 @@ listItemService.service('Sorting', ['$rootScope', 'WittlOrder', '$http',
                         $rootScope.$broadcast('sorting.update');
                         $rootScope.finishNanobar();
 
-                        if(!angular.isUndefined(callback)) {
+                        if (!angular.isUndefined(callback)) {
                             callback(data);
                         }
                     }).
@@ -54,13 +54,13 @@ listItemService.service('Sorting', ['$rootScope', 'WittlOrder', '$http',
                     });
             },
             getSummariesById: function (cardID, n) {
-                var wittlOrder = _.take(WittlOrder.getOrder(), n);
+                var wittlOrder = _.take(Wittl.getOrder(), n);
                 return _.map(wittlOrder, function (wittlID) {
                     return service.scoringData[cardID][wittlID]["summary"]
                 });
             },
             getScoreByID: function (cardID) {
-                var wittlOrder = WittlOrder.getOrder();
+                var wittlOrder = Wittl.getOrder();
                 return _.reduce(wittlOrder, function (acc, wittl, index) {
                     var totalScore = _.reduce(service.scoringData, function (acc, cardData, index) {
                         return acc + cardData[wittl]["score"];
@@ -78,38 +78,32 @@ listItemService.service('Sorting', ['$rootScope', 'WittlOrder', '$http',
     }]);
 
 
-wittlsService.factory('Wittls', ['$http', '$resource',
+wittlsService.factory('Wittl', ['$http', '$resource',
     function ($http, $resource) {
-        return {
+        var service = {
+            wittls: [
+                {
+                    text: 'any wittl',
+                    model: {},
+                    fields: {}
+                }
+            ],
+            getOrder: function () {
+                var hasID = function (object) {
+                    return _.has(object, "id");
+                };
+
+                return _.map(_.filter(service.wittls, hasID), function (x) {
+                    return x.id
+                });
+            },
             getConfiguration: function () {
                 return $http.get(api + '/wittls/', {})
             },
             list: $resource(api + '/lists/:listID/wittls/:wittlID/', {wittlID: "@id", listID: "@list"}, {
                 'update': {method: 'PUT'}
             })
-        }
+        };
+
+        return service;
     }]);
-
-wittlsService.factory('WittlOrder', [function () {
-    var service = {
-        wittls: [{
-            text: 'any wittl',
-            model: {},
-            fields: {}
-        }],
-        getOrder: function () {
-            var hasID = function (object) {
-                return _.has(object, "id");
-            };
-
-            return _.map(_.filter(service.wittls, hasID), function (x) {
-                return x.id
-            });
-        },
-        update: function (updatedWittls) {
-            service.wittls = updatedWittls;
-        }
-    };
-
-    return service;
-}]);
