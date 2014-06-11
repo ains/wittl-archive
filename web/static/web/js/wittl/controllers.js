@@ -79,6 +79,7 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', '
                 var onSuccess = function (data) {
                     Sorting.updateScores(listID, function () {
                         $scope.items.push(data);
+                        resort();
                         l.ladda('stop');
                     });
                 };
