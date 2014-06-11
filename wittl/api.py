@@ -142,9 +142,23 @@ class ListComparatorViewset(viewsets.ViewSet):
         return Response(serializer.data)
 
     def update(self, request, pk=None, list_pk=None):
-        comparator = get_object_or_404(ListComparator, pk=list_pk)
+        comparator = get_object_or_404(ListComparator, pk=pk)
         comparator.order = request.DATA["id"]
         comparator.configuration = json.dumps(request.DATA["configuration"])
+        comparator.save()
+
+        serializer = ListComparatorSerializer(comparator, context={'request': request})
+        return Response(serializer.data)
+
+    def create(self, request, list_pk=None):
+        list = get_object_or_404(List, pk=list_pk)
+
+        comparator = ListComparator()
+        comparator.user = request.user
+        comparator.list = list
+        comparator.comparator_name = request.DATA["comparator_name"]
+        comparator.configuration = json.dumps(request.DATA["configuration"])
+        comparator.order = 10
         comparator.save()
 
         serializer = ListComparatorSerializer(comparator, context={'request': request})

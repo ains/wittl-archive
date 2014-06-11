@@ -13,7 +13,7 @@ wittlsDirective.directive('wittlParams', ['$compile',
             // TODO: make ngRepeat instead
             angular.forEach(model.fields, function (val, key) {
                 paramsHtml += '<input type=\'[[ wittl.model.fields["' + key + '"].type ]]\''
-                    + 'ng-model=\'wittl.fields["' + key + '"]\' class="param-field" value=\'[[ wittl.fields["' + key + '"] ]]\' ng-blur="save()" placeholder="placeholder"/>\n';
+                    + 'ng-model=\'wittl.configuration["' + key + '"]\' class="param-field" value=\'[[ wittl.configuration["' + key + '"] ]]\' ng-blur="save(wittl)" placeholder="placeholder"/>\n';
             });
 
             el.replaceWith($compile(prepositionHtml + paramsHtml)(scope));
@@ -51,11 +51,15 @@ wittlsDirective.directive('dropdownSelect', ['$document', '$compile',
                     this.select = function (selected) {
                         if (selected !== $scope.dropdownModel) {
                             angular.copy(selected, $scope.dropdownModel);
+                            $scope.dropdownModel.canSave = true;
+                            $scope.dropdownModel.configuration = {};
+                            $scope.dropdownModel.comparator_name = selected.model.name;
                         }
                         $scope.dropdownOnchange({
                             selected: selected
                         });
                     };
+
                     body = $document.find("body");
                     body.bind("click", function () {
                         $element.removeClass('active');

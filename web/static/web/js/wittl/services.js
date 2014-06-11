@@ -45,7 +45,10 @@ listItemService.service('Sorting', ['$rootScope', 'WittlOrder', '$http',
                         service.scoringData = data;
                         $rootScope.$broadcast('sorting.update');
                         $rootScope.finishNanobar();
-                        callback(data);
+
+                        if(!angular.isUndefined(callback)) {
+                            callback(data);
+                        }
                     }).
                     error(function (data) {
                     });
@@ -89,7 +92,11 @@ wittlsService.factory('Wittls', ['$http', '$resource',
 
 wittlsService.factory('WittlOrder', [function () {
     var service = {
-        wittls: [],
+        wittls: [{
+            text: 'any wittl',
+            model: {},
+            fields: {}
+        }],
         getOrder: function () {
             var hasID = function (object) {
                 return _.has(object, "id");
