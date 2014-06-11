@@ -134,8 +134,8 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', '
     }]);
 
 
-wittlsController.controller('WittlsCtrl', ['$scope', '$q', 'Wittl', 'Sorting',
-    function ($scope, $q, Wittl, Sorting) {
+wittlsController.controller('WittlsCtrl', ['$scope', 'Wittl', 'Sorting',
+    function ($scope, Wittl, Sorting) {
         $scope.wittlOptions = {};
         $scope.clauses = Wittl.wittls;
 
