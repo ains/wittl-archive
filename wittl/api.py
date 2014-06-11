@@ -134,6 +134,11 @@ class ListItemViewSet(viewsets.ViewSet):
         list_item = get_object_or_404(ListItem, pk=pk)
         return Response(list_item.comparator_data(request.user))
 
+class FavouritesViewSet(viewsets.ViewSet):
+    def list(self, request, list_pk=None):
+        queryset = request.user.favourites.all()
+        serializer = ListItemSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)        
 
 class ListComparatorViewset(viewsets.ViewSet):
     def list(self, request, list_pk=None):
@@ -176,6 +181,7 @@ class ComparatorViewSet(viewsets.ViewSet):
 router = routers.DefaultRouter()
 router.register(r'lists', ListViewSet, base_name="list")
 router.register(r'wittls', ComparatorViewSet, base_name="comparator")
+router.register(r'favourites', FavouritesViewSet, base_name="favourites")
 
 lists_router = NestedSimpleRouter(router, r'lists', lookup='list')
 lists_router.register(r'items', ListItemViewSet, base_name='listitem')
