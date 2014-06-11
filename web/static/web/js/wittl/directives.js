@@ -13,7 +13,9 @@ wittlsDirective.directive('wittlParams', ['$compile',
             // TODO: make ngRepeat instead
             angular.forEach(model.fields, function (val, key) {
                 paramsHtml += '<input type=\'[[ wittl.model.fields["' + key + '"].type ]]\''
-                    + 'ng-model=\'wittl.configuration["' + key + '"]\' class="param-field" value=\'[[ wittl.configuration["' + key + '"] ]]\' ng-blur="save(wittl)" placeholder="placeholder"/>\n';
+                    + 'ng-model=\'wittl.configuration["' + key + '"]\' class="param-field" '
+                    + 'value=\'[[ wittl.configuration["' + key + '"] ]]\' ng-blur="save(wittl)" '
+                    + 'placeholder="placeholder"/>\n';
             });
 
             el.replaceWith($compile(prepositionHtml + paramsHtml)(scope));

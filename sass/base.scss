@@ -19,7 +19,7 @@
 // Custom styles here 
 // ============================== 
 
-html, body {
+html, body { 
   height: 100%;
   width: 100%;
 }
@@ -176,15 +176,15 @@ body {
 .wittlist-left.pane,
 .wittlist-right.pane {
   float: left;
-  padding: 0 15px;
+  padding: 0 25px;
 }
 
 .wittlist-left.pane {
-  width: 70%;
+  width: 65%;
 }
 
 .wittlist-right.pane {
-  width: 30%;
+  width: 35%;
 }
 
 section.pane {
@@ -1249,6 +1249,8 @@ body.modal-open {
 
   .wittl-clause {
     margin: 10px 0;
+    padding: 5px 10px;
+    border-radius: 3px;
 
     // HACK
     &:first-child {
@@ -1259,8 +1261,32 @@ body.modal-open {
       }
     }
 
+    &:last-child {
+
+      .wittl-conjunction {
+        color: #CCC;
+      }
+
+      .wittl {
+        border-bottom-color: #CCC;
+
+        .selected {
+          color: #CCC;
+        }
+      }
+    }
+
+    &.wittl-dragstart {
+      background-color: rgba(0,0,0,0.01);
+    }
+
+    
     .wittl {
       display: inline-block;
+
+      &:hover {
+        cursor: move;
+      }
 
       .selected {
         color: $wittl-color;
@@ -1353,6 +1379,14 @@ body.modal-open {
       }
 
       .param-field {
+        cursor: text;
+
+        &::-webkit-input-placeholder,
+        &::-moz-placeholder,
+        &:-moz-placeholder,
+        &:-ms-input-placeholder {
+          color: red;
+        }
 
         &.loading {
           opacity: 0;
@@ -1367,4 +1401,10 @@ body.modal-open {
     color: #616161;
     font-size: 1em;
   }
+}
+
+.wittl-droppable {
+  background-color: #EEE;
+  border-radius: 3px;
+  border: 2px dashed #CCC;
 }
