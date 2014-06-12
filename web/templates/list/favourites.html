@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Wittlist -->
+<div ng-controller="FavouritesCtrl">
+	<div class="wittlist row" ng-cloak>
+	    <div class="col-sm-12 card-wrapper" ng-repeat="item in items track by item.id">
+	        <div class="card" data-id="[[item.id]]" ng-click="showModal(item)">
+	            <div class="row">
+	                <div class="col-sm-1 pic">
+	                    <a class="favourite pull-right" ng-click="toggleFavourite($event, item)"
+	                       ng-if="item.favourited" href="#"><i
+	                            class="icon_star"></i></a>
+	                    <a class="favourite pull-right" ng-click="toggleFavourite($event, item)"
+	                       ng-if="!item.favourited" href="#"><i
+	                            class="icon_star_alt"></i></a>
+
+	                    <img ng-src="[[ item.card_image ]]" title="Name of thing here"/>
+	                </div>
+
+	                <div class="col-sm-4">
+	                    <h3 class="title"> [[ item.name | limitTo: 20 ]]</h3>
+
+	                    <p class="wittl-meta-description">[[ item.subtitle | limitTo:10 ]]</p>
+	                </div>
+	                <div class="col-sm-7">
+	                    <ul class="wittl-data">
+	                        <li style="color: #e74c3c;" ng-bind-html="item.summary[0] | unsafe"></li>
+	                        <li style="color: #2ecc71;" ng-bind-html="item.summary[1] | unsafe"></li>
+	                        <li style="color: #9b59b6;" ng-bind-html="item.summary[2] | unsafe"></li>
+	                    </ul>
+	                </div>
+	            </div>
+
+	        </div>
+	    </div>
+	</div>
+</div>
+
+{% endblock %}
+
+
+{% block javascript %}
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/nanobar/0.2.0/nanobar.min.js"></script>
+
+	<script src="/static/web/js/vendor/angular/angular.js"></script>
+	<script src="/static/web/js/vendor/angular/angular-resource.js"></script>
+	<script src="/static/web/js/vendor/angular/angular-cookies.js"></script>
+	<script src="/static/web/js/vendor/angular/angular-isotope.min.js"></script>
+	<script src="/static/web/js/vendor/angular/angular-nanobar.js"></script>
+	<script src="/static/web/js/vendor/angular/angular-sortable.js"></script>
+
+	<script src="/static/web/js/wittl/filters.js"></script>
+	<script src="/static/web/js/wittl/directives.js"></script>
+	<script src="/static/web/js/wittl/controllers.js"></script>
+	<script src="/static/web/js/wittl/services.js"></script>
+	<script src="/static/web/js/wittl/app.js"></script>
+
+{% endblock %}
