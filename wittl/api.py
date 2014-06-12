@@ -1,4 +1,6 @@
 import json
+import itertools
+import importer
 
 from django.http import HttpResponseForbidden, HttpResponseServerError
 from django.shortcuts import get_object_or_404
@@ -11,6 +13,7 @@ from rest_framework.decorators import link, action
 from rest_framework.response import Response
 from rest_framework import viewsets, routers
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from rest_framework.permissions import AllowAny
 
 from rest_framework_nested.routers import NestedSimpleRouter
 
@@ -134,11 +137,13 @@ class ListItemViewSet(viewsets.ViewSet):
         list_item = get_object_or_404(ListItem, pk=pk)
         return Response(list_item.comparator_data(request.user))
 
+
 class FavouritesViewSet(viewsets.ViewSet):
     def list(self, request, list_pk=None):
         queryset = request.user.favourites.all()
         serializer = ListItemSerializer(queryset, many=True, context={'request': request})
-        return Response(serializer.data)        
+        return Response(serializer.data)
+
 
 class ListComparatorViewset(viewsets.ViewSet):
     def list(self, request, list_pk=None):
@@ -177,11 +182,21 @@ class ComparatorViewSet(viewsets.ViewSet):
                          for comparator_name, comparator in all_comparators.items()}
         return Response(response_data)
 
+
+class ValidUrlPatternViewSet(viewsets.ViewSet):
+    permission_classes = (AllowAny,)
+
+    def list(self, request):
+        all_patterns = [imp.URL_PATTERNS for imp in importer.LOADED_IMPORTERS]
+
+        return Response(itertools.chain.from_iterable(all_patterns))
+
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'lists', ListViewSet, base_name="list")
 router.register(r'wittls', ComparatorViewSet, base_name="comparator")
 router.register(r'favourites', FavouritesViewSet, base_name="favourites")
+router.register(r'valid-urls', ValidUrlPatternViewSet, base_name="validurls")
 
 lists_router = NestedSimpleRouter(router, r'lists', lookup='list')
 lists_router.register(r'items', ListItemViewSet, base_name='listitem')

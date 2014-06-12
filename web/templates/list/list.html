@@ -44,6 +44,8 @@
                     {{ user.first_name }} {{ user.last_name }}
                 </p>
                 <hr/>
+
+                <p class="joined">Wittler since {{ user.date_joined | date:"F j, Y"}}.</p>
                 <p class="other">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
                     has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
                     galley of type and scrambled it to make a type specimen book.</p>
