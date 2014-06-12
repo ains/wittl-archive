@@ -173,7 +173,7 @@ body {
 }
 
 .content {
-  padding-top: $header-height + 30;
+  padding-top: $header-height + 15;
   overflow: auto;
 }
 
@@ -291,227 +291,17 @@ section.pane {
     float: left;
     padding-left: 0;
     list-style-type: none;
-
-    // .wittl {
-    //   width: 100%;
-    //   overflow: hidden;
-    //   margin: 6px 0;
-    //   float: left;
-    //   height: $wittl-header-height;
-    //   transition: height 0.3s ease-out;
-    //   -webkit-transition: height 0.3s ease-out;
-
-    //   .primary-param {
-    //     width: 90px;
-    //     text-transform: none;
-    //     font-family: $body-font;
-    //     font-weight: 300;
-    //     padding: 0;
-    //     padding-bottom: 1px;
-    //     background: none;
-    //     border: none;
-    //     color: #FCFCFC;
-    //     border-bottom: 1px dotted #FCFCFC;
-    //   }
-
-    //   & > header {
-    //     position: relative;
-    //     z-index: 2;
-    //     float: left;
-    //     width: 100%;
-    //     height: $wittl-header-height;
-    //     padding-bottom: 0;
-    //     border-top-left-radius: 4px;
-    //     border-top-right-radius: 4px;
-    //     border-bottom-left-radius: 4px;
-    //     border-bottom-right-radius: 4px;
-    //     -webkit-transition: margin-top 0.5s ease-out,
-    //     border-bottom-left-radius 0.3s ease-out 0.3s,
-    //     border-bottom-right-radius 0.3s ease-out 0.3s;
-    //     transition: margin-top 0.5s ease-out,
-    //     border-bottom-left-radius 0.3s ease-out 0.3s,
-    //     border-bottom-right-radius 0.3s ease-out 0.3s;
-    //     border: none;
-    //     background-color: $wittl-color;
-    //     color: #FFFFFF;
-    //     cursor: move;
-
-    //     .name {
-    //       text-transform: uppercase;
-    //       font-weight: 600;
-    //       letter-spacing: 1px;
-    //       width: 85%;
-    //       padding: 0 10px;
-    //     }
-
-    //     .reveal {
-    //       width: 15%;
-    //       padding: 0 3px;
-
-    //       a {
-    //         color: #FFF;
-    //         -webkit-transition: color 0.3s ease-out;
-    //         transition: color 0.3s ease-out;
-
-    //         i {
-    //           font-size: 18px;
-    //         }
-
-    //         &:hover {
-    //           text-decoration: none;
-    //           color: darken(white, 15%);
-    //           -webkit-transition: color 0.3s ease-in;
-    //           transition: color 0.3s ease-in;
-    //         }
-    //       }
-    //     }
-    //   }
-
-    //   .wittl-body {
-    //     float: left;
-    //     width: 100%;
-    //     left: -999em;
-    //     margin-top: - (2 * $wittl-body-height) px;
-    //     height: $wittl-body-height;
-    //     background-color: #f4f2f0;
-    //     border-bottom-left-radius: 4px;
-    //     border-bottom-right-radius: 4px;
-
-    //     padding: 20px 20px;
-
-    //     .wittl-info {
-    //       color: lighten($heading-color, 20%);
-    //       line-height: 1.8em;
-
-    //       .wittl-name {
-    //         font-size: 15px;
-    //         font-weight: 600;
-    //         text-transform: uppercase;
-    //         color: $wittl-color;
-    //       }
-
-    //       .primary-param {
-    //         color: $wittl-color;
-    //         border-color: $wittl-color;
-    //         width: auto;
-    //         max-width: 160px !important;
-    //       }
-
-    //       .wittl-description {
-    //         padding-top: 5px;
-    //         color: lighten($heading-color, 30%);
-    //         line-height: 1.5em;
-    //         font-family: $heading-font;
-    //         font-style: italic;
-    //         font-size: 12px;
-    //       }
-    //     }
-
-    //     .wittl-params {
-    //       float: left;
-    //       padding: 5px 0;
-
-    //       & > header {
-    //         float: left;
-    //         width: 100%;
-    //         padding-bottom: 5px;
-    //         border-bottom: 1px solid #E5E5E5;
-
-    //         h3 {
-    //           text-transform: uppercase;
-    //           margin: 0;
-    //           font-size: 14px;
-    //           font-weight: 700;
-    //           color: lighten($heading-color, 15%);
-    //         }
-    //       }
-
-    //       .secondary-param {
-    //         float: left;
-    //         width: 100%;
-    //         padding: 8px 0;
-
-    //         .key, .value {
-    //           float: left;
-    //           padding: 0 10px;
-    //         }
-
-    //         .key {
-    //           width: 40%;
-    //           padding-left: 0;
-    //           font-family: $body-font;
-    //           text-transform: uppercase;
-    //           font-size: 12px;
-    //           font-weight: 600;
-    //           color: $wittl-color;
-    //         }
-
-    //         .value {
-    //           width: 60%;
-    //           padding-right: 0;
-
-    //           input {
-    //             background-color: #fbfbfb;
-    //             border-color: #f2eee9;
-    //             box-shadow: none;
-    //             font-size: 0.8em;
-    //             font-weight: 300;
-    //             letter-spacing: 1px;
-
-    //             &::-webkit-input-placeholder {
-    //               color: #CCC;
-    //             }
-    //             &::-moz-placeholder {
-    //               color: #CCC;
-    //             }
-    //             &:-moz-placeholder {
-    //               color: #CCC;
-    //             }
-    //             &:-ms-input-placeholder {
-    //               color: #CCC;
-    //             }
-    //           }
-    //         }
-    //       }
-    //     }
-
-    //   }
-
-    //   &.opened {
-    //     height: $wittl-header-height + $wittl-body-height;
-    //     transition: height 0.3s ease-in 0.3s;
-    //     -webkit-transition: height 0.3s ease-in 0.3s;
-
-    //     header {
-    //       border-bottom-left-radius: 0px;
-    //       border-bottom-right-radius: 0px;
-    //       -webkit-transition: margin-top 0.5s ease-in,
-    //       border-bottom-left-radius 0.3s ease-in,
-    //       border-bottom-right-radius 0.3s ease-in;
-    //       transition: margin-top 0.5s ease-in,
-    //       border-bottom-left-radius 0.3s ease-in,
-    //       border-bottom-right-radius 0.3s ease-in;
-    //     }
-
-    //     .wittl-body {
-    //       left: 0;
-    //       margin-top: 0;
-    //       transition: margin-top 0.5s ease-in;
-    //       -webkit-transition: margin-top 0.5s ease-in;
-    //     }
-    //   }
-
-    // }
   }
 }
 
-.wittlist {
-  padding: 10px 0;
+.wittlist { 
+  padding-bottom: 20px;
 
   .card-wrapper {
     float: left;
-    padding-top: 60px;
     margin-top: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
 
     .card {
       position: relative;
@@ -525,48 +315,35 @@ section.pane {
       .pic {
         position: relative;
         padding: 0;
-        // height: 160px;
+
+        height: 120px;
 
         border-top-left-radius: 4px;
-        border-bottom-left-radius: 4px;
+        border-top-right-radius: 4px;
         overflow: hidden;
 
         .favourite {
           position: absolute;
+          left: 15px;
+          top: 10px;
+          font-size: 20px;
+
+          color: #FFF;
+
+          &:hover {
+            text-decoration: none;
+          }
         }
 
         img {
           width: 100%;
         }
-      }
 
-      .test {
-        position: absolute;
-        top: -55px;
-        left: 50%;
-        height: 110px;
-        width: 110px;
-        margin-left: -55px;
-        border-radius: 99em;
-        border: 4px solid white;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
-
-        .inner {
-          width: 100%;
-          height: 100%;
-          overflow: hidden;
-
-          img {
-            height: 100%;
-          }
-        }
       }
 
       .details {
-        padding: 10px 30px;
-        padding-top: 70px;
-        //border-left: 4px solid #F1F1F1;
+        padding: 10px 25px;
+        border-top: 4px solid $wittl-color;
 
         .title {
           font-family: $heading-font;
@@ -609,143 +386,6 @@ section.pane {
       }
 
     }
-
-    // .card {
-    //   background-color: #FFFFFF;
-    //   border: 1px solid #ededed;
-    //   box-shadow: 2px 2px 5px rgba(34, 62, 85, 0.15);
-
-    //   .wittl-data {
-    //     height: 140px;
-    //     padding: 0;
-    //     margin: 0;
-
-    //     list-style-type: none;
-    //     border-left: 1px solid #ededed;
-    //     li {
-    //       height: 33.3%;
-    //       padding: 10px 10px 10px 50px;
-    //       font-size: 15px;
-    //       border-bottom: 1px solid #ededed;
-    //     }
-    //   }
-
-    //   .pic {
-    //     position: relative;
-    //     height: 140px;
-    //     overflow: hidden;
-    //     border-right: 1px solid #ededed;
-
-    //     a.favourite {
-    //       position: absolute;
-    //       right: 0;
-    //       z-index: 5;
-    //       font-size: 20px;
-    //       padding-top: 5px;
-    //       padding-right: 10px;
-    //       color: #FFFFFF;
-
-    //       &:hover {
-    //         text-decoration: none;
-    //         color: darken(white, 10%);
-    //       }
-    //     }
-
-    //     img {
-    //       height: 100%;
-    //     }
-    //   }
-
-    //   .detail {
-    //     height: 80px;
-    //     padding: 5px 15px;
-
-    //     header {
-    //       border: none;
-    //       padding: 10px 3px 5px 0;
-
-    //       .title {
-    //         font-family: $heading-font;
-    //         font-weight: 700;
-    //         font-size: 14px;
-    //         letter-spacing: 1px;
-    //         text-transform: uppercase;
-    //         color: $heading-color;
-    //         transition: color 0.3s ease-out;
-    //         -webkit-transition: color 0.3s ease-out;
-
-    //         margin: 5px 0;
-    //       }
-
-    //       .wittl-meta-description {
-    //         font-family: $heading-font;
-    //         font-weight: 400;
-    //         font-size: 12px;
-    //         font-style: italic;
-    //         letter-spacing: 1px;
-    //         color: $subheading-color;
-    //         margin: 2px;
-    //       }
-    //     }
-
-    //     .user-metrics {
-    //       padding: 10px 0 5px 3px;
-
-    //       .key, .value {
-    //         padding: 4px 3px;
-    //       }
-
-    //       .key {
-    //         font-size: 14px;
-    //         color: $wittl-color;
-    //       }
-
-    //       .value {
-    //         line-height: 14px;
-    //         font-family: $heading-font;
-    //         font-weight: 300;
-    //         font-size: 1.1em;
-    //         letter-spacing: 0.8px;
-    //         text-transform: uppercase;
-    //         color: lighten($subheading-color, 10%);
-    //       }
-    //     }
-
-    //     .user-display-metrics {
-    //       width: 100%;
-    //       padding: 5px 0;
-
-    //       td {
-    //         border: none;
-    //         padding: 1.5px 0;
-    //         font-size: 12px;
-    //         letter-spacing: 0.75px;
-    //       }
-
-    //       .key {
-    //         width: 65%;
-    //         text-transform: uppercase;
-    //         font-weight: 600;
-    //         color: lighten(#58555a, 10%);
-    //       }
-
-    //       .value {
-    //         width: 35%;
-    //         color: #9b9b9b;
-    //       }
-    //     }
-
-    //     &:hover {
-    //       cursor: pointer;
-
-    //       .title {
-    //         color: $wittl-color;
-    //         transition: color 0.3s ease-in;
-    //         -webkit-transition: color 0.3s ease-in;
-    //       }
-    //     }
-    //   }
-    // }
 
   }
 }
@@ -1352,7 +992,7 @@ body.modal-open {
   }
 
   .wittl-clause {
-    margin: 10px 0;
+    margin: 5px 0;
     padding: 5px 10px;
     border-radius: 3px;
 
@@ -1502,6 +1142,7 @@ body.modal-open {
 
   .wittl-conjunction {
     padding: 5px 0;
+    padding-bottom: 15px;
     color: #616161;
     font-size: 1em;
   }
