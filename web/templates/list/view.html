@@ -1,15 +1,6 @@
 {% extends "base.html" %}
 
 {% block css %}
-    <style type="text/css">
-        #draggablePanelList .panel-heading {
-            cursor: move;
-        }
-
-        #draggablePanelList {
-            height: 300px
-        }
-    </style>
     <link href="//code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" type="text/css" rel="stylesheet" media="all"/>
     <link href="/static/web/js/vendor/ladda/ladda-themeless.min.css" type="text/css" rel="stylesheet"/>
 {% endblock %}
@@ -141,36 +132,42 @@
 
         <!-- Wittlist -->
         <div class="wittlist row" isotope-container="isotope-container"
-             iso-options="{layoutMode: 'vertical', transitionDuration: '0.65s'}" ng-cloak>
-            <div class="col-sm-12 card-wrapper" ng-repeat="item in items track by item.id" isotope-item="isotope-item">
+             iso-options="{transitionDuration: '0.65s'}" ng-cloak>
+            <div class="col-sm-4 card-wrapper" ng-repeat="item in items track by item.id" isotope-item="isotope-item">
+                
                 <div class="card" data-id="[[item.id]]" ng-click="showModal(item)">
-                    <div class="row">
-                        <div class="col-sm-1 pic">
-                            <a class="favourite pull-right" ng-click="toggleFavourite($event, item)"
-                               ng-if="item.favourited" href="#"><i
-                                    class="icon_star"></i></a>
-                            <a class="favourite pull-right" ng-click="toggleFavourite($event, item)"
-                               ng-if="!item.favourited" href="#"><i
-                                    class="icon_star_alt"></i></a>
+                    <!-- <div class="pix col-sm-12">
+                        <a class="favourite pull-right" ng-click="toggleFavourite($event, item)"
+                           ng-if="item.favourited" href="#"><i
+                                class="icon_star"></i></a>
+                        <a class="favourite pull-right" ng-click="toggleFavourite($event, item)"
+                           ng-if="!item.favourited" href="#"><i
+                                class="icon_star_alt"></i></a>
 
-                            <img ng-src="[[ item.card_image ]]" title="Name of thing here"/>
+                        <img ng-src="[[ item.card_image ]]" title="[[ item.name ]]" alt="[[ item.name ]]" />
+                    </div> -->
+
+                    <div class="test">
+                        <div class="inner">
+                            <img ng-src="[[ item.card_image ]]" title="[[ item.name ]]" alt="[[ item.name ]]" />
                         </div>
+                    </div>
+                   
+                    <div class="details">
+                        <h3 class="title"> [[ item.name | truncate: 25 ]]</h3>
 
-                        <div class="col-sm-4">
-                            <h3 class="title"> [[ item.name | limitTo: 20 ]]</h3>
-
-                            <p class="wittl-meta-description">[[ item.subtitle | limitTo:10 ]]</p>
-                        </div>
-                        <div class="col-sm-7">
-                            <ul class="wittl-data">
-                                <li style="color: #e74c3c;" ng-bind-html="item.summary[0] | unsafe"></li>
-                                <li style="color: #2ecc71;" ng-bind-html="item.summary[1] | unsafe"></li>
-                                <li style="color: #9b59b6;" ng-bind-html="item.summary[2] | unsafe"></li>
+                        <p class="wittl-meta-description">[[ item.attributes.subtitle | truncate: 30 ]]</p>
+                        <div class="wittl-data">   
+                            <ul>
+                                <li ng-bind-html="item.summary[0] | unsafe"></li>
+                                <li ng-bind-html="item.summary[1] | unsafe"></li>
+                                <li ng-bind-html="item.summary[2] | unsafe"></li>
                             </ul>
                         </div>
                     </div>
 
                 </div>
+
             </div>
 
         </div>
@@ -189,12 +186,12 @@
             <form class="nl-form wittl-form">
                 <input type="hidden" ng-model="listId" value="{{ list.id }}" ng-init="listID={{ list.id }}" />
                 <ul class="wittls" ui-sortable="sortableWittlsOptions" ng-model="clauses">
+                    <div class="wittl-conjunction">
+                        and 
+                    </div>
                     <li class="wittl-clause" ng-repeat="clause in clauses">
-                        <div class="wittl-conjunction">
-                            and 
-                        </div>
                         <div class="wittl">
-                            <div dropdown-select="wittlOptions" dropdown-model="clause"></div>
+                            <div dropdown-select="wittlOptions" dropdown-model="clause" dropdown-onchange="addNewWittl(selected)"></div>
                             <wittl-params wittl="clause"></wittl-params>
                         </div>
                     </li>

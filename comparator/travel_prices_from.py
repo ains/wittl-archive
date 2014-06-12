@@ -45,6 +45,6 @@ class TravelPricesFromComparator(BaseComparator):
         formatted_price = total_price.format('en_GB')
         return {
             "score": score,
-            "summary": u"Average cost of <strong>{}</strong> from {}".format(formatted_price,
+            "summary": u"<strong>{}</strong> from {}".format(formatted_price,
                                                                                         origin_location)
         }

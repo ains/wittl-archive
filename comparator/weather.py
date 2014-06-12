@@ -21,5 +21,5 @@ class WeatherComparator(BaseComparator):
         score = abs(weather_at_destination - int(ideal_temperature))
         return {
             "score": score,
-            "summary": u"<strong>{}\u2103</strong> from your ideal temperature on average".format(score)
+            "summary": u"<strong>{}<small>\u2103</small></strong> from your ideal temperature".format(score)
         }

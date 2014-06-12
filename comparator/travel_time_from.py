@@ -40,8 +40,8 @@ class TravelTimeFromComparator(BaseComparator):
         h, m = divmod(shortest_duration, 60)
         duration_string = ""
         if h > 0:
-            duration_string += "{} Hours ".format(h)
-        duration_string += "{} Minutes".format(m)
+            duration_string += "{} hrs ".format(h)
+        duration_string += "{} mins".format(m)
 
         return {
             "score": shortest_duration,
