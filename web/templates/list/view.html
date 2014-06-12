@@ -108,6 +108,13 @@
 {% endblock %}
 
 {% block content %}
+    <header class="toolbar">
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    </header>
+
     <section class="wittlist-left pane" ng-controller="ListItemsCtrl">
         <header>
             <h2>My Wittlist - {{ list.name }}</h2>
@@ -133,7 +140,7 @@
         <!-- Wittlist -->
         <div class="wittlist row" isotope-container="isotope-container"
              iso-options="{transitionDuration: '0.65s'}" ng-cloak>
-            <div class="col-sm-4 card-wrapper" ng-repeat="item in items track by item.id" isotope-item="isotope-item">
+            <div class="col-sm-12 card-wrapper" ng-repeat="item in items track by item.id" isotope-item="isotope-item">
                 
                 <div class="card" data-id="[[item.id]]" ng-click="showModal(item)">
                     <div class="pic">
@@ -208,13 +215,13 @@
 
     <script src="/static/web/js/vendor/isotope.pkgd.js"></script>
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/nanobar/0.2.0/nanobar.min.js"></script>
     <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgcL0rohxn0A99lQMRJ8WcN17NT_x9mf0&sensor=true"></script>
 
     <script type="text/javascript" src="/static/web/js/vendor/ladda/spin.min.js"></script>
     <script type="text/javascript" src="/static/web/js/vendor/ladda/ladda.min.js"></script>
     <script type="text/javascript" src="/static/web/js/vendor/ladda/ladda.jquery.min.js"></script>
+    <script type="text/javascript" src="/static/web/js/vendor/nanobar.js"></script>
 
     <script src="/static/web/js/vendor/angular/angular.js"></script>
     <script src="/static/web/js/vendor/angular/angular-resource.js"></script>
