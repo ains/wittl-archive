@@ -136,7 +136,7 @@
             <div class="col-sm-4 card-wrapper" ng-repeat="item in items track by item.id" isotope-item="isotope-item">
                 
                 <div class="card" data-id="[[item.id]]" ng-click="showModal(item)">
-                    <!-- <div class="pix col-sm-12">
+                    <div class="pic">
                         <a class="favourite pull-right" ng-click="toggleFavourite($event, item)"
                            ng-if="item.favourited" href="#"><i
                                 class="icon_star"></i></a>
@@ -145,16 +145,10 @@
                                 class="icon_star_alt"></i></a>
 
                         <img ng-src="[[ item.card_image ]]" title="[[ item.name ]]" alt="[[ item.name ]]" />
-                    </div> -->
-
-                    <div class="test">
-                        <div class="inner">
-                            <img ng-src="[[ item.card_image ]]" title="[[ item.name ]]" alt="[[ item.name ]]" />
-                        </div>
                     </div>
                    
                     <div class="details">
-                        <h3 class="title"> [[ item.name | truncate: 25 ]]</h3>
+                        <h3 class="title"> [[ item.name | truncate: 15 ]]</h3>
 
                         <p class="wittl-meta-description">[[ item.attributes.subtitle | truncate: 30 ]]</p>
                         <div class="wittl-data">   
@@ -186,10 +180,10 @@
             <form class="nl-form wittl-form">
                 <input type="hidden" ng-model="listId" value="{{ list.id }}" ng-init="listID={{ list.id }}" />
                 <ul class="wittls" ui-sortable="sortableWittlsOptions" ng-model="clauses">
-                    <div class="wittl-conjunction">
-                        and 
-                    </div>
                     <li class="wittl-clause" ng-repeat="clause in clauses">
+                        <div class="wittl-conjunction">
+                            and 
+                        </div>
                         <div class="wittl">
                             <div dropdown-select="wittlOptions" dropdown-model="clause" dropdown-onchange="addNewWittl(selected)"></div>
                             <wittl-params wittl="clause"></wittl-params>
