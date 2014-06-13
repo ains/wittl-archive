@@ -134,6 +134,15 @@
             </form>
         </div>
 
+        <div class="wittlist-empty" ng-if="items.length === 0">
+            <i class="illustration icon_documents_alt"></i>
+            <h3 class="message">
+                Your wittlist is looking rather empty <span class="smiley">:(</span>
+                <br>Let's get cracking above!
+                <br><span class="sub">(or check out our <a class="plugin-link" href="#">chrome plugin</a>)</span>
+            </h3>
+        </div>
+
         <!-- Wittlist -->
         <div class="wittlist row" isotope-container="isotope-container"
              iso-options="{layoutMode: 'vertical', transitionDuration: '0.65s'}" ng-cloak>

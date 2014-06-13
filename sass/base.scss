@@ -357,6 +357,45 @@ section.pane {
   }
 }
 
+.wittlist-empty {
+  padding: 50px 0;
+  text-align: center;
+
+  .illustration {
+    font-size: 70px;
+    color: #e7e7e7;
+  }
+
+  .message {
+    padding: 20px;
+    color: #D5D5D5;
+    font-size: 1.3em;
+
+    .smiley {
+      font-weight: 600;
+      padding: 0 10px;
+    }
+
+    .sub {
+      display: block;
+      padding-top: 20px;
+      font-size: 0.8em;
+      font-style: italic;
+    }
+  }
+
+  .plugin-link {
+    color: $wittl-color;
+    font-style: italic;
+
+    &:hover {
+      text-decoration: none;
+      color: lighten($wittl-color, 10%);
+    }
+  }
+}
+
+
 .wittlist { 
   padding-bottom: 20px;
 
