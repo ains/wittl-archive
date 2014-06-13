@@ -521,6 +521,14 @@ section.pane {
           // margin-left: -20px;
           // margin-right: -20px;
 
+          .empty {
+            text-align: center;
+            color: lighten($subheading-color, 10%);
+            font-weight: 600;
+            font-style: italic;
+            font-size: 0.9em;
+          }
+
           ul {
             float: left;
             width: 100%;

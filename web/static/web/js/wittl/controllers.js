@@ -37,7 +37,7 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', '
     function ($scope, $timeout, $http, ListItem, Wittl, Sorting) {
         $scope.$watch("listID", function () {
             var listID = $scope.listID;
-            $scope.items = [];
+            $scope.items = null;
             $scope.wittlOrder = Wittl;
 
             var resort = function () {
