@@ -179,10 +179,12 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittl', 'Sorting',
         $scope.sortableWittlsOptions = {
             placeholder: 'wittl-droppable',
             start: function(e, ui){
+                ui.item.closest('.wittl-form').addClass('dragging');
                 ui.item.addClass('wittl-dragstart');
                 ui.placeholder.height(ui.item.outerHeight());
             },
             stop: function (e, ui) {
+                ui.item.closest('.wittl-form').removeClass('dragging');
                 ui.item.removeClass('wittl-dragstart');
                 angular.forEach($scope.clauses, function (wittl, i) {
                     wittl.order = i;

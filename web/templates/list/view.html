@@ -194,7 +194,9 @@
 
                 <hr />
 
-                <p class="intro">I want to wittl by</p>
+                <p class="intro">
+                    I want to wittl by 
+                </p>
                 <ul class="wittls" ui-sortable="sortableWittlsOptions" ng-model="clauses" ng-cloak>
                     <li class="wittl-clause" ng-repeat="clause in clauses">
                         <!-- <div class="wittl"> -->
@@ -206,7 +208,10 @@
                         <!-- </div> -->
                     </li>
                 </ul>
-                <div class="nl-overlay"></div>
+
+                <div class="delete">
+                    <p><i class="icon_trash_alt"></i>Drop wittl here to delete</p>
+                </div>
             </form>
         </div>
     </section>
