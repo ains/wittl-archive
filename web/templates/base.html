@@ -123,10 +123,12 @@
 
             <div class="main-pane">
 
-                <div class="container content">
-                    {% block content %}
+                <div class="container-fluid content">
+                    <div class="inner">
+                        {% block content %}
 
-                    {% endblock %}
+                        {% endblock %}
+                    </div>
                 </div>
             </div>
 
