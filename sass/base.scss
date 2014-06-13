@@ -782,10 +782,10 @@ body.modal-open {
       border-radius: 2px;
       box-shadow: 0px 0px 0px 1px #D8D8D8;
 
-      a.add-item {
+      a.add-item,
+      a.delete-list {
         position: absolute;
         top: 0;
-        right: 0;
         z-index: 5;
 
         padding: 3px;
@@ -803,9 +803,18 @@ body.modal-open {
         transition: opacity 0.3s ease-out;
       }
 
+      a.add-item {
+        right: 0;
+      }
+
+      a.delete-list {
+        left: 0;
+      }
+
       &:hover {
 
-        a.add-item {
+        a.add-item,
+        a.delete-list {
           // display: block;
           opacity: 1;
 

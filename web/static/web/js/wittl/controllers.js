@@ -19,14 +19,13 @@ listsController.controller('ListsQuickAddCtrl', ['$scope', 'ListItem', 'Broadcas
 
         $scope.addItemToList = function () {
             var data = Broadcast.getData();
-
             if (data.selectedList) {
                 var newItem = {
                     url: $scope.item.url,
-                    list_id: data.selectedList
+                    list: data.selectedList
                 };
 
-                ListItems.save(newItem)
+                ListItem.save(newItem)
             }
         };
 

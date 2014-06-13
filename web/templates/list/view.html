@@ -175,12 +175,12 @@
                     </div>
                     
                     <div class="wittl-data">   
-                        <ul ng-if="item.summary >= 0">
+                        <ul ng-if="item.summary.length > 0">
                             <li ng-bind-html="item.summary[0] | unsafe"></li>
                             <li ng-bind-html="item.summary[1] | unsafe"></li>
                             <li ng-bind-html="item.summary[2] | unsafe"></li>
                         </ul>
-                        <p class="empty" ng-if="item.summary == 0">No wittls selected yet</p>
+                        <p class="empty" ng-if="item.summary.length == 0">No wittls selected yet</p>
                     </div>
 
                 </div>
