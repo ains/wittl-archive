@@ -1174,6 +1174,7 @@ body.modal-open {
     }
  
     &:last-child {
+      display: block;
 
       .wittl-conjunction {
         color: #CCC;
