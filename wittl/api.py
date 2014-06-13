@@ -3,18 +3,17 @@ import itertools
 import importer
 
 from django.http import HttpResponseForbidden, HttpResponseServerError
-from django.shortcuts import get_object_or_404
 
 from importer import get_importer_for_url
 from comparator import all_comparators
 from web.models import List, ListItem, User, ListComparator
+from shortcuts import get_list, get_list_comparator, get_list_item
 
 from rest_framework.decorators import link, action
 from rest_framework.response import Response
 from rest_framework import viewsets, routers
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from rest_framework.permissions import AllowAny
-
 from rest_framework_nested.routers import NestedSimpleRouter
 
 
@@ -67,7 +66,7 @@ class ListViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
-        list = get_object_or_404(List, pk=pk)
+        list = get_list(request.user, pk=pk)
         if list.user_invited(request.user):
             serializer = ListSerializer(list, context={'request': request})
             return Response(serializer.data)
@@ -76,7 +75,7 @@ class ListViewSet(viewsets.ViewSet):
 
     @link()
     def score_data(self, request, pk=None):
-        list = get_object_or_404(List, pk=pk)
+        list = get_list(request.user, pk=pk)
 
         score_data = {}
         for item in list.items.all():
@@ -86,12 +85,12 @@ class ListViewSet(viewsets.ViewSet):
 
 class ListItemViewSet(viewsets.ViewSet):
     def list(self, request, list_pk=None):
-        queryset = get_object_or_404(List, pk=list_pk).items.all()
+        queryset = get_list(request.user, pk=list_pk).items.all()
         serializer = ListItemSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None, list_pk=None):
-        list_item = get_object_or_404(ListItem, pk=pk)
+        list_item = get_list_item(request.user, pk=pk)
         if list_item.list.user_invited(request.user):
             serializer = ListItemSerializer(list_item, context={'request': request})
             return Response(serializer.data)
@@ -99,7 +98,7 @@ class ListItemViewSet(viewsets.ViewSet):
             return HttpResponseForbidden()
 
     def create(self, request, list_pk=None):
-        list = get_object_or_404(List, id=list_pk)
+        list = get_list(request.user, id=list_pk)
 
         import_url = request.DATA["url"]
         importer = get_importer_for_url(import_url)
@@ -123,7 +122,7 @@ class ListItemViewSet(viewsets.ViewSet):
 
     @action()
     def toggle_favourite(self, request, pk=None, list_pk=None):
-        list_item = get_object_or_404(ListItem, pk=pk)
+        list_item = get_list_item(request.user, pk=pk)
         user = request.user
         if user.favourites.filter(pk=pk).exists():
             user.favourites.remove(list_item)
@@ -134,7 +133,7 @@ class ListItemViewSet(viewsets.ViewSet):
 
     @link()
     def score_data(self, request, pk=None, list_pk=None):
-        list_item = get_object_or_404(ListItem, pk=pk)
+        list_item = get_list_item(request.user, pk=pk)
         return Response(list_item.comparator_data(request.user))
 
 
@@ -147,13 +146,13 @@ class FavouritesViewSet(viewsets.ViewSet):
 
 class ListComparatorViewset(viewsets.ViewSet):
     def list(self, request, list_pk=None):
-        list = get_object_or_404(List, pk=list_pk)
+        list = get_list(request.user, pk=list_pk)
         comparators = list.get_comparators_for_user(request.user)
         serializer = ListComparatorSerializer(comparators, many=True, context={'request': request})
         return Response(serializer.data)
 
     def update(self, request, pk=None, list_pk=None):
-        comparator = get_object_or_404(ListComparator, pk=pk)
+        comparator = get_list_comparator(request.user, pk=pk)
         comparator.order = request.DATA["order"]
         comparator.configuration = json.dumps(request.DATA["configuration"])
         comparator.save()
@@ -162,7 +161,7 @@ class ListComparatorViewset(viewsets.ViewSet):
         return Response(serializer.data)
 
     def create(self, request, list_pk=None):
-        list = get_object_or_404(List, pk=list_pk)
+        list = get_list(request.user, pk=list_pk)
 
         comparator = ListComparator()
         comparator.user = request.user

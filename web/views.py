@@ -1,10 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse, HttpResponseRedirect
 
 from models import List, ListForm
+from wittl.shortcuts import get_list
 
 
 def index(request):
@@ -38,7 +39,7 @@ def list_list(request):
 
 @login_required
 def list_view(request, list_id):
-    list = get_object_or_404(List, id=list_id)
+    list = get_list(request.user, id=list_id)
     render_data = {
         "list": list,
         "comparators": list.get_comparators_for_user(request.user)
