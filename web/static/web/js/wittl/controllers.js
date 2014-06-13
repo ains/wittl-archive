@@ -63,7 +63,7 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', '
 
 
             Sorting.updateScores(listID, function () {
-                $scope.items = ListItem.query({listID: 1}, function () {
+                $scope.items = ListItem.query({listID: listID}, function () {
                     resort();
                 });
             });
