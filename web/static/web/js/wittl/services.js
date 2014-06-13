@@ -104,6 +104,8 @@ wittlsService.factory('Wittl', ['$http', '$resource',
                 'update': {method: 'PUT'}
             }),
             favourites: $resource(api + '/favourites/'),
+            options: {},
+            attributeOptions: []
         };
 
         return service;
