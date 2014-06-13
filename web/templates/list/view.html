@@ -141,6 +141,10 @@
                 
                 <div class="card" data-id="[[item.id]]" ng-click="showModal(item)">
                    
+                    <a href="#" class="delete pull-right" ng-click="delete(item)">
+                        <i class="icon_close"></i>
+                    </a>
+
                     <div class="pic" style="background-image: url('[[ item.card_image ]]')">
                         <!-- <div class="overlay"></div> -->
                         <a class="favourite pull-right" ng-click="toggleFavourite($event, item)"
@@ -156,7 +160,9 @@
                     <div class="details">
                         <h3 class="title"> [[ item.name | truncate: 35 ]]</h3>
 
-                        <p class="wittl-meta-description">[[ item.attributes.subtitle | truncate: 30 ]]</p>
+                        <p class="wittl-meta-description">
+                            [[ item.attributes.subtitle | truncate: 30 ]]
+                        </p>
                     </div>
                     
                     <div class="wittl-data">   

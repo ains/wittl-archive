@@ -376,6 +376,29 @@ section.pane {
       border: 1px solid #ededed;
       box-shadow: 2px 2px 4px rgba(34, 62, 85, 0.15);
 
+      .delete {
+        position: absolute;
+        display: table;
+        right: 0;
+        top: 0;
+        width: 26px;
+        height: 26px;
+        background-color: $wittl-color;
+        border-bottom-left-radius: 5px;
+
+        i {
+          display: table-cell;
+          text-align: center;
+          vertical-align: middle;
+          color: #FFF;
+          font-size: 15px;
+        }
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
       .pic {
         position: relative;
         width: 32%;
