@@ -40,6 +40,19 @@ body {
   color: $wittl-color;
 }
 
+a {
+  color: $wittl-color;
+  -webkit-transition: color 0.2s ease-out;
+  transition: color 0.2s ease-out;
+
+  &:hover {
+    text-decoration: none;
+    color: lighten($wittl-color, 10%);
+    -webkit-transition: color 0.2s ease-in;
+    transition: color 0.2s ease-in; 
+  }
+}
+
 .sidebar {
   float: left;
   position: fixed;
@@ -913,6 +926,11 @@ body.modal-open {
       padding-bottom: 40px;
       color: #c5645a;
       letter-spacing: 1;
+
+      ul {
+        padding-left: 0;
+        list-style-type: none;
+      }
     }
 
     .username {
@@ -930,6 +948,32 @@ body.modal-open {
     .wittl-btn {
       margin: 20px 0;
       width: 200px;
+    }
+
+    .register {
+      font-size: 0.8em;
+      font-style: italic;
+      color: $subheading-color;
+
+      .register-link {
+        font-size: 0.85em;
+        font-style: normal;
+        font-weight: 600;
+      }
+    }
+
+
+    &.signup {
+
+      .login-error {
+        padding-top: 5px
+        padding-bottom: 10px;
+      }
+
+      input {
+        margin: 5px 0;
+        border-radius: 4px;
+      }
     }
 
   }

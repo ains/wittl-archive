@@ -2,31 +2,40 @@
 
 {% block content %}
 
-<h1>Create an account</h1>
+<div class="row login-area">
+    <div class="login-form signup col-sm-4 col-sm-offset-4">
+        
 
-<form role="form" action="" method="post">
-	{% csrf_token %}
-	<div class="form-group">
-		<label for="usernameInput">{{form.username.label}}</label>
-		<input type="text" class="form-control" id="usernameInput" name="{{form.username.name}}" />
-		{{form.username.errors}}
-	</div>
-	<div class="form-group">
-		<label for="inputEmail">{{form.email.label}}</label>
-		<input type="text" class="form-control" id="inputEmail" name="{{form.email.name}}" />
-	  	{{form.email.errors}}
-	</div>
-	<div class="form-group">
-		<label for="inputPassword">{{form.password1.label}}</label>
-		<input type="password" class="form-control" id="inputPassword" name="{{form.password1.name}}" />
-	  	{{form.password1.errors}}
-	</div>
-	<div class="form-group">
-		<label for="inputPasswordConfirm">{{form.password2.label}}</label>
-		<input type="password" class="form-control" id="inputPasswordConfirm" name="{{form.password2.name}}" />
-	 	 {{form.password2.errors}}
-	</div>
-	<button type="submit" class="btn btn-primary">Submit</button>
-</form>
+        <h2 class="title">wittl</h2>
+        <p class="intro">Glad you could join us!<br />Sign up below</p>
+        <hr />
+
+        <form role="form" method="post" action="">
+            {% csrf_token %}
+            <div class="wittl-input-group">
+                <input type="text" name="{{ form.username.name }}" class="username form-control" placeholder="Username" />
+                {% if form.username.errors %}
+		            <small class="login-error">{{ form.username.errors }}</small>
+		        {% endif %}
+                <input type="email" name="{{ form.email.name }}" class="username form-control" placeholder="Email" />
+		        {% if form.email.errors %}
+		            <small class="login-error">{{ form.email.errors }}</small>
+		        {% endif %}
+                <input type="password" name="{{ form.password1.name }}" class="password form-control" placeholder="Password" />
+				{% if form.password1.errors %}
+		            <small class="login-error">{{ form.password1.errors }}</small>
+		        {% endif %}
+                <input type="password" name="{{ form.password2.name }}" class="password form-control" placeholder="Confirm Password" />
+                {% if form.password2.errors %}
+		            <small class="login-error">{{ form.password2.errors }}</small>
+		        {% endif %}
+                
+                <button type="submit" class="btn wittl-btn">Register</button>
+            </div>
+
+            <input type="hidden" name="next" value="{{ next }}"/>
+        </form>
+    </div>
+</div>
 
 {% endblock %}
