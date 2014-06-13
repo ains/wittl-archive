@@ -50,3 +50,7 @@ def list_view(request, list_id):
 @login_required
 def favourite_list(request):
     return render(request, "list/favourites.html")
+
+@login_required
+def account_settings(request):
+    return render(request, "settings.html")

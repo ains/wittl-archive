@@ -57,6 +57,15 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', '
                 angular.forEach($scope.items, function (item) {
                     item.summary = Sorting.getSummariesById(item.id, 3);
                 });
+
+                var sortableAttrs = _.intersection.apply(this, _.map($scope.items, function (item) {
+                    return _.keys(item.attributes.sortable_attrs);
+                }));
+
+                angular.forEach(sortableAttrs, function (attr) {
+                    Wittl.attributeOptions.push(attr);
+                });
+
             };
             $scope.$on('sorting.update', resort);
             $scope.$watch('wittlOrder.wittls', resort, true);
@@ -150,7 +159,10 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', '
 
 wittlsController.controller('WittlsCtrl', ['$scope', 'Wittl', 'Sorting',
     function ($scope, Wittl, Sorting) {
-        $scope.wittlOptions = {};
+        $scope.wittlOptions = {
+            'wittls': Wittl.options,
+            'attrs': Wittl.attributeOptions
+        };
         $scope.clauses = Wittl.wittls;
 
         Wittl.getConfiguration().then(function (response) {
