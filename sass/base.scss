@@ -357,6 +357,45 @@ section.pane {
   }
 }
 
+.wittlist-empty {
+  padding: 50px 0;
+  text-align: center;
+
+  .illustration {
+    font-size: 70px;
+    color: #e7e7e7;
+  }
+
+  .message {
+    padding: 20px;
+    color: #D5D5D5;
+    font-size: 1.3em;
+
+    .smiley {
+      font-weight: 600;
+      padding: 0 10px;
+    }
+
+    .sub {
+      display: block;
+      padding-top: 20px;
+      font-size: 0.8em;
+      font-style: italic;
+    }
+  }
+
+  .plugin-link {
+    color: $wittl-color;
+    font-style: italic;
+
+    &:hover {
+      text-decoration: none;
+      color: lighten($wittl-color, 10%);
+    }
+  }
+}
+
+
 .wittlist { 
   padding-bottom: 20px;
 
@@ -481,6 +520,14 @@ section.pane {
           padding: 15px;
           // margin-left: -20px;
           // margin-right: -20px;
+
+          .empty {
+            text-align: center;
+            color: lighten($subheading-color, 10%);
+            font-weight: 600;
+            font-style: italic;
+            font-size: 0.9em;
+          }
 
           ul {
             float: left;
@@ -1104,6 +1151,75 @@ body.modal-open {
 
   &.loading {
     opacity: 0;
+  }
+
+  .delete {
+    margin: 0;
+    padding: 0;
+    color: lighten($subheading-color, 10%);
+    float: left;
+    width: 100%;
+    text-align: center;
+    background-color: rgba(0,0,0,0.025);
+    border-radius: 4px;
+    border: 1px dashed rgba(0,0,0,0.075);
+
+    //display: none;
+    height: 0;
+    opacity: 0;
+    -webkit-transition: opacity 0.5s ease-out 0.2s, 
+                        height 0.5s ease-out,
+                        padding 0.5s ease-out,
+                        margin 0.5s ease-out;
+    transition: opacity 0.5s ease-out 0.2s, 
+                        height 0.5s ease-out,
+                        padding 0.5s ease-out,
+                        margin 0.5s ease-out;
+
+    p {
+      opacity: 0;
+      margin: 0;
+      color: #FF6F6F;
+      font-size: 0.9em;
+      text-transform: uppercase;
+
+      -webkit-transition: opacity 0.2s ease-out;
+      transition: opacity 0.2s ease-out;
+
+      i {
+        padding-right: 20px;
+        font-size: 0.9em;
+      }
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  &.dragging {
+
+    .delete {
+      //display: block;
+      margin: 15px 0;
+      padding: 10px 20px;
+      height: auto;
+      opacity: 1;
+      -webkit-transition: opacity 0.5s ease-in 0.2s, 
+                        height 0.5s ease-in,
+                        padding 0.5s ease-in,
+                        margin 0.5s ease-in;
+      transition: opacity 0.5s ease-in, 
+                        height 0.5s ease-in,
+                        padding 0.5s ease-in,
+                        margin 0.5s ease-in;
+
+      p {
+        opacity: 1;
+        -webkit-transition: opacity 0.5s ease-in;
+        transition: opacity 0.5s ease-in;
+      }
+    }
   }
 
   .instruction {

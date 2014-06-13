@@ -134,6 +134,15 @@
             </form>
         </div>
 
+        <div class="wittlist-empty" ng-if="items == []" ng-cloak>
+            <i class="illustration icon_documents_alt"></i>
+            <h3 class="message">
+                Your wittlist is looking rather empty <span class="smiley">:(</span>
+                <br>Let's get cracking above!
+                <br><span class="sub">(or check out our <a class="plugin-link" href="#">chrome plugin</a>)</span>
+            </h3>
+        </div>
+
         <!-- Wittlist -->
         <div class="wittlist row" isotope-container="isotope-container"
              iso-options="{layoutMode: 'vertical', transitionDuration: '0.65s'}" ng-cloak>
@@ -166,11 +175,12 @@
                     </div>
                     
                     <div class="wittl-data">   
-                        <ul>
+                        <ul ng-if="item.summary >= 0">
                             <li ng-bind-html="item.summary[0] | unsafe"></li>
                             <li ng-bind-html="item.summary[1] | unsafe"></li>
                             <li ng-bind-html="item.summary[2] | unsafe"></li>
                         </ul>
+                        <p class="empty" ng-if="item.summary == 0">No wittls selected yet</p>
                     </div>
 
                 </div>
@@ -194,7 +204,9 @@
 
                 <hr />
 
-                <p class="intro">I want to wittl by</p>
+                <p class="intro">
+                    I want to wittl by 
+                </p>
                 <ul class="wittls" ui-sortable="sortableWittlsOptions" ng-model="clauses" ng-cloak>
                     <li class="wittl-clause" ng-repeat="clause in clauses">
                         <!-- <div class="wittl"> -->
@@ -206,7 +218,10 @@
                         <!-- </div> -->
                     </li>
                 </ul>
-                <div class="nl-overlay"></div>
+
+                <div class="delete">
+                    <p><i class="icon_trash_alt"></i>Drop wittl here to delete</p>
+                </div>
             </form>
         </div>
     </section>

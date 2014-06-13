@@ -1,11 +1,30 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth import authenticate, login
 
 from models import List, ListForm
 from wittl.shortcuts import get_list
+from forms import UserCreationForm
+
+def register(request):
+    if request.method == "POST":
+        user_form = UserCreationForm(request.POST)
+        if user_form.is_valid():
+            user_form.save()
+            user_data = user_form.cleaned_data
+            user = authenticate(username = user_data['username'], 
+                                password = user_data['password2'])
+            login(request, user)
+            return redirect(reverse("list_list"))
+    else:
+        user_form = UserCreationForm()
+
+    return render(request, "registration/register.html", {
+            'form' : user_form,
+    })
 
 
 def index(request):
