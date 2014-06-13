@@ -33,8 +33,8 @@ listsController.controller('ListsQuickAddCtrl', ['$scope', 'ListItem', 'Broadcas
     }]);
 
 
-listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', 'Wittl', 'Sorting',
-    function ($scope, $http, ListItem, Wittl, Sorting) {
+listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', 'ListItem', 'Wittl', 'Sorting',
+    function ($scope, $timeout, $http, ListItem, Wittl, Sorting) {
         $scope.$watch("listID", function () {
             var listID = $scope.listID;
             $scope.items = [];
@@ -99,6 +99,18 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$http', 'ListItem', '
                     .success(function () {
                         item.favourited = !item.favourited;
                     });
+            };
+
+            $scope.deleteItem = function (e, index, item) {
+                e.stopPropagation();
+                if (confirm("Would you like to delete this item?")) {
+                    $scope.items.splice(index, 1);
+
+                    $timeout(function () {
+                        $scope.$emit("iso-method", {name: "layout", params: null});
+                        item.$delete();
+                    });
+                }
             };
 
             $scope.showModal = function (item) {

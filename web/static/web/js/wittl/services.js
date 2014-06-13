@@ -29,7 +29,7 @@ listsService.factory('Broadcast',
 listItemService.factory('ListItem', ['$resource',
     function ($resource) {
         return $resource(api + '/lists/:listID/items/:listItemID',
-            {listItemID: "@id"}, {}
+            {listItemID: "@id", listID: "@list"}, {}
         );
     }]);
 
