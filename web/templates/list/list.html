@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block css %}
+    <link href="/static/web/js/vendor/ladda/ladda-themeless.min.css" type="text/css" rel="stylesheet"/>
+{% endblock %}
+
 {% block outsidewrapper %}
 
     <div id="newItemModal" ng-controller="ListsQuickAddCtrl" class="modal fade" role="dialog">
@@ -17,7 +21,8 @@
                             <input name="url" ng-model="item.url" class="form-control" type="text"
                                    placeholder="Add an item to your wittlist..."/>
                             <span class="input-group-btn">
-                                <button type="submit" class="btn wittl-btn">Add</button>
+                                <button type="submit" class="ladda-button wittl-btn btn" type="submit"
+                            data-style="zoom-in"><span class="ladda-label">Add</span></button>
                             </span>
                         </div>
                     </form>
@@ -43,9 +48,10 @@
                 <p class="fullname">
                     {{ user.first_name }} {{ user.last_name }}
                 </p>
+                <p class="joined">Wittler since {{ user.date_joined | date:"F j, Y"}}.</p>
+                
                 <hr/>
 
-                <p class="joined">Wittler since {{ user.date_joined | date:"F j, Y"}}.</p>
                 <p class="other">
                     Wittlists are collections of items you want to compare. 
                     In each Wittlist you can create <strong>Wittls</strong> to compare the different items.
@@ -118,7 +124,9 @@
 {% block javascript %}
 
     <script type="text/javascript" src="/static/web/js/vendor/nanobar.js"></script>
-
+    <script type="text/javascript" src="/static/web/js/vendor/ladda/spin.min.js"></script>
+    <script type="text/javascript" src="/static/web/js/vendor/ladda/ladda.min.js"></script>
+    <script type="text/javascript" src="/static/web/js/vendor/ladda/ladda.jquery.min.js"></script>
 
     <script src="/static/web/js/vendor/angular/angular.js"></script>
     <script src="/static/web/js/vendor/angular/angular-resource.js"></script>

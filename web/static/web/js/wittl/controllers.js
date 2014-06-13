@@ -25,7 +25,15 @@ listsController.controller('ListsQuickAddCtrl', ['$scope', 'ListItem', 'Broadcas
                     list: data.selectedList
                 };
 
-                ListItem.save(newItem)
+                var $form = $('#newItemModal');
+                var l = $form.find('.ladda-button').ladda();
+                l.ladda('start');
+
+                ListItem.save(newItem, function() {
+                    console.log('done');
+                    l.ladda('stop');
+                    $form.modal('hide');
+                });
             }
         };
 
