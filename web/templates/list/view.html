@@ -141,7 +141,7 @@
                 
                 <div class="card" data-id="[[item.id]]" ng-click="showModal(item)">
                    
-                    <a href="#" class="delete pull-right" ng-click="delete(item)">
+                    <a href="#" class="delete pull-right" ng-click="deleteItem($event, $index, item)">
                         <i class="icon_close"></i>
                     </a>
 

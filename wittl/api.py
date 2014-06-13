@@ -37,7 +37,7 @@ class ListItemSerializer(ModelSerializer):
 
     class Meta:
         model = ListItem
-        fields = ('name', 'attributes', 'id', 'card_image', 'favourited')
+        fields = ('name', 'attributes', 'id', 'card_image', 'favourited', 'list')
 
 
 class ListSerializer(ModelSerializer):
@@ -119,6 +119,12 @@ class ListItemViewSet(viewsets.ViewSet):
             return Response(serializer.data)
         else:
             return HttpResponseServerError("Unrecognised URL")
+
+    def delete(self, request, pk=None, list_pk=None):
+        list_item = get_list_item(request.user, pk=pk)
+        list_item.delete()
+
+        return Response("ok")
 
     @action()
     def toggle_favourite(self, request, pk=None, list_pk=None):
