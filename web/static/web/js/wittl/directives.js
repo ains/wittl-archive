@@ -88,8 +88,7 @@ wittlsDirective.directive('dropdownSelect', ['$document', '$compile',
                                     first = false;
                                 }
                             }
-
-                            $compile($element.siblings()[0])($scope.$parent);
+                            $compile($element.siblings()[1])($scope.$parent);
                         }
                     }, true);
                 }
