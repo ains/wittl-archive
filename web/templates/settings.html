@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
+    {% if messages %}
+        <div class="alert alert-warning">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <div class="pane col-sm-6">
         <header>
             <h2>User Info</h2>
@@ -13,28 +21,29 @@
             <h2>Change Settings</h2>
         </header>
 
-        <form class="create-wittlist" action="{% url 'list_create' %}" method="post">
+        <h4>Change Password</h4>
 
+        <form role="form" action="" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="oldPasswordInput">{{form.old_password.label}}</label>
+                <input type="password" class="form-control" id="oldPasswordInput" name="{{form.old_password.name}}" />
+                {{form.old_password.errors}}
+            </div>
+            <div class="form-group">
+                <label for="inputPassword">{{form.password1.label}}</label>
+                <input type="password" class="form-control" id="inputPassword" name="{{form.password1.name}}" />
+                {{form.password1.errors}}
+            </div>
+            <div class="form-group">
+                <label for="inputPasswordConfirm">{{form.password2.label}}</label>
+                <input type="password" class="form-control" id="inputPasswordConfirm" name="{{form.password2.name}}" />
+                 {{form.password2.errors}}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 
     </div>
 
-
-{% endblock %}
-
-{% block javascript %}
-
-    <script src="/static/web/js/vendor/angular/angular.js"></script>
-    <script src="/static/web/js/vendor/angular/angular-resource.js"></script>
-    <script src="/static/web/js/vendor/angular/angular-cookies.js"></script>
-    <script src="/static/web/js/vendor/angular/angular-isotope.min.js"></script>
-    <script src="/static/web/js/vendor/angular/angular-nanobar.js"></script>
-    <script src="/static/web/js/vendor/angular/angular-sortable.js"></script>
-
-    <script src="/static/web/js/wittl/filters.js"></script>
-    <script src="/static/web/js/wittl/directives.js"></script>
-    <script src="/static/web/js/wittl/controllers.js"></script>
-    <script src="/static/web/js/wittl/services.js"></script>
-    <script src="/static/web/js/wittl/app.js"></script>
 
 {% endblock %}

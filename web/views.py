@@ -3,11 +3,12 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 
 from models import List, ListForm
 from wittl.shortcuts import get_list
-from forms import UserCreationForm
+from forms import UserCreationForm, UserChangePasswordForm
 
 def register(request):
     if request.method == "POST":
@@ -72,4 +73,16 @@ def favourite_list(request):
 
 @login_required
 def account_settings(request):
-    return render(request, "settings.html")
+    if request.method == "POST":
+        user_form = UserChangePasswordForm(request.POST)
+        if user_form.is_valid():
+            request.user.set_password(user_form.cleaned_data["password1"])
+            request.user.save()
+            messages.success(request, 'Password successfully changed')
+            return redirect(reverse("settings"))
+    else:
+        user_form = UserChangePasswordForm()
+
+    return render(request, "settings.html", {
+            'form' : user_form,
+    })
