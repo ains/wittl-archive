@@ -5,7 +5,7 @@
 @import "vendor/sidr";
 @import "vendor/nlform";
 
-// Import components 
+// Import components
 @import "components";
 
 /* ------------------------------
@@ -19,7 +19,7 @@
 // Custom styles here 
 // ============================== 
 
-html, body { 
+html, body {
   height: 100%;
   width: 100%;
 }
@@ -49,7 +49,7 @@ a {
     text-decoration: none;
     color: lighten($wittl-color, 10%);
     -webkit-transition: color 0.2s ease-in;
-    transition: color 0.2s ease-in; 
+    transition: color 0.2s ease-in;
   }
 }
 
@@ -227,7 +227,7 @@ a {
 }
 
 section.pane {
-  padding-top: 30px; 
+  padding-top: 30px;
 
   header {
     padding: 10px 0;
@@ -240,7 +240,7 @@ section.pane {
       text-transform: uppercase;
       color: $wittl-color;
 
-      .browse { 
+      .browse {
         float: right;
         padding-right: 10px;
         padding-top: 8px;
@@ -327,7 +327,7 @@ section.pane {
   background: linear-gradient(to bottom, #f7f7f7 0%,#f2f2f2 80%,#f4f4f4 100%); /* W3C */
   border-bottom: 1px solid #F2F2F2;
   // box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-  
+
   margin-bottom: 30px; // dEBUG
 
   .left, .right {
@@ -410,7 +410,7 @@ section.pane {
 }
 
 
-.wittlist { 
+.wittlist {
   padding-bottom: 20px;
 
   .card-wrapper {
@@ -669,7 +669,7 @@ section.favourites-wrap {
 
 body.modal-open {
   .wrapper {
-    -webkit-filter: grayscale(0.75); 
+    -webkit-filter: grayscale(0.75);
     filter: grayscale(0.75);
   }
 }
@@ -1297,8 +1297,8 @@ body.modal-open {
     width: 100%;
   }
 }
- 
-.wittl-form { 
+
+.wittl-form {
   color: #616161;
   float: left;
   padding-bottom: 100px;
@@ -1325,11 +1325,11 @@ body.modal-open {
     //display: none;
     height: 0;
     opacity: 0;
-    -webkit-transition: opacity 0.5s ease-out 0.2s, 
+    -webkit-transition: opacity 0.5s ease-out 0.2s,
                         height 0.5s ease-out,
                         padding 0.5s ease-out,
                         margin 0.5s ease-out;
-    transition: opacity 0.5s ease-out 0.2s, 
+    transition: opacity 0.5s ease-out 0.2s,
                         height 0.5s ease-out,
                         padding 0.5s ease-out,
                         margin 0.5s ease-out;
@@ -1363,11 +1363,11 @@ body.modal-open {
       padding: 10px 20px;
       height: auto;
       opacity: 1;
-      -webkit-transition: opacity 0.5s ease-in 0.2s, 
+      -webkit-transition: opacity 0.5s ease-in 0.2s,
                         height 0.5s ease-in,
                         padding 0.5s ease-in,
                         margin 0.5s ease-in;
-      transition: opacity 0.5s ease-in, 
+      transition: opacity 0.5s ease-in,
                         height 0.5s ease-in,
                         padding 0.5s ease-in,
                         margin 0.5s ease-in;
@@ -1393,6 +1393,7 @@ body.modal-open {
 
   .wittl-clause {
     margin: 5px -10px;
+    margin-right: 2px;
     padding: 5px 10px;
     border-radius: 3px;
     display: inline-block;
@@ -1421,9 +1422,9 @@ body.modal-open {
         opacity: 1;
         -webkit-transition: opacity 0.5s ease-in;
       }
-    } 
+    }
 
-    .wittl-conjunction { 
+    .wittl-conjunction {
       display: inline-block;
       padding-right: 5px;
       color: #999;
@@ -1440,20 +1441,20 @@ body.modal-open {
 
     // HACK
     &:first-child {
-        
+
       .wittl-conjunction {
         display: none;
         visibility: hidden;
       }
     }
- 
+
     &:last-child {
       display: block;
 
       .wittl-conjunction {
         color: #CCC;
       }
- 
+
       .selected {
         color: #CCC;
       }
@@ -1495,7 +1496,6 @@ body.modal-open {
         position: absolute;
         display: none;
         visibility: hidden;
-        background: $wittl-color;
         border-radius: 3px;
         right: 0;
         top: 50%;
@@ -1509,6 +1509,21 @@ body.modal-open {
         transition: visibility 0s 0.3s, opacity 0.3s, transform 0.3s;
 
 
+        .dropdown-item {
+          background: $wittl-color;
+          &:hover {
+            background: lighten($wittl-color, 10%);
+          }
+        }
+
+        .dropdown-item-attr {
+          background: #EE5757;
+
+          &:hover {
+            background: lighten(#EE5757, 10%);
+          }
+        }
+
         li {
           color: #fff;
           position: relative;
@@ -1517,16 +1532,12 @@ body.modal-open {
           cursor: pointer;
           white-space: nowrap;
 
-          &:hover {
-            background: rgba(0,0,0,0.05);
-          }
-
           &.checked:before {
             font-family: 'ElegantIcons';
             color: #FFF;
             speak: none;
             font-style: normal;
-            font-weight: normal; 
+            font-weight: normal;
             font-variant: normal;
             text-transform: none;
             -webkit-font-smoothing: antialiased;

@@ -2,21 +2,16 @@ var wittlsDirective = angular.module('wittlsDirective', []);
 var ngDropdowns = angular.module('ngDropdowns', []);
 
 
-wittlsDirective.directive('wittlParams', ['$compile',
-    function ($compile) {
+wittlsDirective.directive('wittlParams', ['$compile', '$timeout',
+    function ($compile, $timeout) {
         var renderDirective = function (scope, el) {
             var model = scope.wittl.model;
 
             var prepositionHtml = '<span class="preposition">[[ wittl.model.preposition ]]</span>\n';
-            var paramsHtml = "";
-
-            // TODO: make ngRepeat instead
-            angular.forEach(model.fields, function (val, key) {
-                paramsHtml += '<input type=\'[[ wittl.model.fields["' + key + '"].type ]]\''
-                    + 'ng-model=\'wittl.configuration["' + key + '"]\' class="param-field" '
-                    + 'value=\'[[ wittl.configuration["' + key + '"] ]]\' ng-blur="save(wittl)" '
-                    + 'placeholder="placeholder"/>\n';
-            });
+            var paramsHtml = '<input ng-repeat="(key, val) in wittl.model.fields" type=\'[[ wittl.model.fields[key].type ]]\''
+                + 'ng-model=\'wittl.configuration[key]\' class="param-field" '
+                + 'value=\'[[ wittl.configuration[key] ]]\' ng-blur="save(wittl)" '
+                + 'placeholder="placeholder"/>\n';
 
             el.replaceWith($compile(prepositionHtml + paramsHtml)(scope));
         };
@@ -29,7 +24,6 @@ wittlsDirective.directive('wittlParams', ['$compile',
             controller: 'WittlsCtrl',
             link: function (scope, el, attr) {
                 if (Object.keys(scope.wittl.model).length === 0) return;
-
                 renderDirective(scope, el);
             }
         }
@@ -51,11 +45,22 @@ wittlsDirective.directive('dropdownSelect', ['$document', '$compile',
                     var body;
                     $scope.labelField = $attrs.dropdownItemLabel != null ? $attrs.dropdownItemLabel : 'text';
                     this.select = function (selected) {
-                        if (selected !== $scope.dropdownModel) {
-                            angular.copy(selected, $scope.dropdownModel);
-                            $scope.dropdownModel.canSave = true;
-                            $scope.dropdownModel.configuration = {};
-                            $scope.dropdownModel.comparator_name = selected.model.name;
+                        var dropdownModel = $scope.dropdownModel;
+                        if (selected !== dropdownModel) {
+                            dropdownModel.model = {};
+                            dropdownModel.configuration = {};
+
+                            angular.extend(dropdownModel, selected);
+
+                            var type = dropdownModel.model.type;
+                            if (type == "attr") {
+                                dropdownModel.comparator_name = "attr:" + dropdownModel.text;
+
+                                //Save attribute wittls immediately
+                                $scope.$parent.$parent.save(dropdownModel);
+                            } else {
+                                dropdownModel.comparator_name = selected.model.name;
+                            }
                         }
                         $scope.dropdownOnchange({
                             selected: selected
@@ -93,7 +98,12 @@ wittlsDirective.directive('dropdownSelect', ['$document', '$compile',
                     }, true);
                 }
             ],
-            template: "<div class='wrap-dd-select'>\n    <span class='selected'>[[ dropdownModel[labelField] ]]</span>\n    <ul class='dropdown'>\n        <li ng-repeat='item in dropdownSelect'\n            class='dropdown-item'\n            dropdown-select-item='item'\n            dropdown-item-label='labelField'>\n        </li>\n    </ul>\n</div>"
+            template: "<div class='wrap-dd-select'>\n" +
+                "<span class='selected'>[[ dropdownModel[labelField] ]]</span>\n" +
+                " <ul class='dropdown'>\n" +
+                "<li ng-repeat='item in dropdownSelect.wittls' class='dropdown-item' dropdown-select-item='item' dropdown-item-label='labelField'></li>\n" +
+                "<li ng-repeat='item in dropdownSelect.attrs' class='dropdown-item-attr' dropdown-select-item='item' dropdown-item-label='labelField'></li>\n" +
+                "</ul>\n</div>"
         };
     }
 ]).directive('dropdownSelectItem', [
@@ -118,7 +128,7 @@ wittlsDirective.directive('dropdownSelect', ['$document', '$compile',
                     dropdownSelectCtrl.select(scope.dropdownSelectItem);
                 };
             },
-            template: "<li ng-class='{divider: dropdownSelectItem.divider}' ng-click='selectItem()'>\n    <a href='' class='dropdown-item'\n        ng-if='!dropdownSelectItem.divider'\n        ng-href='[[ dropdownSelectItem.href ]]'>\n        [[ dropdownSelectItem[dropdownItemLabel] ]]\n    </a>\n</li>"
+            template: "<li ng-class='{divider: dropdownSelectItem.divider}' ng-click='selectItem()'>\n    <a href=''  ng-if='!dropdownSelectItem.divider'\n        ng-href='[[ dropdownSelectItem.href ]]'>\n        [[ dropdownSelectItem[dropdownItemLabel] ]]\n    </a>\n</li>"
         };
     }
 ]);

@@ -29,8 +29,7 @@ listsController.controller('ListsQuickAddCtrl', ['$scope', 'ListItem', 'Broadcas
                 var l = $form.find('.ladda-button').ladda();
                 l.ladda('start');
 
-                ListItem.save(newItem, function() {
-                    console.log('done');
+                ListItem.save(newItem, function () {
                     l.ladda('stop');
                     $form.modal('hide');
                 });
@@ -70,18 +69,25 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', '
                 }));
 
                 angular.forEach(sortableAttrs, function (attr) {
-                    Wittl.attributeOptions.push(attr);
+                    Wittl.attributeOptions[attr] = {
+                        text: attr,
+                        model: {
+                            'type': 'attr',
+                            'preposition': ''
+                        },
+                        fields: {}
+                    };
                 });
-
             };
             $scope.$on('sorting.update', resort);
             $scope.$watch('wittlOrder.wittls', resort, true);
 
 
             Sorting.updateScores(listID, function () {
-                $scope.items = ListItem.query({listID: listID}, function () {
+                ListItem.items = ListItem.resource.query({listID: listID}, function () {
                     resort();
                 });
+                $scope.items = ListItem.items;
             });
 
             $scope.createListItem = function (e) {
@@ -178,7 +184,7 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittl', 'Sorting',
                 for (var i = 0; i < wittl.fields.length; i++) {
                     fields[wittl.fields[i].name] = '';
                 }
-                $scope.wittlOptions[key] = {
+                $scope.wittlOptions.wittls[key] = {
                     text: wittl.display_name,
                     model: wittl,
                     fields: fields
@@ -193,12 +199,19 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittl', 'Sorting',
                     //Insert in reverse order as we're unshifting
                     for (var i = response.length - 1; i >= 0; i--) {
                         var activeWittl = response[i];
-                        var wittl = $scope.wittlOptions[activeWittl.comparator_name];
+                        var wittl = $scope.wittlOptions.wittls[activeWittl.comparator_name];
+                        var newWittl = angular.copy(activeWittl);
+
                         if (wittl) {
-                            var newWittl = angular.copy(activeWittl);
                             newWittl.text = wittl.text;
                             newWittl.model = wittl.model;
-                            newWittl.canSave = true;
+                            $scope.clauses.unshift(newWittl);
+                        }
+
+                        if (newWittl.comparator_name.indexOf("attr:") === 0) {
+                            var attrName = newWittl.comparator_name.replace("attr:", "");
+                            newWittl.text = attrName;
+                            newWittl.model = {};
                             $scope.clauses.unshift(newWittl);
                         }
                     }
@@ -209,7 +222,7 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittl', 'Sorting',
 
         $scope.sortableWittlsOptions = {
             placeholder: 'wittl-droppable',
-            start: function(e, ui){
+            start: function (e, ui) {
                 ui.item.closest('.wittl-form').addClass('dragging');
                 ui.item.addClass('wittl-dragstart');
                 ui.placeholder.height(ui.item.outerHeight());
@@ -227,26 +240,24 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittl', 'Sorting',
         };
 
         $scope.save = function (updatedWittl) {
-            if (updatedWittl.canSave) {
-                var listID = Wittl.list.listID;
-                var request;
-                if (angular.isUndefined(updatedWittl.$save)) {
-                    var persistedWittl = new Wittl.list(updatedWittl);
-                    persistedWittl.list = listID;
+            var listID = Wittl.list.listID;
+            var request;
+            if (angular.isUndefined(updatedWittl.$save)) {
+                var persistedWittl = new Wittl.list(updatedWittl);
+                persistedWittl.list = listID;
 
-                    request = persistedWittl.$save(function (savedWittl) {
-                        angular.extend(persistedWittl, savedWittl);
-                        angular.extend(persistedWittl, updatedWittl);
-                        angular.copy(persistedWittl, updatedWittl);
-                    });
-                } else {
-                    request = updatedWittl.$update();
-                }
-
-                request.then(function () {
-                    Sorting.updateScores(listID);
+                request = persistedWittl.$save(function (savedWittl) {
+                    angular.extend(persistedWittl, savedWittl);
+                    angular.extend(persistedWittl, updatedWittl);
+                    angular.copy(persistedWittl, updatedWittl);
                 });
+            } else {
+                request = updatedWittl.$update();
             }
+
+            request.then(function () {
+                Sorting.updateScores(listID);
+            });
         };
 
     }]);

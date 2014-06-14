@@ -159,6 +159,7 @@ class ListComparatorViewset(viewsets.ViewSet):
 
     def update(self, request, pk=None, list_pk=None):
         comparator = get_list_comparator(request.user, pk=pk)
+        comparator.comparator_name = request.DATA["comparator_name"]
         comparator.order = request.DATA["order"]
         comparator.configuration = json.dumps(request.DATA["configuration"])
         comparator.save()
