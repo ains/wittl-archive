@@ -20,7 +20,7 @@ from rest_framework_nested.routers import NestedSimpleRouter
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name')
+        fields = ('id', 'username', 'first_name', 'last_name')
 
 
 class ListItemSerializer(ModelSerializer):
@@ -197,9 +197,18 @@ class ValidUrlPatternViewSet(viewsets.ViewSet):
 
         return Response(itertools.chain.from_iterable(all_patterns))
 
+
+class UserViewSet(viewsets.ViewSet):
+    def list(self, request):
+        query = request.QUERY_PARAMS["query"]
+        queryset = User.objects.filter(username__contains=query).all()
+        serializer = UserSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
+
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'lists', ListViewSet, base_name="list")
+router.register(r'user-search', UserViewSet, base_name="usersearch")
 router.register(r'wittls', ComparatorViewSet, base_name="comparator")
 router.register(r'favourites', FavouritesViewSet, base_name="favourites")
 router.register(r'valid-urls', ValidUrlPatternViewSet, base_name="validurls")

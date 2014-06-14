@@ -1,30 +1,36 @@
 var wittl = angular.module('wittl', [
-	'ngCookies',
-	
-	/* Lists
-	 * ------------------- */
-	'listsService',
-	'listsController',
-	'listsFilter',
+    'ngCookies',
 
-	/* List Items
-	 * ------------------- */
-	'listItemService',
-	'listItemController',
+    /* Lists
+     * ------------------- */
+    'listsService',
+    'listsController',
+    'listsFilter',
 
-	/* Wittls
-	 * ------------------- */
-	'wittlsService',
-	'wittlsController',
-	'wittlsDirective',
+    /* List Items
+     * ------------------- */
+    'listItemService',
+    'listItemController',
 
-	/* Favourites
-	 * ------------------- */
-	'favouritesController',
+    /* Wittls
+     * ------------------- */
+    'wittlsService',
+    'wittlsController',
+    'wittlsDirective',
 
-	 /* Vendor
-	 * ------------------- */
-	 'ui.sortable'
+    /* Favourites
+     * ------------------- */
+    'favouritesController',
+
+    /* User Invite
+     * ------------------- */
+    'userService',
+    'userInviteController',
+
+    /* Vendor
+     * ------------------- */
+    'ui.sortable',
+    'angular-selectize'
 ]);
 
 wittl.config(function ($httpProvider, $interpolateProvider, $resourceProvider) {
@@ -38,8 +44,8 @@ wittl.config(function ($httpProvider, $interpolateProvider, $resourceProvider) {
     $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
     $http.defaults.headers.put['X-CSRFToken'] = $cookies.csrftoken;
     $http.defaults.headers.common['X-CSRFToken'] = $cookies.csrftoken;
-}).filter('unsafe', function($sce) {
-    return function(val) {
+}).filter('unsafe', function ($sce) {
+    return function (val) {
         return $sce.trustAsHtml(val);
     };
 });

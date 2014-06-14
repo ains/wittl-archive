@@ -3,6 +3,8 @@
 {% block css %}
     <link href="//code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" type="text/css" rel="stylesheet" media="all"/>
     <link href="/static/web/js/vendor/ladda/ladda-themeless.min.css" type="text/css" rel="stylesheet"/>
+    <link href="/static/web/js/vendor/selectize/css/selectize.css" type="text/css" rel="stylesheet"/>
+    <link href="/static/web/js/vendor/selectize/css/selectize.default.css" type="text/css" rel="stylesheet"/>
 {% endblock %}
 
 {% block outsidewrapper %}
@@ -194,55 +196,61 @@
     </section>
 
     <section ng-controller="WittlsCtrl" class="wittlist-right pane">
-    <header>
-        <h2>Wittl By</h2>
-    </header>
+        <header>
+            <h2>Wittl By</h2>
+        </header>
 
-    <div class="wittl-wrapper">
-    <form class="nl-form wittl-form">
-        <p class="instruction">Drag and drop each <strong class="wittl-color">wittl</strong> to let us know
-            what's most important to you.<br/><strong><em>The higher up it is, the more important!</em></strong>
-        </p>
-        <input type="hidden" ng-model="listId" value="{{ list.id }}" ng-init="listID={{ list.id }}"/>
+        <div class="wittl-wrapper">
+            <form class="nl-form wittl-form">
+                <p class="instruction">Drag and drop each <strong class="wittl-color">wittl</strong> to let us know
+                    what's most important to you.<br/><strong><em>The higher up it is, the more important!</em></strong>
+                </p>
+                <input type="hidden" ng-model="listId" value="{{ list.id }}" ng-init="listID={{ list.id }}"/>
 
-        <hr/>
+                <hr/>
 
-        <p class="intro">
-            I want to wittl by
-        </p>
-        <ul class="wittls" ui-sortable="sortableWittlsOptions" ng-model="clauses" ng-cloak>
-            <li class="wittl-clause" ng-repeat="clause in clauses">
-                <!-- <div class="wittl"> -->
-                <div class="wittl-conjunction">
-                    and
-                </div>
-                <div dropdown-select="wittlOptions" dropdown-model="clause"
-                     dropdown-onchange="addNewWittl(selected)"></div>
-                <wittl-params wittl="clause"></wittl-params>
-                <!-- </div> -->
-            </li>
-        </ul>
-
-        <div class="delete">
-            <p><i class="icon_trash_alt"></i>Drop wittl here to delete</p>
-        </div>
-    </form>
-
-    <hr/>
-    <h2>Co-Wittlers</h2>
-    <ul class="list-inline">
-    {% for user in list.users.all %}
-        <li><img src="{{ user.gravatar_url }}"
-                 alt="{{ user.username }}"
-                 class="img-circle"
-                 style="height: 30px; width:30px;"
-                 data-placement="top"
-                 data-toggle="tooltip" title="{{ user.username }}"
-                            />
+                <p class="intro">
+                    I want to wittl by
+                </p>
+                <ul class="wittls" ui-sortable="sortableWittlsOptions" ng-model="clauses" ng-cloak>
+                    <li class="wittl-clause" ng-repeat="clause in clauses">
+                        <!-- <div class="wittl"> -->
+                        <div class="wittl-conjunction">
+                            and
+                        </div>
+                        <div dropdown-select="wittlOptions" dropdown-model="clause"
+                             dropdown-onchange="addNewWittl(selected)"></div>
+                        <wittl-params wittl="clause"></wittl-params>
+                        <!-- </div> -->
                     </li>
-                {% endfor %}
-            </ul>
+                </ul>
 
+                <div class="delete">
+                    <p><i class="icon_trash_alt"></i>Drop wittl here to delete</p>
+                </div>
+                <hr/>
+
+            </form>
+
+            <div ng-controller="UserInviteCtrl">
+
+                <h3>Members</h3>
+                <ul class="list-inline">
+                    {% for user in list.users.all %}
+                        <li><img src="{{ user.gravatar_url }}"
+                                 alt="{{ user.username }}"
+                                 class="img-circle"
+                                 style="height: 30px; width:30px;"
+                                 data-placement="top"
+                                 data-toggle="tooltip" title="{{ user.username }}"
+                                />
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <h4>Invite someone new:</h4>
+                <input type="text" ng-model="invite_users" selectize=""/>
+            </div>
         </div>
     </section>
 

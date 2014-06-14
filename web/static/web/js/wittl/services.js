@@ -5,6 +5,7 @@ var api = '/api/v1';
 var listsService = angular.module('listsService', ['ngResource']);
 var listItemService = angular.module('listItemService', ['ngResource']);
 var wittlsService = angular.module('wittlsService', ['ngResource']);
+var userService = angular.module('userService', []);
 
 
 listsService.factory('Lists', ['$resource',
@@ -146,4 +147,13 @@ wittlsService.factory('Wittl', ['$http', '$resource',
         };
 
         return service;
+    }]);
+
+userService.factory('User', ['$http',
+    function ($http) {
+        return {
+            search: function (query) {
+                return $http.get(api + "/user-search/", {params: {query: query}});
+            }
+        };
     }]);
