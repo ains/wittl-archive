@@ -93,7 +93,12 @@ wittlsDirective.directive('dropdownSelect', ['$document', '$compile',
                     }, true);
                 }
             ],
-            template: "<div class='wrap-dd-select'>\n    <span class='selected'>[[ dropdownModel[labelField] ]]</span>\n    <ul class='dropdown'>\n        <li ng-repeat='item in dropdownSelect'\n            class='dropdown-item'\n            dropdown-select-item='item'\n            dropdown-item-label='labelField'>\n        </li>\n    </ul>\n</div>"
+            template: "<div class='wrap-dd-select'>\n" +
+                "<span class='selected'>[[ dropdownModel[labelField] ]]</span>\n" +
+                " <ul class='dropdown'>\n" +
+                "<li ng-repeat='item in dropdownSelect.wittls' class='dropdown-item' dropdown-select-item='item' dropdown-item-label='labelField'></li>\n" +
+                "<li ng-repeat='item in dropdownSelect.attrs' class='dropdown-item-attr' dropdown-select-item='item' dropdown-item-label='labelField'></li>\n" +
+                "</ul>\n</div>"
         };
     }
 ]).directive('dropdownSelectItem', [
@@ -118,7 +123,7 @@ wittlsDirective.directive('dropdownSelect', ['$document', '$compile',
                     dropdownSelectCtrl.select(scope.dropdownSelectItem);
                 };
             },
-            template: "<li ng-class='{divider: dropdownSelectItem.divider}' ng-click='selectItem()'>\n    <a href='' class='dropdown-item'\n        ng-if='!dropdownSelectItem.divider'\n        ng-href='[[ dropdownSelectItem.href ]]'>\n        [[ dropdownSelectItem[dropdownItemLabel] ]]\n    </a>\n</li>"
+            template: "<li ng-class='{divider: dropdownSelectItem.divider}' ng-click='selectItem()'>\n    <a href=''  ng-if='!dropdownSelectItem.divider'\n        ng-href='[[ dropdownSelectItem.href ]]'>\n        [[ dropdownSelectItem[dropdownItemLabel] ]]\n    </a>\n</li>"
         };
     }
 ]);

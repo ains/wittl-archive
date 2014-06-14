@@ -29,8 +29,7 @@ listsController.controller('ListsQuickAddCtrl', ['$scope', 'ListItem', 'Broadcas
                 var l = $form.find('.ladda-button').ladda();
                 l.ladda('start');
 
-                ListItem.save(newItem, function() {
-                    console.log('done');
+                ListItem.save(newItem, function () {
                     l.ladda('stop');
                     $form.modal('hide');
                 });
@@ -70,9 +69,15 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', '
                 }));
 
                 angular.forEach(sortableAttrs, function (attr) {
-                    Wittl.attributeOptions.push(attr);
+                    Wittl.attributeOptions[attr] = {
+                        text: attr,
+                        model: {
+                            'type': 'attr',
+                            'preposition': ''
+                        },
+                        fields: {}
+                    };
                 });
-
             };
             $scope.$on('sorting.update', resort);
             $scope.$watch('wittlOrder.wittls', resort, true);
@@ -178,7 +183,7 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittl', 'Sorting',
                 for (var i = 0; i < wittl.fields.length; i++) {
                     fields[wittl.fields[i].name] = '';
                 }
-                $scope.wittlOptions[key] = {
+                $scope.wittlOptions.wittls[key] = {
                     text: wittl.display_name,
                     model: wittl,
                     fields: fields
@@ -193,7 +198,7 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittl', 'Sorting',
                     //Insert in reverse order as we're unshifting
                     for (var i = response.length - 1; i >= 0; i--) {
                         var activeWittl = response[i];
-                        var wittl = $scope.wittlOptions[activeWittl.comparator_name];
+                        var wittl = $scope.wittlOptions.wittls[activeWittl.comparator_name];
                         if (wittl) {
                             var newWittl = angular.copy(activeWittl);
                             newWittl.text = wittl.text;
@@ -209,7 +214,7 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittl', 'Sorting',
 
         $scope.sortableWittlsOptions = {
             placeholder: 'wittl-droppable',
-            start: function(e, ui){
+            start: function (e, ui) {
                 ui.item.closest('.wittl-form').addClass('dragging');
                 ui.item.addClass('wittl-dragstart');
                 ui.placeholder.height(ui.item.outerHeight());
