@@ -51,11 +51,22 @@ wittlsDirective.directive('dropdownSelect', ['$document', '$compile',
                     var body;
                     $scope.labelField = $attrs.dropdownItemLabel != null ? $attrs.dropdownItemLabel : 'text';
                     this.select = function (selected) {
-                        if (selected !== $scope.dropdownModel) {
-                            angular.copy(selected, $scope.dropdownModel);
-                            $scope.dropdownModel.canSave = true;
-                            $scope.dropdownModel.configuration = {};
-                            $scope.dropdownModel.comparator_name = selected.model.name;
+                        const dropdownModel = $scope.dropdownModel;
+                        if (selected !== dropdownModel) {
+                            delete dropdownModel["fields"];
+                            delete dropdownModel["model"];
+                            angular.extend(dropdownModel, selected);
+
+                            dropdownModel.configuration = {};
+                            var type = dropdownModel.model.type;
+                            if (type == "attr") {
+                                dropdownModel.comparator_name = "attr:" + dropdownModel.text;
+
+                                //Save attribute wittls immediately
+                                $scope.$parent.$parent.save(dropdownModel);
+                            } else {
+                                dropdownModel.comparator_name = selected.model.name;
+                            }
                         }
                         $scope.dropdownOnchange({
                             selected: selected

@@ -84,9 +84,10 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', '
 
 
             Sorting.updateScores(listID, function () {
-                $scope.items = ListItem.query({listID: listID}, function () {
+                ListItem.items = ListItem.resource.query({listID: listID}, function () {
                     resort();
                 });
+                $scope.items = ListItem.items;
             });
 
             $scope.createListItem = function (e) {
@@ -199,11 +200,18 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittl', 'Sorting',
                     for (var i = response.length - 1; i >= 0; i--) {
                         var activeWittl = response[i];
                         var wittl = $scope.wittlOptions.wittls[activeWittl.comparator_name];
+                        var newWittl = angular.copy(activeWittl);
+
                         if (wittl) {
-                            var newWittl = angular.copy(activeWittl);
                             newWittl.text = wittl.text;
                             newWittl.model = wittl.model;
-                            newWittl.canSave = true;
+                            $scope.clauses.unshift(newWittl);
+                        }
+
+                        if (newWittl.comparator_name.indexOf("attr:") === 0) {
+                            var attrName = newWittl.comparator_name.replace("attr:", "");
+                            newWittl.text = attrName;
+                            newWittl.model = {};
                             $scope.clauses.unshift(newWittl);
                         }
                     }
@@ -232,26 +240,24 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittl', 'Sorting',
         };
 
         $scope.save = function (updatedWittl) {
-            if (updatedWittl.canSave) {
-                var listID = Wittl.list.listID;
-                var request;
-                if (angular.isUndefined(updatedWittl.$save)) {
-                    var persistedWittl = new Wittl.list(updatedWittl);
-                    persistedWittl.list = listID;
+            var listID = Wittl.list.listID;
+            var request;
+            if (angular.isUndefined(updatedWittl.$save)) {
+                var persistedWittl = new Wittl.list(updatedWittl);
+                persistedWittl.list = listID;
 
-                    request = persistedWittl.$save(function (savedWittl) {
-                        angular.extend(persistedWittl, savedWittl);
-                        angular.extend(persistedWittl, updatedWittl);
-                        angular.copy(persistedWittl, updatedWittl);
-                    });
-                } else {
-                    request = updatedWittl.$update();
-                }
-
-                request.then(function () {
-                    Sorting.updateScores(listID);
+                request = persistedWittl.$save(function (savedWittl) {
+                    angular.extend(persistedWittl, savedWittl);
+                    angular.extend(persistedWittl, updatedWittl);
+                    angular.copy(persistedWittl, updatedWittl);
                 });
+            } else {
+                request = updatedWittl.$update();
             }
+
+            request.then(function () {
+                Sorting.updateScores(listID);
+            });
         };
 
     }]);
