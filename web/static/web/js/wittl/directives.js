@@ -2,21 +2,16 @@ var wittlsDirective = angular.module('wittlsDirective', []);
 var ngDropdowns = angular.module('ngDropdowns', []);
 
 
-wittlsDirective.directive('wittlParams', ['$compile',
-    function ($compile) {
+wittlsDirective.directive('wittlParams', ['$compile', '$timeout',
+    function ($compile, $timeout) {
         var renderDirective = function (scope, el) {
             var model = scope.wittl.model;
 
             var prepositionHtml = '<span class="preposition">[[ wittl.model.preposition ]]</span>\n';
-            var paramsHtml = "";
-
-            // TODO: make ngRepeat instead
-            angular.forEach(model.fields, function (val, key) {
-                paramsHtml += '<input type=\'[[ wittl.model.fields["' + key + '"].type ]]\''
-                    + 'ng-model=\'wittl.configuration["' + key + '"]\' class="param-field" '
-                    + 'value=\'[[ wittl.configuration["' + key + '"] ]]\' ng-blur="save(wittl)" '
-                    + 'placeholder="placeholder"/>\n';
-            });
+            var paramsHtml = '<input ng-repeat="(key, val) in wittl.model.fields" type=\'[[ wittl.model.fields[key].type ]]\''
+                + 'ng-model=\'wittl.configuration[key]\' class="param-field" '
+                + 'value=\'[[ wittl.configuration[key] ]]\' ng-blur="save(wittl)" '
+                + 'placeholder="placeholder"/>\n';
 
             el.replaceWith($compile(prepositionHtml + paramsHtml)(scope));
         };
@@ -29,7 +24,6 @@ wittlsDirective.directive('wittlParams', ['$compile',
             controller: 'WittlsCtrl',
             link: function (scope, el, attr) {
                 if (Object.keys(scope.wittl.model).length === 0) return;
-
                 renderDirective(scope, el);
             }
         }
@@ -51,13 +45,13 @@ wittlsDirective.directive('dropdownSelect', ['$document', '$compile',
                     var body;
                     $scope.labelField = $attrs.dropdownItemLabel != null ? $attrs.dropdownItemLabel : 'text';
                     this.select = function (selected) {
-                        const dropdownModel = $scope.dropdownModel;
+                        var dropdownModel = $scope.dropdownModel;
                         if (selected !== dropdownModel) {
-                            delete dropdownModel["fields"];
-                            delete dropdownModel["model"];
+                            dropdownModel.model = {};
+                            dropdownModel.configuration = {};
+
                             angular.extend(dropdownModel, selected);
 
-                            dropdownModel.configuration = {};
                             var type = dropdownModel.model.type;
                             if (type == "attr") {
                                 dropdownModel.comparator_name = "attr:" + dropdownModel.text;
