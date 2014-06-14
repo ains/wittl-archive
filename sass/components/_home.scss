@@ -2,7 +2,7 @@
 	position: relative;
 	width: 100%;
 	height: 100%;
-	background-color: #FAFAFA;
+	background-color: $wittl-color;
 
 	#main-nav {
 		position: absolute;
@@ -61,9 +61,9 @@
 	.hero {
 		position: fixed;
 		width: 100%;
-		height: 440px;
-		background-color: white;
-		background-image: url('../images/decisions.png');
+		height: 500px;
+		background-color: $wittl-color;
+		// background-image: url('../images/decisions.png');
 		background-size: 100% auto;
 		background-position: 0 -50px;
 		background-repeat: no-repeat;
@@ -77,7 +77,7 @@
 			margin: 0 auto;
 
 			img {
-
+				padding-top: 100px;
 				width: 40%;
 			}
 
@@ -90,7 +90,7 @@
 				// color: $wittl-color;
 				letter-spacing: 3px;
 				color: #FFF;
-				font-family: $body-font;
+				font-family: 'Lato', sans-serif;
 				font-weight: 100;
 				font-size: 30px;
 
@@ -128,12 +128,45 @@
 		position: absolute;
 		width: 100%;
 		margin-top: 440px;
-		background-color: #FAFAFA;
+		//background-color: #FFF;
 		padding-top: 0;
+		color: #FFF;
 
 		.strip {
-			background-color: #FFF;
+			//background-color: #FFF;
 			padding: 20px;
+				
+				.tagline {
+					margin-top: 50px;
+					text-align: center;
+
+					h4 {
+						color: #FFF; 
+						margin-top: 10px;
+						font-family: 'Lato', sans-serif;
+						font-weight: 300;
+						font-size: 1.2em;
+						line-height: 1.3em;
+						letter-spacing: 2px;
+					}
+
+				}
+		}
+
+		.signup-wrap {
+
+			#signup {
+				padding: 15px 60px;
+				border-radius: 5px;
+				background-color: rgba(0,0,0,0.1);
+				border-bottom: 3px solid rgba(0,0,0,0.25);
+				color: #FFF;
+				font-size: 1.6em;
+				text-transform: uppercase;
+				font-weight: 300;
+				letter-spacing: 3px;
+
+			}
 		}
 
 		.main-header {
@@ -155,5 +188,6 @@
 				}
 			}
 		}
+
 	}
 }
