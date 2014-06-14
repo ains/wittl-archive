@@ -56,21 +56,5 @@
 
 
 {% block javascript %}
-
-	<script src="/static/web/js/vendor/nanobar.js"></script>
-	<script src="/static/web/js/vendor/isotope.pkgd.js"></script>
-
-	<script src="/static/web/js/vendor/angular/angular.js"></script>
-	<script src="/static/web/js/vendor/angular/angular-resource.js"></script>
-	<script src="/static/web/js/vendor/angular/angular-cookies.js"></script>
-	<script src="/static/web/js/vendor/angular/angular-isotope.min.js"></script>
-	<script src="/static/web/js/vendor/angular/angular-nanobar.js"></script>
-	<script src="/static/web/js/vendor/angular/angular-sortable.js"></script>
-
-	<script src="/static/web/js/wittl/filters.js"></script>
-	<script src="/static/web/js/wittl/directives.js"></script>
-	<script src="/static/web/js/wittl/controllers.js"></script>
-	<script src="/static/web/js/wittl/services.js"></script>
-	<script src="/static/web/js/wittl/app.js"></script>
-
+    {% include 'js_dependencies.html' %}
 {% endblock %}

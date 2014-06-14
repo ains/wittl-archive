@@ -22,7 +22,7 @@
                                    placeholder="Add an item to your wittlist..."/>
                             <span class="input-group-btn">
                                 <button type="submit" class="ladda-button wittl-btn btn" type="submit"
-                            data-style="zoom-in"><span class="ladda-label">Add</span></button>
+                                        data-style="zoom-in"><span class="ladda-label">Add</span></button>
                             </span>
                         </div>
                     </form>
@@ -48,14 +48,16 @@
                 <p class="fullname">
                     {{ user.first_name }} {{ user.last_name }}
                 </p>
-                <p class="joined">Wittler since {{ user.date_joined | date:"F j, Y"}}.</p>
-                
+
+                <p class="joined">Wittler since {{ user.date_joined | date:"F j, Y" }}.</p>
+
                 <hr/>
 
                 <p class="other">
-                    Wittlists are collections of items you want to compare. 
+                    Wittlists are collections of items you want to compare.
                     In each Wittlist you can create <strong>Wittls</strong> to compare the different items.
                 </p>
+
                 <p class="other">
                     You might want to create a list of holiday locations or a collection of potential jobs.
                 </p>
@@ -64,81 +66,64 @@
         </div>
     </div>
     <section ng-controller="ListsCtrl" class="wittlist-list-wrapper pane col-sm-8">
-    <header>
-        <h2>My Wittlists</h2>
-    </header>
+        <header>
+            <h2>My Wittlists</h2>
+        </header>
 
-    <form class="create-wittlist" action="{% url 'list_create' %}" method="post">
-        {% csrf_token %}
-        <div class="input-group wittl-input-group">
-            <input name="{{ create_form.name.name }}" class="form-control" type="text"
-                   placeholder="Name your new wittlist..."/>
+        <form class="create-wittlist" action="{% url 'list_create' %}" method="post">
+            {% csrf_token %}
+            <div class="input-group wittl-input-group">
+                <input name="{{ create_form.name.name }}" class="form-control" type="text"
+                       placeholder="Name your new wittlist..."/>
                     <span class="input-group-btn">
                         <button type="submit" class="btn wittl-btn">Create</button>
                     </span>
-        </div>
-    </form>
+            </div>
+        </form>
 
-    <ul class="wittlist-list row" ng-cloak>
+        <ul class="wittlist-list row" ng-cloak>
 
-        <li ng-repeat="list in lists" class="col-sm-6">
+            <li ng-repeat="list in lists" class="col-sm-6">
 
-            <div class="row">
-                <div class="col-xs-8">
-                    <div class="cover">
-                        <a href="#" ng-click="selectList(list.id)" class="add-item" data-toggle="modal"
-                           data-target="#newItemModal"><i class="icon_plus"></i></a>
-                        <a href="#" ng-click="deleteList(list.id)" class="delete-list" data-toggle="modal"
-                           data-target="#newItemModal"><i class="icon_close"></i></a>
-                        <a href="/list/[[ list.id ]]" class="cover-inner">
-                            <img ng-src="[[ list.items[0].card_image | coverphoto ]]" title="[[ list.name ]]"
-                                 alt="[[ list.name ]]"/>
-                        </a>
-                    </div>
-                    <div class="details">
-                        <h3 class="name">
-                            <a href="/list/[[ list.id ]]">[[ list.name ]]</a>
-                        </h3>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="cover">
+                            <a href="#" ng-click="selectList(list.id)" class="add-item" data-toggle="modal"
+                               data-target="#newItemModal"><i class="icon_plus"></i></a>
+                            <a href="#" ng-click="deleteList(list.id)" class="delete-list" data-toggle="modal"
+                               data-target="#newItemModal"><i class="icon_close"></i></a>
+                            <a href="/list/[[ list.id ]]" class="cover-inner">
+                                <img ng-src="[[ list.items[0].card_image | coverphoto ]]" title="[[ list.name ]]"
+                                     alt="[[ list.name ]]"/>
+                            </a>
+                        </div>
+                        <div class="details">
+                            <h3 class="name">
+                                <a href="/list/[[ list.id ]]">[[ list.name ]]</a>
+                            </h3>
 
-                        <div class="stats">
+                            <div class="stats">
                                     <span class="viewers">
                                         <i class="icon_group"></i>&nbsp; [[ list.users.length ]]
                                     </span>
                                     <span class="items">
                                         <i class="icon_tags"></i>&nbsp; [[ list.items.length ]]
                                     </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-        </li>
+            </li>
 
-    </ul>
+        </ul>
 
-    </div>
+        </div>
+    </section>
 
 
 {% endblock %}
 
 {% block javascript %}
-
-    <script type="text/javascript" src="/static/web/js/vendor/nanobar.js"></script>
-    <script type="text/javascript" src="/static/web/js/vendor/ladda/spin.min.js"></script>
-    <script type="text/javascript" src="/static/web/js/vendor/ladda/ladda.min.js"></script>
-    <script type="text/javascript" src="/static/web/js/vendor/ladda/ladda.jquery.min.js"></script>
-
-    <script src="/static/web/js/vendor/angular/angular.js"></script>
-    <script src="/static/web/js/vendor/angular/angular-resource.js"></script>
-    <script src="/static/web/js/vendor/angular/angular-cookies.js"></script>
-    <script src="/static/web/js/vendor/angular/angular-isotope.min.js"></script>
-    <script src="/static/web/js/vendor/angular/angular-nanobar.js"></script>
-    <script src="/static/web/js/vendor/angular/angular-sortable.js"></script>
-
-    <script src="/static/web/js/wittl/filters.js"></script>
-    <script src="/static/web/js/wittl/directives.js"></script>
-    <script src="/static/web/js/wittl/controllers.js"></script>
-    <script src="/static/web/js/wittl/services.js"></script>
-    <script src="/static/web/js/wittl/app.js"></script>
-
+    {% include 'js_dependencies.html' %}
 {% endblock %}
