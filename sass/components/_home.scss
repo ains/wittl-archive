@@ -13,10 +13,13 @@
 		background: none;
 		border: none;
 
-		.navbar-nav {
+		.navbar-nav,
+		.login {
 			padding-top: 30px;
+			list-style-type: none;
 
 			li {
+				float: left;
 				padding: 15px 6px;
 
 				a {
@@ -48,6 +51,10 @@
 					}
 				}
 			}
+
+			.login-btn {
+				background-color: rgba(255,255,255,0.1);
+			}
 		}
 	}
 
@@ -60,6 +67,35 @@
 		background-size: 100% auto;
 		background-position: 0 -50px;
 		background-repeat: no-repeat;
+		display: table;
+
+		.wrap {
+			display: table-cell;
+			vertical-align: middle;
+			text-align: center;
+			width: 100%;
+			margin: 0 auto;
+
+			img {
+
+				width: 40%;
+			}
+
+			h2 {
+				text-align: center;
+				margin: 0;
+				//background-color: rgba(255,255,255,0.15);
+				padding: 15px 20px;
+				border-radius: 8px;
+				// color: $wittl-color;
+				letter-spacing: 3px;
+				color: #FFF;
+				font-family: $body-font;
+				font-weight: 100;
+				font-size: 30px;
+
+			}
+		}
 
 		&> header {
 			position: relative;
@@ -71,6 +107,7 @@
 
 			text-align: center;
 			color: #FFF;
+
 
 			h1 {
 				//background-color: rgba(255,255,255,0.15);
@@ -92,12 +129,11 @@
 		width: 100%;
 		margin-top: 440px;
 		background-color: #FAFAFA;
+		padding-top: 0;
 
 		.strip {
-			float: left;
-			width: 100%;
 			background-color: #FFF;
-			padding-top: 15px;
+			padding: 20px;
 		}
 
 		.main-header {
