@@ -13,15 +13,17 @@ $(function () {
         }
     });
 
-    var resizeInput = function() {
+    var resizeInput = function () {
         $(this).attr('size', $(this).val().length);
     };
 
     $('.wittl-form')
         .on('keyup', 'input.param-field', resizeInput);
-        
-    setTimeout(function() {
+
+    setTimeout(function () {
         $('.wittl-form input.param-field').each(resizeInput);
     }, 250);
+
+    $("[data-toggle='tooltip']").tooltip();
 
 });

@@ -362,6 +362,11 @@ section.pane {
 .wittl-wrapper {
   width: 100%;
   float: left;
+  color: #616161;
+  opacity: 1;
+  padding: 25px 30px 100px;
+  border-radius: 4px;
+  background-color: #F9F9F9;
 
   .wittls {
     width: 100%;
@@ -565,7 +570,7 @@ section.pane {
 
 section.favourites-wrap {
   padding-top: 0;
-  
+
   &> header {
     padding-left: 20px;
 
@@ -641,7 +646,7 @@ section.favourites-wrap {
         }
 
         .attributes {
- 
+
           td {
             padding: 2px 0;
           }
@@ -1299,13 +1304,7 @@ body.modal-open {
 }
 
 .wittl-form {
-  color: #616161;
-  float: left;
-  padding-bottom: 100px;
-  opacity: 1;
-  padding: 25px 30px;
-  border-radius: 4px;
-  background-color: #F9F9F9;
+
 
   &.loading {
     opacity: 0;

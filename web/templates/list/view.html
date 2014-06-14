@@ -108,9 +108,9 @@
 {% endblock %}
 
 {% block content %}
-<!--     <header class="toolbar">
-        
-    </header> -->
+    <!--     <header class="toolbar">
+
+        </header> -->
 
     <section class="wittlist-left pane" ng-controller="ListItemsCtrl">
         <header>
@@ -136,6 +136,7 @@
 
         <div class="wittlist-empty" ng-if="items.length == 0" ng-cloak>
             <i class="illustration icon_documents_alt"></i>
+
             <h3 class="message">
                 Your wittlist is looking rather empty <span class="smiley">:(</span>
                 <br>Let's get cracking above!
@@ -147,9 +148,9 @@
         <div class="wittlist row" isotope-container="isotope-container"
              iso-options="{layoutMode: 'vertical', transitionDuration: '0.65s'}" ng-cloak>
             <div class="col-sm-12 card-wrapper" ng-repeat="item in items track by item.id" isotope-item="isotope-item">
-                
+
                 <div class="card" data-id="[[item.id]]" ng-click="showModal(item)">
-                   
+
                     <a href="#" class="delete pull-right" ng-click="deleteItem($event, $index, item)">
                         <i class="icon_close"></i>
                     </a>
@@ -173,8 +174,8 @@
                             [[ item.attributes.subtitle | truncate: 30 ]]
                         </p>
                     </div>
-                    
-                    <div class="wittl-data">   
+
+                    <div class="wittl-data">
                         <ul ng-if="item.summary.length > 0">
                             <li ng-bind-html="item.summary[0] | unsafe"></li>
                             <li ng-bind-html="item.summary[1] | unsafe"></li>
@@ -193,36 +194,55 @@
     </section>
 
     <section ng-controller="WittlsCtrl" class="wittlist-right pane">
-        <header>
-            <h2>Wittl By</h2>
-        </header>
+    <header>
+        <h2>Wittl By</h2>
+    </header>
 
-        <div class="wittl-wrapper">
-            <form class="nl-form wittl-form">
-                <p class="instruction">Drag and drop each <strong class="wittl-color">wittl</strong> to let us know what's most important to you.<br /><strong><em>The higher up it is, the more important!</em></strong></p>
-                <input type="hidden" ng-model="listId" value="{{ list.id }}" ng-init="listID={{ list.id }}" />
+    <div class="wittl-wrapper">
+    <form class="nl-form wittl-form">
+        <p class="instruction">Drag and drop each <strong class="wittl-color">wittl</strong> to let us know
+            what's most important to you.<br/><strong><em>The higher up it is, the more important!</em></strong>
+        </p>
+        <input type="hidden" ng-model="listId" value="{{ list.id }}" ng-init="listID={{ list.id }}"/>
 
-                <hr />
+        <hr/>
 
-                <p class="intro">
-                    I want to wittl by 
-                </p>
-                <ul class="wittls" ui-sortable="sortableWittlsOptions" ng-model="clauses" ng-cloak>
-                    <li class="wittl-clause" ng-repeat="clause in clauses">
-                        <!-- <div class="wittl"> -->
-                        <div class="wittl-conjunction">
-                            and 
-                        </div>
-                            <div dropdown-select="wittlOptions" dropdown-model="clause" dropdown-onchange="addNewWittl(selected)"></div>
-                            <wittl-params wittl="clause"></wittl-params>
-                        <!-- </div> -->
-                    </li>
-                </ul>
-
-                <div class="delete">
-                    <p><i class="icon_trash_alt"></i>Drop wittl here to delete</p>
+        <p class="intro">
+            I want to wittl by
+        </p>
+        <ul class="wittls" ui-sortable="sortableWittlsOptions" ng-model="clauses" ng-cloak>
+            <li class="wittl-clause" ng-repeat="clause in clauses">
+                <!-- <div class="wittl"> -->
+                <div class="wittl-conjunction">
+                    and
                 </div>
-            </form>
+                <div dropdown-select="wittlOptions" dropdown-model="clause"
+                     dropdown-onchange="addNewWittl(selected)"></div>
+                <wittl-params wittl="clause"></wittl-params>
+                <!-- </div> -->
+            </li>
+        </ul>
+
+        <div class="delete">
+            <p><i class="icon_trash_alt"></i>Drop wittl here to delete</p>
+        </div>
+    </form>
+
+    <hr/>
+    <h2>Co-Wittlers</h2>
+    <ul class="list-inline">
+    {% for user in list.users.all %}
+        <li><img src="{{ user.gravatar_url }}"
+                 alt="{{ user.username }}"
+                 class="img-circle"
+                 style="height: 30px; width:30px;"
+                 data-placement="top"
+                 data-toggle="tooltip" title="{{ user.username }}"
+                            />
+                    </li>
+                {% endfor %}
+            </ul>
+
         </div>
     </section>
 
