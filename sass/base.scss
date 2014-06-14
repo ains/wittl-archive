@@ -194,6 +194,7 @@ a {
     width: 100%;
     max-width: 1200 - $sidebar-width;
     margin: 0 auto;
+    padding-top: 30px;
 
     &:before,
     &:after {
@@ -559,6 +560,110 @@ section.pane {
 
     }
 
+  }
+}
+
+section.favourites-wrap {
+  padding-top: 0;
+  
+  &> header {
+    padding-left: 20px;
+
+    h2 {
+      margin: 10px;
+      padding: 15px 0;
+      border-bottom: 1px solid #EEE;
+    }
+  }
+}
+
+.favourites {
+  padding: 0;
+  padding-bottom: 50px;
+
+  .card-wrapper {
+    margin-top: 30px;
+
+    .card {
+      border-radius: 4px;
+      background-color: #FFF;
+      border: 1px solid #ededed;
+      box-shadow: 2px 2px 4px rgba(34, 62, 85, 0.15);
+
+      .pic {
+        position: relative;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        overflow: hidden;
+        height: 140px;
+        box-shadow: 0 0 100px rgba(0,0,0,0.7) inset;
+
+        .favourite {
+          position: absolute;
+          left: 15px;
+          top: 10px;
+          font-size: 20px;
+
+          color: #FFF;
+
+          &:hover {
+            color: darken(white, 10%);
+          }
+        }
+
+
+        img {
+          width: 100%;
+        }
+      }
+
+      .details {
+        padding: 10px 25px;
+        border-top: 4px solid $wittl-color;
+
+        .title {
+          font-family: $heading-font;
+          font-weight: 700;
+          font-size: 1em;
+          text-transform: uppercase;
+          line-height: 1.3em;
+          // color: #575757;
+          color: $wittl-color;
+
+          margin: 10px 0;
+        }
+
+        .wittl-meta-description {
+          font-size: 0.9em;
+          font-weight: 600;
+          font-style: italic;
+          color: #BBB;
+        }
+
+        .attributes {
+ 
+          td {
+            padding: 2px 0;
+          }
+
+          .key {
+            width: 50%;
+            padding-right: 10px;
+            font-family: $heading-font;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            color: darken($subheading-color, 5%);
+          }
+
+          .val {
+            width: 50%;
+            padding-left: 20px;
+            color: $wittl-color;
+            text-align: right;
+          }
+        }
+      }
+    }
   }
 }
 

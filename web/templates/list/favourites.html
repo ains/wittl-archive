@@ -2,13 +2,23 @@
 
 {% block content %}
 
-<!-- Wittlist -->
-<div ng-controller="FavouritesCtrl">
-	<div class="wittlist row" ng-cloak>
-	    <div class="col-sm-12 card-wrapper" ng-repeat="item in items track by item.id">
-	        <div class="card" data-id="[[item.id]]" ng-click="showModal(item)">
-	            <div class="row">
-	                <div class="col-sm-1 pic">
+
+<section class="favourites-wrap pane">
+    <header>
+        <h2>My Favourites</h2>
+    </header>
+
+	<!-- Favourites list -->
+	<div ng-controller="FavouritesCtrl" class="col-sm-12">
+
+		<div class="favourites row" isotope-container="isotope-container"
+	             iso-options="{layoutMode: 'masonry', transitionDuration: '0.65s'}" ng-cloak>
+
+		    <div class="col-sm-3 card-wrapper" ng-repeat="item in items track by item.id" isotope-item="isotope-item">
+
+				<!-- Begin card -->
+		        <div class="card" data-id="[[item.id]]" ng-click="showModal(item)">
+	                <div class="pic">
 	                    <a class="favourite pull-right" ng-click="toggleFavourite($event, item)"
 	                       ng-if="item.favourited" href="#"><i
 	                            class="icon_star"></i></a>
@@ -18,32 +28,37 @@
 
 	                    <img ng-src="[[ item.card_image ]]" title="Name of thing here"/>
 	                </div>
-
-	                <div class="col-sm-4">
+	                <div class="details">
 	                    <h3 class="title"> [[ item.name | limitTo: 20 ]]</h3>
+	                    <p class="wittl-meta-description">[[ item.attributes.subtitle | limitTo:10 ]]</p>
+	                    
+	                    <hr />
 
-	                    <p class="wittl-meta-description">[[ item.subtitle | limitTo:10 ]]</p>
-	                </div>
-	                <div class="col-sm-7">
-	                    <ul class="wittl-data">
-	                        <li style="color: #e74c3c;" ng-bind-html="item.summary[0] | unsafe"></li>
-	                        <li style="color: #2ecc71;" ng-bind-html="item.summary[1] | unsafe"></li>
-	                        <li style="color: #9b59b6;" ng-bind-html="item.summary[2] | unsafe"></li>
-	                    </ul>
-	                </div>
-	            </div>
+	                    <table class="attributes">
+	                    	<tr ng-repeat="(key, val) in item.attributes.sortable_attrs">
+	                    		<td class="key">[[ key ]]</td>
+	                    		<td class="val">[[ val ]]</td>
+	                    	</tr>
+	                    </table>
 
-	        </div>
-	    </div>
+	                </div>
+		        </div>
+		        <!-- END card -->
+
+		    </div>
+		</div>
+
 	</div>
-</div>
+
+</section>
 
 {% endblock %}
 
 
 {% block javascript %}
 
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/nanobar/0.2.0/nanobar.min.js"></script>
+	<script src="/static/web/js/vendor/nanobar.js"></script>
+	<script src="/static/web/js/vendor/isotope.pkgd.js"></script>
 
 	<script src="/static/web/js/vendor/angular/angular.js"></script>
 	<script src="/static/web/js/vendor/angular/angular-resource.js"></script>
