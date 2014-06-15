@@ -12,9 +12,9 @@ class DistanceFromComparator(BaseComparator):
     PREPOSITION = "to"
     FIELDS = {"destination_location": {"type": "text"}}
 
-    def score(self, latitude, longitude, to_lat, to_lon):
-        score = GoogleMapsAPI().get_distance(latitude, longitude, to_lat, to_lon)
+    def score(self, latitude, longitude, destination_location):
+        distance_data = GoogleMapsAPI().get_distance(latitude, longitude, destination_location)
         return {
-            "score": score,
-            "summary": ""
+            "score": distance_data["value"],
+            "summary": "{} from {}".format(distance_data["text"], destination_location)
         }

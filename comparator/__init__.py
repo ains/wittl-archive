@@ -5,6 +5,7 @@ from distance_from import DistanceFromComparator
 from travel_prices_from import TravelPricesFromComparator
 from travel_time_from import TravelTimeFromComparator
 from weather import WeatherComparator
+from nearby import NearbyComparator
 
 
 # Magic/Reflection method of getting all comparators
@@ -28,6 +29,7 @@ ENABLED_COMPARATORS = [
     TravelPricesFromComparator,
     TravelTimeFromComparator,
     WeatherComparator,
+    NearbyComparator,
 ]
 all_comparators = {comparator.NAME: comparator for comparator in ENABLED_COMPARATORS}
 

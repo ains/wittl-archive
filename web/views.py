@@ -4,9 +4,10 @@ from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
+from django.forms.util import ErrorList
 from django.contrib.auth import authenticate, login
 
-from models import List, ListForm
+from models import ListForm
 from wittl.shortcuts import get_list
 from forms import UserCreationForm, UserChangePasswordForm
 
@@ -76,10 +77,15 @@ def account_settings(request):
     if request.method == "POST":
         user_form = UserChangePasswordForm(request.POST)
         if user_form.is_valid():
-            request.user.set_password(user_form.cleaned_data["password1"])
-            request.user.save()
-            messages.success(request, 'Password successfully changed')
-            return redirect(reverse("settings"))
+            if request.user.check_password(user_form.cleaned_data["old_password"]):
+                request.user.set_password(user_form.cleaned_data["password1"])
+                request.user.save()
+                messages.success(request, 'Password successfully changed')
+                return redirect(reverse("settings"))
+            else:
+                errors = user_form._errors.setdefault('old_password', ErrorList())
+                errors.append('Incorrect Password')
+                print(user_form.error_messages)
     else:
         user_form = UserChangePasswordForm()
 
