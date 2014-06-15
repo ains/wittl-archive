@@ -18,7 +18,7 @@ urlpatterns = patterns('',
                        url(r'^accounts/register/$', 'web.views.register', name="register"),
 
                        url(r'^admin/', include(admin.site.urls)),
-                       url(r'^api/v1/token-auth/', 'rest_framework.authtoken.views.obtain_auth_token'),
+                       url(r'^api/v1/token-auth/', 'wittl.api.obtain_auth_token'),
                        url(r'^api/v1/', include(router.urls)),
                        url(r'^api/v1/', include(lists_router.urls)),
                        url(r'^favourites', 'web.views.favourite_list', name='favourites'),

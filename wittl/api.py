@@ -15,6 +15,27 @@ from rest_framework import viewsets, routers
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, Field
 from rest_framework.permissions import AllowAny
 from rest_framework_nested.routers import NestedSimpleRouter
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.authtoken.views import ObtainAuthToken
+
+
+class UnsafeSessionAuthentication(SessionAuthentication):
+    def authenticate(self, request):
+        http_request = request._request
+        user = getattr(http_request, 'user', None)
+
+        if not user or not user.is_active:
+            return None
+
+        return user, None
+
+
+class TokenAuth(ObtainAuthToken):
+    permission_classes = (AllowAny,)
+    authentication_classes = (UnsafeSessionAuthentication,)
+
+
+obtain_auth_token = TokenAuth.as_view()
 
 
 class UserSerializer(ModelSerializer):
