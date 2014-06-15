@@ -25,6 +25,7 @@ html, body {
 }
 
 body {
+  position: relative;
   float: left;
   background-color: $bg-color;
   font-family: $body-font;
@@ -355,16 +356,12 @@ section.pane {
 }
 
 
-.add-new-card {
-  padding: 20px 0;
-}
-
 .wittl-wrapper {
   width: 100%;
   float: left;
   color: #616161;
   opacity: 1;
-  padding: 25px 30px 100px;
+  padding: 25px 30px;
   border-radius: 4px;
   background-color: #F9F9F9;
 
@@ -1576,11 +1573,17 @@ body.modal-open {
       cursor: text;
       color: #3C454D;
 
-      &::-webkit-input-placeholder,
-      &::-moz-placeholder,
-      &:-moz-placeholder,
+      &::-webkit-input-placeholder {
+        color: #CCC;
+      }
+      &::-moz-placeholder {
+        color: #CCC;
+      }
+      &:-moz-placeholder {
+        color: #CCC;
+      }
       &:-ms-input-placeholder {
-        color: red;
+        color: #CCC;
       }
 
       &.loading {
@@ -1594,4 +1597,124 @@ body.modal-open {
   background-color: #F7F7F7;
   border-radius: 3px;
   border: 1px dashed #DDD;
+}
+
+.members-area {
+  padding-top: 10px;
+  padding-bottom: 30px;
+
+  .active-members {
+
+    li {
+      height: 60px;
+      padding: 10px;
+
+      img {
+        height: 100%;
+      }
+    }
+  }
+
+  select {
+
+  }
+
+}
+
+
+.controls {
+  padding: 20px 0;
+
+  .add-new-card {
+    padding: 0;
+  }
+
+  .tabs {
+    float: right;
+    padding-left: 30px;
+
+    .tab {
+      position: relative;
+      background-color: rgba(0,0,0,0.05);
+      color: $wittl-color;
+      padding: 6px 20px;
+      font-size: 15px;
+
+      .count {
+        position: absolute;
+        vertical-align: middle;
+        text-align: center;
+        z-index: 10;
+        top: 5px;
+        right: 10px;
+        width: 15px;
+        height: 15px;
+        padding: 3px;
+        border-radius: 99em;
+        background-color: rgba(0,0,0,0.4);
+        font-size: 7px;
+        color: #FFF;
+      }
+    }
+     
+  }
+}
+
+.comments {
+  float: left;
+  width: 100%;
+  margin-top: 40px;
+  border: 1px solid #EEE;
+  border-radius: 4px;
+  border-bottom: none;
+
+  .thread {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 0;
+    
+
+
+    .message {
+      padding: 10px 0;
+      background-color: rgba(0,0,0,0.01);
+      border-bottom: 1px solid #EEE;
+
+      .sender {
+
+        img {
+          width: 100%;
+          border: 3px solid #FFF;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+      }
+
+      .body {
+        padding: 5px 20px;
+        letter-spacing: 0.8px;
+
+        p {
+          margin-bottom: 5px;
+        }
+
+        .details {
+          font-family: $heading-font;
+          font-size: 0.8em;
+          font-style: italic;
+          color: $subheading-color;
+          letter-spacing: 0.5px;
+        }
+      }
+
+      &:last-child {
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+      }
+
+      &:first-child {
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+      }
+    }
+  }
 }

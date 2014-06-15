@@ -8,6 +8,10 @@ listItemController.controller('ListItemsCtrl', [
             var listID = $scope.listID;
             $scope.items = null;
             $scope.wittlOrder = Wittl;
+            $scope.view = {
+                comments: false,
+                list: true
+            };
 
             var resort = function () {
                 $scope.$emit('iso-option', {
@@ -141,6 +145,16 @@ listItemController.controller('ListItemsCtrl', [
                     renderMap(data.attributes.latitude, data.attributes.longitude);
 
                 }).modal('show');
+            };
+
+            $scope.toggleList = function() {
+                $scope.view.comments = false;
+                $scope.view.list = true;
+            };
+
+            $scope.toggleComments = function() {
+                $scope.view.list = false;
+                $scope.view.comments = true;
             };
 
             Pusher.subscribe('list-' + listID, 'added', addItem);

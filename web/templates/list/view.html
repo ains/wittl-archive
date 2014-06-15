@@ -3,8 +3,7 @@
 {% block css %}
     <link href="//code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" type="text/css" rel="stylesheet" media="all"/>
     <link href="/static/web/js/vendor/ladda/ladda-themeless.min.css" type="text/css" rel="stylesheet"/>
-    <link href="/static/web/js/vendor/selectize/css/selectize.css" type="text/css" rel="stylesheet"/>
-    <link href="/static/web/js/vendor/selectize/css/selectize.default.css" type="text/css" rel="stylesheet"/>
+    <link href="/static/web/js/vendor/selectize/css/selectize.bootstrap3.css" type="text/css" rel="stylesheet"/>
 {% endblock %}
 
 {% block outsidewrapper %}
@@ -20,121 +19,93 @@
         <!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <div class="modal fade" id="browse-wittls">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <!-- modal content here -->
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        <i class="icon_close"></i>
-                    </button>
-                    <h4 class="modal-title">Add a new <strong class="wittl-color">wittl</strong></h4>
-                </div>
-
-                <div class="modal-body">
-
-                    <section class="available-wittls">
-                        <header>
-                            <h3><strong class="wittl-color">WITTLs</strong> available for
-                                <small>{{ list.name|truncatechars:30 }}</small>
-                            </h3>
-                        </header>
-
-                        <ul class="browsable-wittls">
-                            <li class="col-sm-6">
-                                <div class="browsable-wittl" data-selected="0">
-                                    <h4 class="title">Travel Price From</h4>
-
-                                    <div class="more-info">
-                                        <div class="description">
-                                            <p>Brief description about wittl, its primary and secondary params and what
-                                                it can be used for.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="col-sm-6">
-                                <div class="browsable-wittl" data-selected="0">
-                                    <h4 class="title">Ideal Weather</h4>
-
-                                    <div class="more-info">
-                                        <div class="description">
-                                            <p>Brief description about wittl, its primary and secondary params and what
-                                                it can be used for.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="col-sm-6">
-                                <div class="browsable-wittl" data-selected="0">
-                                    <h4 class="title">Travel Time From</h4>
-
-                                    <div class="more-info">
-                                        <div class="description">
-                                            <p>Brief description about wittl, its primary and secondary params and what
-                                                it can be used for.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="col-sm-6">
-                                <div class="browsable-wittl" data-selected="0">
-                                    <h4 class="title">Close To</h4>
-
-                                    <div class="more-info">
-                                        <div class="description">
-                                            <p>Brief description about wittl, its primary and secondary params and what
-                                                it can be used for.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-
-                    </section>
-
-                </div>
-
-                <div class="modal-footer">
-                    <div class="wittl-input-group pull-right">
-                        <button id="browse-next" class="btn wittl-btn">Next</button>
-                    </div>
-                </div>
-
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
 {% endblock %}
 
 {% block content %}
-    <!--     <header class="toolbar">
-
-        </header> -->
 
     <section class="wittlist-left pane" ng-controller="ListItemsCtrl">
         <header>
             <h2>My Wittlist - {{ list.name }}</h2>
         </header>
 
-        <div class="add-new-card">
-            <form id="new-list-item-form" method="POST" ng-submit="createListItem($event)"
-                  action="{% url 'listitem-list' list.id %}">
-                {% csrf_token %}
-                <div class="input-group wittl-input-group">
-                    <input type="text" name="url" ng-model="newItemURL" class="form-control"
-                           placeholder="Add a new item to your Wittlist"/>
-                <span class="input-group-btn">
-                    <button id="new-list-item-submit" class="ladda-button wittl-btn btn" type="submit"
-                            data-style="zoom-in"><span class="ladda-label">Insert</span></button>
-                </span>
-                </div>
-                <input type="hidden" name="list_id" ng-model="listID" ng-init="listID={{ list.id }}"
-                       value="{{ list.id }}"/>
-            </form>
+        <div class="controls">
+            <div class="tabs btn-group">
+                <a class="tab btn btn-default" ng-click="toggleList()">
+                    <i class="icon_documents"></i>
+                </a>
+                <a class="tab btn btn-default" ng-click="toggleComments()">
+                    <i class="icon_chat"></i>
+                    <span class="count">11</span>
+                </a>
+            </div>
+            <div class="add-new-card">
+                <form id="new-list-item-form" method="POST" ng-submit="createListItem($event)"
+                      action="{% url 'listitem-list' list.id %}">
+                    {% csrf_token %}
+                    <div class="input-group wittl-input-group">
+                        <input type="text" name="url" ng-model="newItemURL" class="form-control"
+                               placeholder="Add a new item to your Wittlist"/>
+                    <span class="input-group-btn">
+                        <button id="new-list-item-submit" class="ladda-button wittl-btn btn" type="submit"
+                                data-style="zoom-in"><span class="ladda-label">Insert</span></button>
+                    </span>
+                    </div>
+                    <input type="hidden" name="list_id" ng-model="listID" ng-init="listID={{ list.id }}"
+                           value="{{ list.id }}"/>
+                </form>
+            </div>
+
         </div>
+
+        <div class="comments col-sm-12" ng-show="view.comments" ng-cloak>
+
+            <ul class="thread">
+
+                <li class="message row">
+                    <div class="sender col-sm-2">
+                        <img class="img-circle" src="/static/web/images/liam.jpg" />
+                    </div>
+                    <div class="body col-sm-10">
+                        <p><strong>Liam Hemsworth</strong></p>
+                        <p>Hello and stuff</p>
+                        <p class="details">12:24 on June 21st</p>
+                    </div>
+                </li>
+                <li class="message row">
+                    <div class="sender col-sm-2">
+                        <img class="img-circle" src="/static/web/images/liam.jpg" />
+                    </div>
+                    <div class="body col-sm-10">
+                        <p><strong>Liam Hemsworth</strong></p>
+                        <p>Hello and stuff</p>
+                        <p class="details">12:24 on June 21st</p>
+                    </div>
+                </li>
+                <li class="message row">
+                    <div class="sender col-sm-2">
+                        <img class="img-circle" src="/static/web/images/liam.jpg" />
+                    </div>
+                    <div class="body col-sm-10">
+                        <p><strong>Liam Hemsworth</strong></p>
+                        <p>Hello and stuff</p>
+                        <p class="details">12:24 on June 21st</p>
+                    </div>
+                </li>
+                <li class="message row">
+                    <div class="sender col-sm-2">
+                        <img class="img-circle" src="/static/web/images/liam.jpg" />
+                    </div>
+                    <div class="body col-sm-10">
+                        <p><strong>Liam Hemsworth</strong></p>
+                        <p>Hello and stuff</p>
+                        <p class="details">12:24 on June 21st</p>
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
+
 
         <div class="wittlist-empty" ng-if="items.length == 0" ng-cloak>
             <i class="illustration icon_documents_alt"></i>
@@ -148,7 +119,7 @@
 
         <!-- Wittlist -->
         <div class="wittlist row" isotope-container="isotope-container"
-             iso-options="{layoutMode: 'vertical', transitionDuration: '0.65s'}" ng-cloak>
+             iso-options="{layoutMode: 'vertical', transitionDuration: '0.65s'}" ng-show="view.list" ng-cloak>
             <div class="col-sm-12 card-wrapper" ng-repeat="item in items track by item.id" isotope-item="isotope-item">
 
                 <div class="card" data-id="[[item.id]]" ng-click="showModal(item)">
@@ -196,6 +167,29 @@
     </section>
 
     <section ng-controller="WittlsCtrl" class="wittlist-right pane">
+
+        <input type="hidden" ng-model="listId" value="{{ list.id }}" ng-init="listID={{ list.id }}"/>
+
+        <header>
+            <h2>Members</h2>
+        </header>
+
+        <div ng-controller="UserInviteCtrl" ng-init="listID={{ list.id }}" class="members-area">
+
+            <ul class="active-members list-inline">
+                <li ng-repeat="user in users" ng-cloak>
+                    <img src="[[ user.gravatar_url ]]"
+                           alt="[[ user.username ]]"
+                           class="img-circle"
+                           data-placement="top"
+                           data-toggle="tooltip" title="[[ user.username ]]"
+                        />
+                </li>
+            </ul>
+
+            <select placeholder="Invite a friend" selectize-load="userSearch" selectize-change="inviteUser" selectize=""></select>
+        </div>
+
         <header>
             <h2>Wittl By</h2>
         </header>
@@ -205,7 +199,6 @@
                 <p class="instruction">Drag and drop each <strong class="wittl-color">wittl</strong> to let us know
                     what's most important to you.<br/><strong><em>The higher up it is, the more important!</em></strong>
                 </p>
-                <input type="hidden" ng-model="listId" value="{{ list.id }}" ng-init="listID={{ list.id }}"/>
 
                 <hr/>
 
@@ -232,23 +225,6 @@
 
             </form>
 
-            <div ng-controller="UserInviteCtrl" ng-init="listID={{ list.id }}">
-
-                <h3>Members</h3>
-                <ul class="list-inline">
-                    <li ng-repeat="user in users" ng-cloak><img src="[[ user.gravatar_url ]]"
-                                                       alt="[[ user.username ]]"
-                                                       class="img-circle"
-                                                       style="height: 30px; width:30px;"
-                                                       data-placement="top"
-                                                       data-toggle="tooltip" title="[[ user.username ]]"
-                            />
-                    </li>
-                </ul>
-
-                <h4>Invite someone new:</h4>
-                <select selectize-load="userSearch" selectize-change="inviteUser" selectize=""></select>
-            </div>
         </div>
     </section>
 
