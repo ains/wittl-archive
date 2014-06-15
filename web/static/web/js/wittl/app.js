@@ -30,7 +30,8 @@ var wittl = angular.module('wittl', [
     /* Vendor
      * ------------------- */
     'ui.sortable',
-    'angular-selectize'
+    'angular-selectize',
+    'doowb.angular-pusher'
 ]);
 
 wittl.config(function ($httpProvider, $interpolateProvider, $resourceProvider) {
@@ -48,4 +49,10 @@ wittl.config(function ($httpProvider, $interpolateProvider, $resourceProvider) {
     return function (val) {
         return $sce.trustAsHtml(val);
     };
-});
+}).config(['PusherServiceProvider',
+    function (PusherServiceProvider) {
+        PusherServiceProvider
+            .setToken('8900b5ba3afa0a3d9552')
+            .setOptions({});
+    }
+]);

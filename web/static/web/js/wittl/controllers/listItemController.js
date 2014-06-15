@@ -1,7 +1,9 @@
 var listItemController = angular.module('listItemController', ['iso', 'nanobar']);
 
-listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', 'ListItem', 'Wittl', 'Sorting',
-    function ($scope, $timeout, $http, ListItem, Wittl, Sorting) {
+listItemController.controller('ListItemsCtrl', [
+    '$scope', '$timeout', '$http',
+    'Pusher', 'ListItem', 'Wittl', 'Sorting',
+    function ($scope, $timeout, $http, Pusher, ListItem, Wittl, Sorting) {
         $scope.$watch("listID", function () {
             var listID = $scope.listID;
             $scope.items = null;
@@ -51,6 +53,21 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', '
                 $scope.items = ListItem.items;
             });
 
+            var addItem = function (item, callback) {
+                Sorting.updateScores(listID, function () {
+                    var existingItem = _.findWhere($scope.items, {id: item.id});
+                    if (_.isUndefined(existingItem)) {
+                        $scope.items.push(item);
+                        resort();
+                    }
+
+                    if (!_.isUndefined(callback)) {
+                        callback();
+                    }
+                });
+            };
+
+            Pusher.subscribe('list-' + listID, 'added', addItem);
             $scope.createListItem = function (e) {
                 e.preventDefault();
 
@@ -60,10 +77,8 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', '
                 var url = this.newItemURL;
                 this.newItemURL = '';
 
-                var onSuccess = function (data) {
-                    Sorting.updateScores(listID, function () {
-                        $scope.items.push(data);
-                        resort();
+                var onSuccess = function (item) {
+                    addItem(item, function () {
                         l.ladda('stop');
                     });
                 };
@@ -79,7 +94,7 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', '
             $scope.toggleFavourite = function (e, item) {
                 e.stopPropagation();
                 e.preventDefault();
-                
+
                 $http.post(api + '/lists/' + listID + '/items/' + item.id + "/toggle_favourite/", {})
                     .success(function () {
                         item.favourited = !item.favourited;

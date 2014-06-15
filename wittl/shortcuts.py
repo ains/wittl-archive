@@ -1,7 +1,10 @@
+import pusher
+
 from web.models import List, ListItem, ListComparator
 
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
+from django.conf import settings
 
 
 def get_list(user, *args, **kwargs):
@@ -26,3 +29,13 @@ def get_list_comparator(user, *args, **kwargs):
         return list_comparator
     else:
         raise PermissionDenied()
+
+
+def notify_list(list_id, event, message):
+    p = pusher.Pusher(
+        app_id=settings.PUSHER_APP_ID,
+        key=settings.PUSHER_KEY,
+        secret=settings.PUSHER_SECRET
+    )
+    channel_name = "list-{}".format(list_id)
+    p[channel_name].trigger(event, message)

@@ -7,7 +7,7 @@ from django.http import HttpResponseForbidden, HttpResponseServerError
 from importer import get_importer_for_url
 from comparator import all_comparators
 from web.models import List, ListItem, User, ListComparator
-from shortcuts import get_list, get_list_comparator, get_list_item
+from shortcuts import get_list, get_list_comparator, get_list_item, notify_list
 
 from rest_framework.decorators import link, action
 from rest_framework.response import Response
@@ -118,6 +118,7 @@ class ListItemViewSet(viewsets.ViewSet):
             new_item.save()
 
             serializer = ListItemSerializer(new_item, context={'request': request})
+            notify_list(list.id, "added", serializer.data)
             return Response(serializer.data)
         else:
             return HttpResponseServerError("Unrecognised URL")
