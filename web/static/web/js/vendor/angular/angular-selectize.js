@@ -5,13 +5,21 @@
         return {
             // Restrict it to be an attribute in this case
             restrict: 'A',
-            // responsible for registering DOM listeners as well as updating the DOM
+            scope: {
+                selectizeLoad: "&",
+                selectizeChange: "&"
+            },
             link: function (scope, element, attrs) {
                 $timeout(function () {
-                    $(element).selectize({
+                    var $select = $(element).selectize({
                         persist: false,
-                        create: null,
-                        load: scope.userSearch
+                        create: false,
+                        load: scope.selectizeLoad(),
+                        sortField: 'text'
+                    });
+                    var selectize = $select[0].selectize;
+                    selectize.on('change', function(value) {
+                        scope.selectizeChange()(selectize, value);
                     });
                 });
             }

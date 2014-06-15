@@ -149,11 +149,14 @@ wittlsService.factory('Wittl', ['$http', '$resource',
         return service;
     }]);
 
-userService.factory('User', ['$http',
-    function ($http) {
+userService.factory('User', ['$http', '$resource',
+    function ($http, $resource) {
         return {
             search: function (query) {
                 return $http.get(api + "/user-search/", {params: {query: query}});
+            },
+            resource: function (listID) {
+                return $resource(api + '/lists/:listID/users/', {listID: listID});
             }
         };
     }]);

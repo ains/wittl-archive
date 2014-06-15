@@ -232,24 +232,22 @@
 
             </form>
 
-            <div ng-controller="UserInviteCtrl">
+            <div ng-controller="UserInviteCtrl" ng-init="listID={{ list.id }}">
 
                 <h3>Members</h3>
                 <ul class="list-inline">
-                    {% for user in list.users.all %}
-                        <li><img src="{{ user.gravatar_url }}"
-                                 alt="{{ user.username }}"
-                                 class="img-circle"
-                                 style="height: 30px; width:30px;"
-                                 data-placement="top"
-                                 data-toggle="tooltip" title="{{ user.username }}"
-                                />
-                        </li>
-                    {% endfor %}
+                    <li ng-repeat="user in users" ng-cloak><img src="[[ user.gravatar_url ]]"
+                                                       alt="[[ user.username ]]"
+                                                       class="img-circle"
+                                                       style="height: 30px; width:30px;"
+                                                       data-placement="top"
+                                                       data-toggle="tooltip" title="[[ user.username ]]"
+                            />
+                    </li>
                 </ul>
 
                 <h4>Invite someone new:</h4>
-                <input type="text" ng-model="invite_users" selectize=""/>
+                <select selectize-load="userSearch" selectize-change="inviteUser" selectize=""></select>
             </div>
         </div>
     </section>

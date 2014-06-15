@@ -12,15 +12,17 @@ from shortcuts import get_list, get_list_comparator, get_list_item
 from rest_framework.decorators import link, action
 from rest_framework.response import Response
 from rest_framework import viewsets, routers
-from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from rest_framework.serializers import ModelSerializer, SerializerMethodField, Field
 from rest_framework.permissions import AllowAny
 from rest_framework_nested.routers import NestedSimpleRouter
 
 
 class UserSerializer(ModelSerializer):
+    gravatar_url = Field("gravatar_url")
+
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name')
+        fields = ('id', 'username', 'first_name', 'last_name', 'gravatar_url')
 
 
 class ListItemSerializer(ModelSerializer):
@@ -201,9 +203,35 @@ class ValidUrlPatternViewSet(viewsets.ViewSet):
 class UserViewSet(viewsets.ViewSet):
     def list(self, request):
         query = request.QUERY_PARAMS["query"]
-        queryset = User.objects.filter(username__contains=query).all()
+        queryset = User.objects.filter(username__startswith=query).all()
         serializer = UserSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
+
+
+class ListUserViewSet(viewsets.ViewSet):
+    def list(self, request, list_pk=None):
+        list = get_list(request.user, pk=list_pk)
+        queryset = list.users.all()
+        serializer = UserSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
+
+    def create(self, request, list_pk=None):
+        list = get_list(request.user, pk=list_pk)
+        user_pk = request.DATA["user_id"]
+        user = User.objects.get(pk=user_pk)
+        list.users.add(user)
+
+        serializer = UserSerializer(user, context={'request': request})
+        return Response(serializer.data)
+
+    def delete(self, request, pk=None, list_pk=None):
+        user = User.objects.get(pk=pk)
+        list = get_list(request.user, pk=list_pk)
+        list.users.remove(user)
+
+        serializer = UserSerializer(user, context={'request': request})
+        return Response(serializer.data)
+
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
@@ -216,3 +244,4 @@ router.register(r'valid-urls', ValidUrlPatternViewSet, base_name="validurls")
 lists_router = NestedSimpleRouter(router, r'lists', lookup='list')
 lists_router.register(r'items', ListItemViewSet, base_name='listitem')
 lists_router.register(r'wittls', ListComparatorViewset, base_name='listwittl')
+lists_router.register(r'users', ListUserViewSet, base_name='listusers')
