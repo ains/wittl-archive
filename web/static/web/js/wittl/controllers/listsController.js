@@ -6,7 +6,14 @@ listsController.controller('ListsCtrl', ['$scope', 'Lists', 'Broadcast',
 
         $scope.selectList = function (id) {
             Broadcast.addData('selectedList', id);
-        }
+        };
+
+        $scope.deleteList = function (e, index, list) {
+            e.preventDefault();
+            $scope.lists.splice(index, 1);
+            list.$delete();
+        };
+
 
     }]);
 

@@ -90,8 +90,9 @@
                         <div class="cover">
                             <a href="#" ng-click="selectList(list.id)" class="add-item" data-toggle="modal"
                                data-target="#newItemModal"><i class="icon_plus"></i></a>
-                            <a href="#" ng-click="deleteList(list.id)" class="delete-list" data-toggle="modal"
-                               data-target="#newItemModal"><i class="icon_close"></i></a>
+                            <a href="#" ng-click="deleteList($event, $index, list)" class="delete-list">
+                                <i class="icon_close"></i>
+                            </a>
                             <a href="/list/[[ list.id ]]" class="cover-inner">
                                 <img ng-src="[[ list.items[0].card_image | coverphoto ]]" title="[[ list.name ]]"
                                      alt="[[ list.name ]]"/>

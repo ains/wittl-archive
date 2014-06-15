@@ -10,7 +10,7 @@ var userService = angular.module('userService', []);
 
 listsService.factory('Lists', ['$resource',
     function ($resource) {
-        return $resource(api + '/lists/:listID/');
+        return $resource(api + '/lists/:listID/', {listID: "@id"});
     }]);
 
 listsService.factory('Broadcast',

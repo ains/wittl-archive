@@ -69,11 +69,14 @@ class ListViewSet(viewsets.ViewSet):
 
     def retrieve(self, request, pk=None):
         list = get_list(request.user, pk=pk)
-        if list.user_invited(request.user):
-            serializer = ListSerializer(list, context={'request': request})
-            return Response(serializer.data)
-        else:
-            return HttpResponseForbidden()
+        serializer = ListSerializer(list, context={'request': request})
+        return Response(serializer.data)
+
+    def delete(self, request, pk=None):
+        list = get_list(request.user, pk=pk)
+        list.delete()
+
+        return Response("ok")
 
     @link()
     def score_data(self, request, pk=None):
