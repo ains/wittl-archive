@@ -8,7 +8,7 @@ from django.views.decorators.http import require_POST
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.forms.util import ErrorList
-import django.contib.auth as auth
+import django.contrib.auth as auth
 
 from models import ListForm
 from wittl.shortcuts import get_list
