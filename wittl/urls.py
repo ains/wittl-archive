@@ -12,7 +12,7 @@ urlpatterns = patterns('',
                        url(r'^list/(?P<list_id>[0-9]+)$', 'web.views.list_view', name='list_view'),
 
 
-                       url(r'^accounts/login/$', 'django.contrib.auth.views.login', name='login'),
+                       url(r'^accounts/login/$', 'web.views.login', name='login'),
                        url(r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login', name='logout'),
                        url(r'^accounts/settings/$', 'web.views.account_settings', name='settings'),
                        url(r'^accounts/register/$', 'web.views.register', name="register"),

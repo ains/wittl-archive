@@ -1,14 +1,17 @@
+import django.contrib.auth as auth
+import django.contrib.auth.views
+
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
 
-from models import List, ListForm
+from models import ListForm
 from wittl.shortcuts import get_list
 from forms import UserCreationForm, UserChangePasswordForm
+
 
 def register(request):
     if request.method == "POST":
@@ -16,16 +19,23 @@ def register(request):
         if user_form.is_valid():
             user_form.save()
             user_data = user_form.cleaned_data
-            user = authenticate(username = user_data['username'], 
-                                password = user_data['password2'])
-            login(request, user)
+            user = auth.authenticate(username=user_data['username'],
+                                     password=user_data['password2'])
+            auth.login(request, user)
             return redirect(reverse("list_list"))
     else:
         user_form = UserCreationForm()
 
     return render(request, "registration/register.html", {
-            'form' : user_form,
+        'form': user_form,
     })
+
+
+def login(request, **kwargs):
+    if request.user.is_authenticated():
+        return redirect(reverse("list_list"))
+    else:
+        return auth.views.login(request, **kwargs)
 
 
 def index(request):
@@ -71,6 +81,7 @@ def list_view(request, list_id):
 def favourite_list(request):
     return render(request, "list/favourites.html")
 
+
 @login_required
 def account_settings(request):
     if request.method == "POST":
@@ -84,5 +95,5 @@ def account_settings(request):
         user_form = UserChangePasswordForm()
 
     return render(request, "settings.html", {
-            'form' : user_form,
+        'form': user_form,
     })
