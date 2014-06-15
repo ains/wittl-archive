@@ -127,6 +127,7 @@ class ListItemViewSet(viewsets.ViewSet):
         list_item = get_list_item(request.user, pk=pk)
         list_item.delete()
 
+        notify_list(list_pk, "removed", {"item_id": pk})
         return Response("ok")
 
     @action()

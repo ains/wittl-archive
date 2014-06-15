@@ -42,20 +42,26 @@ listItemService.service('Sorting', ['$rootScope', 'Wittl', 'ListItem', '$http',
     function ($rootScope, Wittl, ListItem, $http) {
         var service = {
             scoringData: {},
+            fetching: false,
             updateScores: function (listID, callback) {
-                $rootScope.startNanobar();
-                $http.get(api + '/lists/' + listID + '/score_data/').
-                    success(function (data) {
-                        service.scoringData = data;
-                        $rootScope.$broadcast('sorting.update');
-                        $rootScope.finishNanobar();
+                if (!service.fetching) {
+                    service.fetching = true;
+                    $rootScope.startNanobar();
+                    $http.get(api + '/lists/' + listID + '/score_data/').
+                        success(function (data) {
+                            service.scoringData = data;
+                            $rootScope.$broadcast('sorting.update');
+                            $rootScope.finishNanobar();
 
-                        if (!angular.isUndefined(callback)) {
-                            callback(data);
-                        }
-                    }).
-                    error(function (data) {
-                    });
+                            if (!angular.isUndefined(callback)) {
+                                callback(data);
+                            }
+                            service.fetching = false;
+                        }).
+                        error(function (data) {
+                            service.fetching = false;
+                        });
+                }
             },
             getSummariesById: function (itemID, n) {
                 var wittlOrder = _.take(Wittl.getOrder(), n);

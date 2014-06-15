@@ -57,7 +57,7 @@ listItemController.controller('ListItemsCtrl', [
                 Sorting.updateScores(listID, function () {
                     var existingItem = _.findWhere($scope.items, {id: item.id});
                     if (_.isUndefined(existingItem)) {
-                        $scope.items.push(item);
+                        $scope.items.push(new ListItem.resource(item));
                         resort();
                     }
 
@@ -67,7 +67,6 @@ listItemController.controller('ListItemsCtrl', [
                 });
             };
 
-            Pusher.subscribe('list-' + listID, 'added', addItem);
             $scope.createListItem = function (e) {
                 e.preventDefault();
 
@@ -142,7 +141,20 @@ listItemController.controller('ListItemsCtrl', [
                     renderMap(data.attributes.latitude, data.attributes.longitude);
 
                 }).modal('show');
-            }
+            };
+
+            Pusher.subscribe('list-' + listID, 'added', addItem);
+            Pusher.subscribe('list-' + listID, 'removed', function (data) {
+                var itemID = parseInt(data['item_id']);
+                var index = _.findIndex($scope.items, {id: itemID});
+                if (index !== -1) {
+                    $scope.items.splice(index, 1);
+                    $timeout(function () {
+                        $scope.$emit("iso-method", {name: "layout", params: null});
+                    });
+                }
+            });
+
         });
     }]);
 
