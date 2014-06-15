@@ -2,22 +2,22 @@
     <!--button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button-->
     <div class="details">
         <header>
-            <h4 class="title">{{ name }}</h4>
+            <h4 class="title"><a target="_blank" href="{{ url }}">{{ attributes.name }}</a></h4>
 
-            <p class="city">{{ city }}</p>
+            <p class="city">{{ attributes.city }}</p>
         </header>
         <hr/>
         <div class="image-wrapper">
-            <img class="item-image" src="{{ image }}"/>
+            <img class="item-image" src="{{ attributes.image }}"/>
         </div>
         <hr/>
-        <p class="description">{{ description }}</p>
+        <p class="description">{{ attributes.description }}</p>
     </div>
 
     <div class="stats">
         <table class="table">
             <tbody>
-            {{#each sortable_attrs}}
+            {{#each attributes.sortable_attrs}}
             <tr>
                 <td class="key">
                     <p>{{@key}}</p>

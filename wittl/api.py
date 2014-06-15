@@ -39,7 +39,7 @@ class ListItemSerializer(ModelSerializer):
 
     class Meta:
         model = ListItem
-        fields = ('name', 'attributes', 'id', 'card_image', 'favourited', 'list')
+        fields = ('name', 'attributes', 'id', 'card_image', 'favourited', 'list', "url")
 
 
 class ListSerializer(ModelSerializer):

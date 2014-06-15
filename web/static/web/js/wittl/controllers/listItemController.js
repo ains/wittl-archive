@@ -97,7 +97,7 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', '
             };
 
             $scope.showModal = function (item) {
-                var data = item.attributes;
+                var data = item;
                 var renderMap = function (lat, long) {
                     var latLng = new google.maps.LatLng(parseFloat(lat), parseFloat(long));
                     var mapOptions = {
@@ -120,7 +120,7 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', '
                     .append(template(data));
 
                 $modal.on('shown.bs.modal', function (e) {
-                    renderMap(data.latitude, data.longitude);
+                    renderMap(data.attributes.latitude, data.attributes.longitude);
 
                 }).modal('show');
             }
