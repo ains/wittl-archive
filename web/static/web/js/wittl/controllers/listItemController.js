@@ -78,6 +78,8 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', '
 
             $scope.toggleFavourite = function (e, item) {
                 e.stopPropagation();
+                e.preventDefault();
+                
                 $http.post(api + '/lists/' + listID + '/items/' + item.id + "/toggle_favourite/", {})
                     .success(function () {
                         item.favourited = !item.favourited;
@@ -86,6 +88,8 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', '
 
             $scope.deleteItem = function (e, index, item) {
                 e.stopPropagation();
+                e.preventDefault();
+
                 if (confirm("Would you like to delete this item?")) {
                     $scope.items.splice(index, 1);
 
