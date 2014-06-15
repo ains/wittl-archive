@@ -5,11 +5,13 @@ var api = '/api/v1';
 var listsService = angular.module('listsService', ['ngResource']);
 var listItemService = angular.module('listItemService', ['ngResource']);
 var wittlsService = angular.module('wittlsService', ['ngResource']);
+var userService = angular.module('userService', []);
+var commentService = angular.module('commentService', []);
 
 
 listsService.factory('Lists', ['$resource',
     function ($resource) {
-        return $resource(api + '/lists/:listID/');
+        return $resource(api + '/lists/:listID/', {listID: "@id"});
     }]);
 
 listsService.factory('Broadcast',
@@ -26,13 +28,20 @@ listsService.factory('Broadcast',
     });
 
 
-listItemService.factory('ListItem', ['$resource',
-    function ($resource) {
+listItemService.factory('ListItem', ['$http', '$resource',
+    function ($http, $resource) {
         return {
             items: null,
             resource: $resource(api + '/lists/:listID/items/:listItemID',
                 {listItemID: "@id", listID: "@list"}, {}
-            )
+            ),
+            favourites: $resource(api + '/favourites/'),
+            toggleFavourite: function (item) {
+                $http.post(api + '/lists/' + item.list + '/items/' + item.id + "/toggle_favourite/", {})
+                    .success(function () {
+                        item.favourited = !item.favourited;
+                    });
+            }
         };
     }]);
 
@@ -41,20 +50,26 @@ listItemService.service('Sorting', ['$rootScope', 'Wittl', 'ListItem', '$http',
     function ($rootScope, Wittl, ListItem, $http) {
         var service = {
             scoringData: {},
+            fetching: false,
             updateScores: function (listID, callback) {
-                $rootScope.startNanobar();
-                $http.get(api + '/lists/' + listID + '/score_data/').
-                    success(function (data) {
-                        service.scoringData = data;
-                        $rootScope.$broadcast('sorting.update');
-                        $rootScope.finishNanobar();
+                if (!service.fetching) {
+                    service.fetching = true;
+                    $rootScope.startNanobar();
+                    $http.get(api + '/lists/' + listID + '/score_data/').
+                        success(function (data) {
+                            service.scoringData = data;
+                            $rootScope.$broadcast('sorting.update');
+                            $rootScope.finishNanobar();
 
-                        if (!angular.isUndefined(callback)) {
-                            callback(data);
-                        }
-                    }).
-                    error(function (data) {
-                    });
+                            if (!angular.isUndefined(callback)) {
+                                callback(data);
+                            }
+                            service.fetching = false;
+                        }).
+                        error(function (data) {
+                            service.fetching = false;
+                        });
+                }
             },
             getSummariesById: function (itemID, n) {
                 var wittlOrder = _.take(Wittl.getOrder(), n);
@@ -140,10 +155,31 @@ wittlsService.factory('Wittl', ['$http', '$resource',
             list: $resource(api + '/lists/:listID/wittls/:wittlID/', {wittlID: "@id", listID: "@list"}, {
                 'update': {method: 'PUT'}
             }),
-            favourites: $resource(api + '/favourites/'),
             options: {},
             attributeOptions: {}
         };
 
         return service;
     }]);
+
+userService.factory('User', ['$http', '$resource',
+    function ($http, $resource) {
+        return {
+            search: function (query) {
+                return $http.get(api + "/user-search/", {params: {query: query}});
+            },
+            resource: function (listID) {
+                return $resource(api + '/lists/:listID/users/', {listID: listID});
+            }
+        };
+    }]);
+
+
+commentService.factory('Comment', ['$resource', function ($resource) {
+    return {
+        resource: function (listID) {
+            return $resource(api + '/lists/:listID/comments/', {listID: listID});
+        },
+        pendingMessages: 0
+    }
+}]);

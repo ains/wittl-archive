@@ -16,6 +16,11 @@ from importer import get_importer_by_name
 class User(AbstractUser):
     favourites = models.ManyToManyField('ListItem')
 
+    @property
+    def gravatar_url(self):
+        hashed_mail = hashlib.md5(self.email).hexdigest()
+        return "http://www.gravatar.com/avatar/{}?default=mm&s=1024".format(hashed_mail)
+
 
 @receiver(post_save, sender=User)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
@@ -36,6 +41,13 @@ class List(models.Model):
 
     def user_invited(self, user):
         return self.users.filter(pk=user.pk).exists()
+
+
+class ListComment(models.Model):
+    author = models.ForeignKey(User)
+    list = models.ForeignKey(List)
+    body = models.TextField()
+    added = models.DateTimeField(auto_now_add=True)
 
 
 class ListForm(ModelForm):

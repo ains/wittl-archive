@@ -6,21 +6,54 @@ from django.http import HttpResponseForbidden, HttpResponseServerError
 
 from importer import get_importer_for_url
 from comparator import all_comparators
-from web.models import List, ListItem, User, ListComparator
-from shortcuts import get_list, get_list_comparator, get_list_item
+from web.models import List, ListItem, User, ListComparator, ListComment
+from shortcuts import get_list, get_list_comparator, get_list_item, notify_list
 
 from rest_framework.decorators import link, action
 from rest_framework.response import Response
 from rest_framework import viewsets, routers
-from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from rest_framework.serializers import ModelSerializer, SerializerMethodField, Field
 from rest_framework.permissions import AllowAny
 from rest_framework_nested.routers import NestedSimpleRouter
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.authtoken.views import ObtainAuthToken
+
+
+class UnsafeSessionAuthentication(SessionAuthentication):
+    def authenticate(self, request):
+        http_request = request._request
+        user = getattr(http_request, 'user', None)
+
+        if not user or not user.is_active:
+            return None
+
+        return user, None
+
+
+class TokenAuth(ObtainAuthToken):
+    permission_classes = (AllowAny,)
+    authentication_classes = (UnsafeSessionAuthentication,)
+
+
+obtain_auth_token = TokenAuth.as_view()
 
 
 class UserSerializer(ModelSerializer):
+    gravatar_url = Field("gravatar_url")
+
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name')
+        fields = ('id', 'username', 'first_name', 'last_name', 'gravatar_url')
+
+
+class ListCommentSerializer(ModelSerializer):
+    author = UserSerializer()
+
+    def transform_added(self, obj, value):
+        return value.strftime("%H:%M")
+
+    class Meta:
+        model = ListComment
 
 
 class ListItemSerializer(ModelSerializer):
@@ -37,7 +70,7 @@ class ListItemSerializer(ModelSerializer):
 
     class Meta:
         model = ListItem
-        fields = ('name', 'attributes', 'id', 'card_image', 'favourited', 'list')
+        fields = ('name', 'attributes', 'id', 'card_image', 'favourited', 'list', "url")
 
 
 class ListSerializer(ModelSerializer):
@@ -67,11 +100,14 @@ class ListViewSet(viewsets.ViewSet):
 
     def retrieve(self, request, pk=None):
         list = get_list(request.user, pk=pk)
-        if list.user_invited(request.user):
-            serializer = ListSerializer(list, context={'request': request})
-            return Response(serializer.data)
-        else:
-            return HttpResponseForbidden()
+        serializer = ListSerializer(list, context={'request': request})
+        return Response(serializer.data)
+
+    def delete(self, request, pk=None):
+        list = get_list(request.user, pk=pk)
+        list.delete()
+
+        return Response("ok")
 
     @link()
     def score_data(self, request, pk=None):
@@ -116,6 +152,7 @@ class ListItemViewSet(viewsets.ViewSet):
             new_item.save()
 
             serializer = ListItemSerializer(new_item, context={'request': request})
+            notify_list(list.id, "added", serializer.data)
             return Response(serializer.data)
         else:
             return HttpResponseServerError("Unrecognised URL")
@@ -124,6 +161,7 @@ class ListItemViewSet(viewsets.ViewSet):
         list_item = get_list_item(request.user, pk=pk)
         list_item.delete()
 
+        notify_list(list_pk, "removed", {"item_id": pk})
         return Response("ok")
 
     @action()
@@ -197,9 +235,63 @@ class ValidUrlPatternViewSet(viewsets.ViewSet):
 
         return Response(itertools.chain.from_iterable(all_patterns))
 
+
+class UserViewSet(viewsets.ViewSet):
+    def list(self, request):
+        query = request.QUERY_PARAMS["query"]
+        queryset = User.objects.filter(username__startswith=query).all()
+        serializer = UserSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
+
+
+class ListUserViewSet(viewsets.ViewSet):
+    def list(self, request, list_pk=None):
+        list = get_list(request.user, pk=list_pk)
+        queryset = list.users.all()
+        serializer = UserSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
+
+    def create(self, request, list_pk=None):
+        list = get_list(request.user, pk=list_pk)
+        user_pk = request.DATA["user_id"]
+        user = User.objects.get(pk=user_pk)
+        list.users.add(user)
+
+        serializer = UserSerializer(user, context={'request': request})
+        return Response(serializer.data)
+
+    def delete(self, request, pk=None, list_pk=None):
+        user = User.objects.get(pk=pk)
+        list = get_list(request.user, pk=list_pk)
+        list.users.remove(user)
+
+        serializer = UserSerializer(user, context={'request': request})
+        return Response(serializer.data)
+
+
+class ListCommentViewSet(viewsets.ViewSet):
+    def list(self, request, list_pk=None):
+        list = get_list(request.user, pk=list_pk)
+        queryset = list.listcomment_set.all()
+        serializer = ListCommentSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
+
+    def create(self, request, list_pk=None):
+        list = get_list(request.user, pk=list_pk)
+        comment = ListComment()
+        comment.author = request.user
+        comment.list = list
+        comment.body = request.DATA["body"]
+        comment.save()
+
+        serializer = ListCommentSerializer(comment, context={'request': request})
+        notify_list(list.id, "newComment", serializer.data)
+        return Response(serializer.data)
+
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'lists', ListViewSet, base_name="list")
+router.register(r'user-search', UserViewSet, base_name="usersearch")
 router.register(r'wittls', ComparatorViewSet, base_name="comparator")
 router.register(r'favourites', FavouritesViewSet, base_name="favourites")
 router.register(r'valid-urls', ValidUrlPatternViewSet, base_name="validurls")
@@ -207,3 +299,5 @@ router.register(r'valid-urls', ValidUrlPatternViewSet, base_name="validurls")
 lists_router = NestedSimpleRouter(router, r'lists', lookup='list')
 lists_router.register(r'items', ListItemViewSet, base_name='listitem')
 lists_router.register(r'wittls', ListComparatorViewset, base_name='listwittl')
+lists_router.register(r'users', ListUserViewSet, base_name='listusers')
+lists_router.register(r'comments', ListCommentViewSet, base_name='comments')

@@ -1,11 +1,25 @@
 var listItemController = angular.module('listItemController', ['iso', 'nanobar']);
 
-listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', 'ListItem', 'Wittl', 'Sorting',
-    function ($scope, $timeout, $http, ListItem, Wittl, Sorting) {
+listItemController.controller('ListItemsCtrl', [
+    '$scope', '$timeout', '$http',
+    'Pusher', 'ListItem', 'Wittl', 'Sorting', 'Comment',
+    function ($scope, $timeout, $http, Pusher, ListItem, Wittl, Sorting, Comment) {
         $scope.$watch("listID", function () {
             var listID = $scope.listID;
             $scope.items = null;
             $scope.wittlOrder = Wittl;
+            $scope.view = {
+                comments: false,
+                list: true
+            };
+            $scope.pendingMessages = Comment.pendingMessages;
+            $scope.$watch(function () {
+                return Comment.pendingMessages;
+            }, function (newValue, oldValue, scope) {
+                if (newValue !== oldValue) {
+                    $scope.pendingMessages = newValue;
+                }
+            });
 
             var resort = function () {
                 $scope.$emit('iso-option', {
@@ -51,6 +65,20 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', '
                 $scope.items = ListItem.items;
             });
 
+            var addItem = function (item, callback) {
+                Sorting.updateScores(listID, function () {
+                    var existingItem = _.findWhere($scope.items, {id: item.id});
+                    if (_.isUndefined(existingItem)) {
+                        $scope.items.push(new ListItem.resource(item));
+                        resort();
+                    }
+
+                    if (!_.isUndefined(callback)) {
+                        callback();
+                    }
+                });
+            };
+
             $scope.createListItem = function (e) {
                 e.preventDefault();
 
@@ -60,10 +88,8 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', '
                 var url = this.newItemURL;
                 this.newItemURL = '';
 
-                var onSuccess = function (data) {
-                    Sorting.updateScores(listID, function () {
-                        $scope.items.push(data);
-                        resort();
+                var onSuccess = function (item) {
+                    addItem(item, function () {
                         l.ladda('stop');
                     });
                 };
@@ -78,14 +104,15 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', '
 
             $scope.toggleFavourite = function (e, item) {
                 e.stopPropagation();
-                $http.post(api + '/lists/' + listID + '/items/' + item.id + "/toggle_favourite/", {})
-                    .success(function () {
-                        item.favourited = !item.favourited;
-                    });
+                e.preventDefault();
+
+                ListItem.toggleFavourite(item);
             };
 
             $scope.deleteItem = function (e, index, item) {
                 e.stopPropagation();
+                e.preventDefault();
+
                 if (confirm("Would you like to delete this item?")) {
                     $scope.items.splice(index, 1);
 
@@ -97,7 +124,7 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', '
             };
 
             $scope.showModal = function (item) {
-                var data = item.attributes;
+                var data = item;
                 var renderMap = function (lat, long) {
                     var latLng = new google.maps.LatLng(parseFloat(lat), parseFloat(long));
                     var mapOptions = {
@@ -120,10 +147,40 @@ listItemController.controller('ListItemsCtrl', ['$scope', '$timeout', '$http', '
                     .append(template(data));
 
                 $modal.on('shown.bs.modal', function (e) {
-                    renderMap(data.latitude, data.longitude);
+                    renderMap(data.attributes.latitude, data.attributes.longitude);
 
                 }).modal('show');
-            }
+            };
+
+            $scope.toggleList = function () {
+                $scope.view.comments = false;
+                $scope.view.list = true;
+            };
+
+            $scope.toggleComments = function () {
+                $scope.view.list = false;
+                $scope.view.comments = true;
+                Comment.pendingMessages = 0;
+            };
+
+            Pusher.subscribe('list-' + listID, 'added', addItem);
+            Pusher.subscribe('list-' + listID, 'removed', function (data) {
+                var itemID = parseInt(data['item_id']);
+                var index = _.findIndex($scope.items, {id: itemID});
+                if (index !== -1) {
+                    $scope.items.splice(index, 1);
+                    $timeout(function () {
+                        $scope.$emit("iso-method", {name: "layout", params: null});
+                    });
+                }
+            });
+            Pusher.subscribe('list-' + listID, 'newComment', function () {
+                if (!$scope.view.comments) {
+                    Comment.pendingMessages++;
+                }
+            });
+
+
         });
     }]);
 

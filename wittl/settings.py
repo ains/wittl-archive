@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import partner_api.keys as keys
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -32,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = (
     'web',
+    'south',
     'rest_framework',
     'rest_framework.authtoken',
     'django.contrib.admin',
@@ -86,11 +88,10 @@ REST_FRAMEWORK = {
     ],
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     )
 }
-
 
 LOGIN_REDIRECT_URL = '/list/'
 
@@ -113,3 +114,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'web.User'
+
+PUSHER_APP_ID = "78083"
+PUSHER_KEY = keys.PUSHER_KEY
+PUSHER_SECRET = keys.PUSHER_SECRET
