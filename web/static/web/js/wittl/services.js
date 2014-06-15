@@ -27,13 +27,20 @@ listsService.factory('Broadcast',
     });
 
 
-listItemService.factory('ListItem', ['$resource',
-    function ($resource) {
+listItemService.factory('ListItem', ['$http', '$resource',
+    function ($http, $resource) {
         return {
             items: null,
             resource: $resource(api + '/lists/:listID/items/:listItemID',
                 {listItemID: "@id", listID: "@list"}, {}
-            )
+            ),
+            favourites: $resource(api + '/favourites/'),
+            toggleFavourite: function (item) {
+                $http.post(api + '/lists/' + item.list + '/items/' + item.id + "/toggle_favourite/", {})
+                    .success(function () {
+                        item.favourited = !item.favourited;
+                    });
+            }
         };
     }]);
 
@@ -147,7 +154,6 @@ wittlsService.factory('Wittl', ['$http', '$resource',
             list: $resource(api + '/lists/:listID/wittls/:wittlID/', {wittlID: "@id", listID: "@list"}, {
                 'update': {method: 'PUT'}
             }),
-            favourites: $resource(api + '/favourites/'),
             options: {},
             attributeOptions: {}
         };

@@ -94,10 +94,7 @@ listItemController.controller('ListItemsCtrl', [
                 e.stopPropagation();
                 e.preventDefault();
 
-                $http.post(api + '/lists/' + listID + '/items/' + item.id + "/toggle_favourite/", {})
-                    .success(function () {
-                        item.favourited = !item.favourited;
-                    });
+                ListItem.toggleFavourite(item);
             };
 
             $scope.deleteItem = function (e, index, item) {
