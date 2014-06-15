@@ -6,7 +6,7 @@ from django.http import HttpResponseForbidden, HttpResponseServerError
 
 from importer import get_importer_for_url
 from comparator import all_comparators
-from web.models import List, ListItem, User, ListComparator
+from web.models import List, ListItem, User, ListComparator, ListComment
 from shortcuts import get_list, get_list_comparator, get_list_item, notify_list
 
 from rest_framework.decorators import link, action
@@ -44,6 +44,16 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'gravatar_url')
+
+
+class ListCommentSerializer(ModelSerializer):
+    author = UserSerializer()
+
+    def transform_added(self, obj, value):
+        return value.strftime("%H:%M")
+
+    class Meta:
+        model = ListComment
 
 
 class ListItemSerializer(ModelSerializer):
@@ -259,6 +269,25 @@ class ListUserViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
 
+class ListCommentViewSet(viewsets.ViewSet):
+    def list(self, request, list_pk=None):
+        list = get_list(request.user, pk=list_pk)
+        queryset = list.listcomment_set.all()
+        serializer = ListCommentSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
+
+    def create(self, request, list_pk=None):
+        list = get_list(request.user, pk=list_pk)
+        comment = ListComment()
+        comment.author = request.user
+        comment.list = list
+        comment.body = request.DATA["body"]
+        comment.save()
+
+        serializer = ListCommentSerializer(comment, context={'request': request})
+        notify_list(list.id, "newComment", serializer.data)
+        return Response(serializer.data)
+
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'lists', ListViewSet, base_name="list")
@@ -271,3 +300,4 @@ lists_router = NestedSimpleRouter(router, r'lists', lookup='list')
 lists_router.register(r'items', ListItemViewSet, base_name='listitem')
 lists_router.register(r'wittls', ListComparatorViewset, base_name='listwittl')
 lists_router.register(r'users', ListUserViewSet, base_name='listusers')
+lists_router.register(r'comments', ListCommentViewSet, base_name='comments')

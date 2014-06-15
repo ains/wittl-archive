@@ -35,7 +35,7 @@
                 </a>
                 <a class="tab btn btn-default" ng-click="toggleComments()">
                     <i class="icon_chat"></i>
-                    <span class="count">11</span>
+                    <span class="count" ng-if="pendingMessages > 0" ng-cloak>[[ pendingMessages ]]</span>
                 </a>
             </div>
             <div class="add-new-card">
@@ -57,57 +57,37 @@
 
         </div>
 
-        <div class="comments col-sm-12" ng-show="view.comments" ng-cloak>
+        <div class="comments col-sm-12" ng-show="view.comments" ng-cloak ng-controller="ListCommentCtrl">
 
             <ul class="thread">
 
-                <li class="message row">
+                <li class="message row" ng-repeat="comment in comments">
                     <div class="sender col-sm-2">
-                        <img class="img-circle" src="/static/web/images/liam.jpg" />
+                        <img class="img-circle" src="[[ comment.author.gravatar_url ]]"/>
                     </div>
                     <div class="body col-sm-10">
-                        <p><strong>Liam Hemsworth</strong></p>
-                        <p>Hello and stuff</p>
-                        <p class="details">12:24 on June 21st</p>
+                        <p><strong>[[ comment.author.username ]]</strong></p>
+
+                        <p>[[ comment.body ]]</p>
+
+                        <p class="details">[[ comment.added ]]</p>
                     </div>
                 </li>
                 <li class="message row">
                     <div class="sender col-sm-2">
-                        <img class="img-circle" src="/static/web/images/liam.jpg" />
+                        <img class="img-circle" src="{{ user.gravatar_url }}"/>
                     </div>
-                    <div class="body col-sm-10">
-                        <p><strong>Liam Hemsworth</strong></p>
-                        <p>Hello and stuff</p>
-                        <p class="details">12:24 on June 21st</p>
-                    </div>
-                </li>
-                <li class="message row">
-                    <div class="sender col-sm-2">
-                        <img class="img-circle" src="/static/web/images/liam.jpg" />
-                    </div>
-                    <div class="body col-sm-10">
-                        <p><strong>Liam Hemsworth</strong></p>
-                        <p>Hello and stuff</p>
-                        <p class="details">12:24 on June 21st</p>
-                    </div>
-                </li>
-                <li class="message row">
-                    <div class="sender col-sm-2">
-                        <img class="img-circle" src="/static/web/images/liam.jpg" />
-                    </div>
-                    <div class="body col-sm-10">
-                        <p><strong>Liam Hemsworth</strong></p>
-                        <p>Hello and stuff</p>
-                        <p class="details">12:24 on June 21st</p>
+                    <div class="body col-sm-10"><textarea class="form-control" rows="3" ng-model="commentText" ng-keypress="checkSubmit($event)"></textarea>
                     </div>
                 </li>
 
             </ul>
 
+
         </div>
 
 
-        <div class="wittlist-empty" ng-if="items.length == 0" ng-cloak>
+        <div class="wittlist-empty" ng-if="items.length == 0 && view.list" ng-cloak>
             <i class="illustration icon_documents_alt"></i>
 
             <h3 class="message">
@@ -179,15 +159,16 @@
             <ul class="active-members list-inline">
                 <li ng-repeat="user in users" ng-cloak>
                     <img src="[[ user.gravatar_url ]]"
-                           alt="[[ user.username ]]"
-                           class="img-circle"
-                           data-placement="top"
-                           data-toggle="tooltip" title="[[ user.username ]]"
-                        />
+                         alt="[[ user.username ]]"
+                         class="img-circle"
+                         data-placement="top"
+                         data-toggle="tooltip" title="[[ user.username ]]"
+                            />
                 </li>
             </ul>
 
-            <select placeholder="Invite a friend" selectize-load="userSearch" selectize-change="inviteUser" selectize=""></select>
+            <select placeholder="Invite a friend" selectize-load="userSearch" selectize-change="inviteUser"
+                    selectize=""></select>
         </div>
 
         <header>
@@ -224,7 +205,7 @@
                 <hr/>
 
             </form>
-            
+
         </div>
     </section>
 

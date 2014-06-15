@@ -6,6 +6,7 @@ var listsService = angular.module('listsService', ['ngResource']);
 var listItemService = angular.module('listItemService', ['ngResource']);
 var wittlsService = angular.module('wittlsService', ['ngResource']);
 var userService = angular.module('userService', []);
+var commentService = angular.module('commentService', []);
 
 
 listsService.factory('Lists', ['$resource',
@@ -172,3 +173,13 @@ userService.factory('User', ['$http', '$resource',
             }
         };
     }]);
+
+
+commentService.factory('Comment', ['$resource', function ($resource) {
+    return {
+        resource: function (listID) {
+            return $resource(api + '/lists/:listID/comments/', {listID: listID});
+        },
+        pendingMessages: 0
+    }
+}]);

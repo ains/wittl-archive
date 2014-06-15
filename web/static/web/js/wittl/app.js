@@ -27,6 +27,11 @@ var wittl = angular.module('wittl', [
     'userService',
     'userInviteController',
 
+    /* Comments
+     * ------------------- */
+    'commentService',
+    'listCommentController',
+
     /* Vendor
      * ------------------- */
     'ui.sortable',

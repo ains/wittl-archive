@@ -8,3 +8,4 @@ djangorestframework
 Babel==1.3
 drf-nested-routers
 pusher==0.8
+south==0.8.4

@@ -2,8 +2,8 @@ var listItemController = angular.module('listItemController', ['iso', 'nanobar']
 
 listItemController.controller('ListItemsCtrl', [
     '$scope', '$timeout', '$http',
-    'Pusher', 'ListItem', 'Wittl', 'Sorting',
-    function ($scope, $timeout, $http, Pusher, ListItem, Wittl, Sorting) {
+    'Pusher', 'ListItem', 'Wittl', 'Sorting', 'Comment',
+    function ($scope, $timeout, $http, Pusher, ListItem, Wittl, Sorting, Comment) {
         $scope.$watch("listID", function () {
             var listID = $scope.listID;
             $scope.items = null;
@@ -12,6 +12,14 @@ listItemController.controller('ListItemsCtrl', [
                 comments: false,
                 list: true
             };
+            $scope.pendingMessages = Comment.pendingMessages;
+            $scope.$watch(function () {
+                return Comment.pendingMessages;
+            }, function (newValue, oldValue, scope) {
+                if (newValue !== oldValue) {
+                    $scope.pendingMessages = newValue;
+                }
+            });
 
             var resort = function () {
                 $scope.$emit('iso-option', {
@@ -144,14 +152,15 @@ listItemController.controller('ListItemsCtrl', [
                 }).modal('show');
             };
 
-            $scope.toggleList = function() {
+            $scope.toggleList = function () {
                 $scope.view.comments = false;
                 $scope.view.list = true;
             };
 
-            $scope.toggleComments = function() {
+            $scope.toggleComments = function () {
                 $scope.view.list = false;
                 $scope.view.comments = true;
+                Comment.pendingMessages = 0;
             };
 
             Pusher.subscribe('list-' + listID, 'added', addItem);
@@ -165,6 +174,12 @@ listItemController.controller('ListItemsCtrl', [
                     });
                 }
             });
+            Pusher.subscribe('list-' + listID, 'newComment', function () {
+                if (!$scope.view.comments) {
+                    Comment.pendingMessages++;
+                }
+            });
+
 
         });
     }]);
