@@ -7,6 +7,22 @@ from importer.base import BaseImporter
 class AutoTraderImporter(BaseImporter):
     NAME = "autotrader"
     URL_PATTERNS = [r"https?:\/\/(www.)?autotrader.co.uk\/.*?"]
+    SORTABLE_ATTRS = {
+        "boot_capacity": "Boot capacity - seats up",
+        "max_towing_weight_unbraked": "Max towing weight (unbraked)",
+        "engine_power": "Engine power",
+        "CO2_emissions": "CO<sub>2</sub> emissions",
+        "urban_mpg": "Urban mpg",
+        "accleration": "Acceleration (0-62mph)",
+        "mpg": "Average mpg",
+        "num_seats": "No. of seats",
+        "wheel_drive": "Wheel drive",
+        "extra_urban_mpg": "Extra Urban mpg",
+        "num_doors": "No. of doors",
+        "engine_size": "Engine size",
+        "top_speed": "Top speed",
+        "max_towing_weight_braked": "Max towing weight (braked)"
+    }
 
     class MetaGetter():
         def __init__(self, soup):
@@ -31,7 +47,7 @@ class AutoTraderImporter(BaseImporter):
 
         table_attributes = {
             'Urban mpg': 'urban_mpg', 'Extra Urban mpg': 'extra_urban_mpg', 'Average mpg': 'mpg',
-            'CO<sub>2</sub> emissions': 'CO2_emissions', 'Annual Tax': 'annual_tax',
+            'CO<sub>2</sub> emissions': 'CO2_emissions', 
             'Engine power': 'engine_power', 'Acceleration (0-62mph)': 'accleration',
             'Wheel drive': 'wheel_drive', 'Engine size': 'engine_size',
             'Top speed': 'top_speed', 'No. of doors': 'num_doors',
@@ -40,13 +56,19 @@ class AutoTraderImporter(BaseImporter):
             'Max towing weight (unbraked)': 'max_towing_weight_unbraked'
         }
 
+        non_numerical_values = ["name", "url", "description", "wheel_drive", "image"]
+
         for (attribute_label, internal_name) in table_attributes.items():
             label_element = soup.find("th", text=attribute_label)
             if label_element:
-                value_element = label_element.find_next_sibling("td")
-                attributes[internal_name] = value_element.string
+                value_string = label_element.find_next_sibling("td").string
+                if value_string != "No details available" and internal_name not in non_numerical_values:
+                    value = value_string.split()[0]
+                    attributes[internal_name] = float(value) if "." in value else int(value)
+                else:
+                    attributes[internal_name] = value_string
 
-        attributes["price"] = soup.find('span', attrs={'id': 'price'})
+        attributes["price"] = int(soup.find('span', attrs={'id': 'price'}).string[1:].replace(",", ""))
 
         meta_property_getter = self.MetaGetter(soup).property
         meta_properties = [
