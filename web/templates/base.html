@@ -1,167 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8"/>
+<head>
+    <meta charset="utf-8"/>
 
-        <meta name="viewport"
-              content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=0, width=device-width"/>
+    <meta name="viewport"
+          content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=0, width=device-width"/>
 
-        <meta name="description" content=""/>
-        <meta name="author" content=""/>
-        <link rel="shortcut icon" href=""/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="shortcut icon" href=""/>
 
-        <!-- iOS -->
-        <meta name="apple-mobile-web-app-capable" content="yes"/>
-        <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-        <meta name="apple-mobile-web-app-title" content=""/>
-        <link rel="apple-touch-icon" sizes="152x152" href=""/>
-        <!-- iOS 7 iPhone @2x -->
-        <link rel="apple-touch-startup-image"
-              media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" href=""/>
+    <!-- iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="apple-mobile-web-app-title" content=""/>
+    <link rel="apple-touch-icon" sizes="152x152" href=""/>
+    <!-- iOS 7 iPhone @2x -->
+    <link rel="apple-touch-startup-image"
+          media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" href=""/>
 
-        <title>My Wittlist</title>
+    <title>My Wittlist</title>
 
-        <!-- Stylesheets -->
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600,700,400italic|Roboto:400,300,400italic,500,700' rel='stylesheet' type='text/css'/>
-        <link href="/static/web/css/vendor/eleganticons.css" rel="stylesheet"/>
-        <link href="/static/web/css/vendor/animate.css" rel="stylesheet"/>
+    <!-- Stylesheets -->
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600,700,400italic|Roboto:400,300,400italic,500,700'
+          rel='stylesheet' type='text/css'/>
+    <link href="/static/web/css/vendor/eleganticons.css" rel="stylesheet"/>
+    <link href="/static/web/css/vendor/animate.css" rel="stylesheet"/>
 
-        <!-- Custom styles for this template -->
-        <link href="/static/web/css/base.css" rel="stylesheet"/>
+    <!-- Custom styles for this template -->
+    <link href="/static/web/css/base.css" rel="stylesheet"/>
 
-        {% block css %}
+    {% block css %}
 
-        {% endblock %}
+    {% endblock %}
 
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
           <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
           <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
+    <script type="text/javascript">
+        window.heap = window.heap || [];
+        heap.load = function (a) {
+            window._heapid = a;
+            var b = document.createElement("script");
+            b.type = "text/javascript", b.async = !0, b.src = ("https:" === document.location.protocol ? "https:" : "http:") + "//cdn.heapanalytics.com/js/heap.js";
+            var c = document.getElementsByTagName("script")[0];
+            c.parentNode.insertBefore(b, c);
+            var d = function (a) {
+                return function () {
+                    heap.push([a].concat(Array.prototype.slice.call(arguments, 0)))
+                }
+            }, e = ["identify", "track"];
+            for (var f = 0; f < e.length; f++)heap[e[f]] = d(e[f])
+        };
+        heap.load("730992440");
+    </script>
+</head>
 
-    </head>
+<body ng-app="wittl">
 
-    <body ng-app="wittl">
+<!-- Visual Debugging (e.g. current Boostrap/responsive screen width) -->
+<!-- <div class="debug">
+    <div class="visiblity">
+        <span class="visible-xs">Size XS</span>
+        <span class="visible-sm">Size SM</span>
+        <span class="visible-md">Size MD</span>
+        <span class="visible-lg">Size LG</span>
+    </div>
+</div> -->
 
-        <!-- Visual Debugging (e.g. current Boostrap/responsive screen width) -->
-        <!-- <div class="debug">
-            <div class="visiblity">
-                <span class="visible-xs">Size XS</span>
-                <span class="visible-sm">Size SM</span>
-                <span class="visible-md">Size MD</span>
-                <span class="visible-lg">Size LG</span>
-            </div>
-        </div> -->
+<!-- Content here -->
 
-        <!-- Content here -->
-        
-        <div id="side-menu">
-            <header>
-                <img src="/static/web/images/logo.png" title="wittl" />
-            </header>
+<div id="side-menu">
+    <header>
+        <img src="/static/web/images/logo.png" title="wittl"/>
+    </header>
 
-            <ul class="text_nav"> 
-                <li>
-                    <a href="{% url 'list_list' %}">
-                        Home
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'favourites' %}">
-                        Starred
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'settings' %}">
-                        Settings
-                    </a>
-                </li>
+    <ul class="text_nav">
+        <li>
+            <a href="{% url 'list_list' %}">
+                Home
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'favourites' %}">
+                Starred
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'settings' %}">
+                Settings
+            </a>
+        </li>
+    </ul>
+</div>
+
+{% block outsidewrapper %}
+
+{% endblock %}
+
+<!-- Main body -->
+<div class="wrapper" nanobar>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <header>
+            <a id="open-menu" href="#open-menu"><i class="icon_menu"></i></a>
+        </header>
+        <ul class="icon_nav">
+            <li>
+                <a href="{% url 'list_list' %}">
+                    <i class="icon_house_alt"></i>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'favourites' %}">
+                    <i class="icon_star_alt"></i>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'settings' %}">
+                    <i class="icon_cogs"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <header class="page-header">
+        <div class="container">
+            <ul class="global-nav list-inline">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">News</a></li>
+                <li><a href="#">Support</a></li>
             </ul>
-        </div>
-
-        {% block outsidewrapper %}
-
-        {% endblock %}
-
-        <!-- Main body -->
-        <div class="wrapper" nanobar>
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <header>
-                    <a id="open-menu" href="#open-menu"><i class="icon_menu"></i></a>
-                </header>
-                <ul class="icon_nav"> 
-                    <li>
-                        <a href="{% url 'list_list' %}">
-                            <i class="icon_house_alt"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'favourites' %}">
-                            <i class="icon_star_alt"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'settings' %}">
-                            <i class="icon_cogs"></i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <header class="page-header">
-                <div class="container">
-                    <ul class="global-nav list-inline">
-                        <li><a href="{% url 'index' %}">Home</a></li>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">News</a></li>
-                        <li><a href="#">Support</a></li>
-                    </ul>
-                    <div class="user-area">
-                        {% if user.is_authenticated %}
-                        <span class="avatar">
-                            <img class="img-circle" src="{{ user.gravatar_url }}" title="{{ user.username }}" alt="{{ user.username }}" />
+            <div class="user-area">
+                {% if user.is_authenticated %}
+                    <span class="avatar">
+                            <img class="img-circle" src="{{ user.gravatar_url }}" title="{{ user.username }}"
+                                 alt="{{ user.username }}"/>
                         </span>
-                        <span>
+                    <span>
                             <a class="profile-link" href="{% url 'list_list' %}">{{ user.username }}</a>
                             |
                             <a class="logout" href="{% url 'logout' %}">Logout</a>
                         </span>
-                        {% else %}
-                        <span>
+                {% else %}
+                    <span>
                             <a class="logout" href="{% url 'login' %}">Log In</a>
                             |
                             <a class="logout" href="{% url 'register' %}">Sign Up</a>
                         </span>
-                        {% endif %}
-                    </div>
-                </div>
-            </header>
-
-            <div class="main-pane">
-
-                <div class="container-fluid content">
-                    <div class="inner">
-                        {% block content %}
-
-                        {% endblock %}
-                    </div>
-                </div>
+                {% endif %}
             </div>
-
         </div>
-        <!-- End main body -->
+    </header>
+
+    <div class="main-pane">
+
+        <div class="container-fluid content">
+            <div class="inner">
+                {% block content %}
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- End main body -->
 
 
-        <!-- JavaScript here
-        ================================================== -->
-        <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="/static/web/js/vendor/jquery.min.js"><\/script>')</script>
-        <script src="/static/web/js/vendor/bootstrap.js"></script>
-        <script src="/static/web/js/vendor/jquery.sidr.min.js"></script>
-        {% block javascript %}
-        {% endblock %}
-        <script src="/static/web/js/main.js"></script>
-    </body>
+<!-- JavaScript here
+================================================== -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/static/web/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="/static/web/js/vendor/bootstrap.js"></script>
+<script src="/static/web/js/vendor/jquery.sidr.min.js"></script>
+{% block javascript %}
+{% endblock %}
+<script src="/static/web/js/main.js"></script>
+</body>
 </html>
