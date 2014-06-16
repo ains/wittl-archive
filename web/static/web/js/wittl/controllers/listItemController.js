@@ -90,9 +90,8 @@ listItemController.controller('ListItemsCtrl', [
                 this.newItemURL = '';
 
                 var onSuccess = function (item) {
-                    addItem(item, function () {
-                        l.ladda('stop');
-                    });
+                    l.ladda('stop');
+                    addItem(item);
                 };
 
                 var onEror = function () {
