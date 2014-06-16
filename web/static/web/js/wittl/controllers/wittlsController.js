@@ -90,4 +90,8 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittl', 'Sorting',
             });
         };
 
+        $scope.del = function (wittl) {
+            console.debug('Del called with', wittl);
+        }
+
     }]);

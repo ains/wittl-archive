@@ -14,6 +14,7 @@
                     var $select = $(element).selectize({
                         persist: false,
                         create: false,
+                        preload: 'focus',
                         load: scope.selectizeLoad(),
                         sortField: 'text'
                     });

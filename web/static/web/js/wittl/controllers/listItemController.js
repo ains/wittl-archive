@@ -9,6 +9,7 @@ listItemController.controller('ListItemsCtrl', [
             $scope.items = null;
             $scope.wittlOrder = Wittl;
             $scope.view = {
+                membes: false,
                 comments: false,
                 list: true
             };
@@ -152,15 +153,14 @@ listItemController.controller('ListItemsCtrl', [
                 }).modal('show');
             };
 
-            $scope.toggleList = function () {
-                $scope.view.comments = false;
-                $scope.view.list = true;
-            };
-
-            $scope.toggleComments = function () {
-                $scope.view.list = false;
-                $scope.view.comments = true;
-                Comment.pendingMessages = 0;
+            $scope.toggleTab = function (tab) {
+                for(view in $scope.view) {
+                    $scope.view[view] = false;
+                }
+                $scope.view[tab] = true;
+                if(tab == 'comments') {
+                    Comment.pendingMessages = 0;
+                }
             };
 
             Pusher.subscribe('list-' + listID, 'added', addItem);

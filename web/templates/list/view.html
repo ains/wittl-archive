@@ -30,10 +30,13 @@
 
         <div class="controls">
             <div class="tabs btn-group">
-                <a class="tab btn btn-default" ng-click="toggleList()">
+                <a class="tab btn btn-default" ng-click="toggleTab('list')">
                     <i class="icon_documents"></i>
                 </a>
-                <a class="tab btn btn-default" ng-click="toggleComments()">
+                <a class="tab btn btn-default" ng-click="toggleTab('members')">
+                    <i class="icon_group"></i>
+                </a>
+                <a class="tab btn btn-default" ng-click="toggleTab('comments')">
                     <i class="icon_chat"></i>
                     <span class="count" ng-if="pendingMessages > 0" ng-cloak>[[ pendingMessages ]]</span>
                 </a>
@@ -83,6 +86,31 @@
 
             </ul>
 
+        </div>
+
+        <div ng-controller="UserInviteCtrl" ng-init="listID={{ list.id }}" ng-show="view.members" class="members-area" ng-cloak>
+
+            <header>
+                <h2>Members</h2>
+            </header>
+
+            <select class="invite-friends" placeholder="Invite a friend..." selectize-load="userSearch" selectize-change="inviteUser"
+                    selectize=""></select>
+                    
+            <ul class="active-members list-inline">
+                <li class="col-sm-4" ng-repeat="user in users">
+                    <div class="card">
+                        <div class="pic">
+                            <img src="[[ user.gravatar_url ]]"
+                                 alt="[[ user.username ]]"
+                                 class="img-circle"
+                                 title="[[ user.username ]]"
+                                    />
+                        </div>
+                        <h4 class="name">[[ user.username ]]</h4>
+                    </div>
+                </li>
+            </ul>
 
         </div>
 
@@ -151,27 +179,6 @@
         <input type="hidden" ng-model="listId" value="{{ list.id }}" ng-init="listID={{ list.id }}"/>
 
         <header>
-            <h2>Members</h2>
-        </header>
-
-        <div ng-controller="UserInviteCtrl" ng-init="listID={{ list.id }}" class="members-area">
-
-            <ul class="active-members list-inline">
-                <li ng-repeat="user in users" ng-cloak>
-                    <img src="[[ user.gravatar_url ]]"
-                         alt="[[ user.username ]]"
-                         class="img-circle"
-                         data-placement="top"
-                         data-toggle="tooltip" title="[[ user.username ]]"
-                            />
-                </li>
-            </ul>
-
-            <select placeholder="Invite a friend" selectize-load="userSearch" selectize-change="inviteUser"
-                    selectize=""></select>
-        </div>
-
-        <header>
             <h2>Wittl By</h2>
         </header>
 
@@ -188,14 +195,17 @@
                 </p>
                 <ul class="wittls" ui-sortable="sortableWittlsOptions" ng-model="clauses" ng-cloak>
                     <li class="wittl-clause" ng-repeat="clause in clauses">
-                        <!-- <div class="wittl"> -->
                         <div class="wittl-conjunction">
                             and
                         </div>
                         <div dropdown-select="wittlOptions" dropdown-model="clause"
                              dropdown-onchange="addNewWittl(selected)"></div>
                         <wittl-params wittl="clause"></wittl-params>
-                        <!-- </div> -->
+                        <div class="del">
+                            <a href="#" ng-click="del(clause)">
+                                <i class="icon_close"></i>
+                            </a>
+                        </div>
                     </li>
                 </ul>
 
@@ -207,6 +217,7 @@
             </form>
 
         </div>
+
     </section>
 
 
