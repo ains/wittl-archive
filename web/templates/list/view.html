@@ -66,7 +66,7 @@
 
                 <li class="message row" ng-repeat="comment in comments">
                     <div class="sender col-sm-2">
-                        <img class="img-circle" src="[[ comment.author.gravatar_url ]]"/>
+                        <img class="img-circle" ng-src="[[ comment.author.gravatar_url ]]"/>
                     </div>
                     <div class="body col-sm-10">
                         <p><strong>[[ comment.author.username ]]</strong></p>
@@ -78,7 +78,7 @@
                 </li>
                 <li class="message row">
                     <div class="sender col-sm-2">
-                        <img class="img-circle" src="{{ user.gravatar_url }}"/>
+                        <img class="img-circle" ng-src="{{ user.gravatar_url }}"/>
                     </div>
                     <div class="body col-sm-10"><textarea class="form-control" rows="3" ng-model="commentText" ng-keypress="checkSubmit($event)"></textarea>
                     </div>
@@ -101,7 +101,7 @@
                 <li class="col-sm-4" ng-repeat="user in users">
                     <div class="card">
                         <div class="pic">
-                            <img src="[[ user.gravatar_url ]]"
+                            <img ng-src="[[ user.gravatar_url ]]"
                                  alt="[[ user.username ]]"
                                  class="img-circle"
                                  title="[[ user.username ]]"
@@ -208,11 +208,6 @@
                         </div>
                     </li>
                 </ul>
-
-                <div class="delete">
-                    <p><i class="icon_trash_alt"></i>Drop wittl here to delete</p>
-                </div>
-                <hr/>
 
             </form>
 
