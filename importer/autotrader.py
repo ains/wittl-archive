@@ -29,7 +29,6 @@ class AutoTraderImporter(BaseImporter):
             meta_tag = self.soup.find("meta", attrs={"name": name_name})
             return h.unescape(meta_tag["content"]) if meta_tag is not None else ""
 
-
     def extract_attributes(self, page):
         attributes = {}
 
@@ -37,7 +36,7 @@ class AutoTraderImporter(BaseImporter):
 
         table_attributes = {
             'Urban mpg': 'urban_mpg', 'Extra Urban mpg': 'extra_urban_mpg', 'Average mpg': 'mpg',
-            'CO<sub>2</sub> emissions': 'CO2_emissions', 
+            'CO<sub>2</sub> emissions': 'CO2_emissions',
             'Engine power': 'engine_power', 'Acceleration (0-62mph)': 'accleration',
             'Wheel drive': 'wheel_drive', 'Engine size': 'engine_size',
             'Top speed': 'top_speed', 'No. of doors': 'num_doors',
@@ -73,6 +72,7 @@ class AutoTraderImporter(BaseImporter):
             ("description", "description")
         ]
         attributes.update({key: meta_name_getter(property_name) for (property_name, key) in meta_names})
+        attributes["subtitle"] = ""
 
         return attributes
 
