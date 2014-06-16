@@ -219,6 +219,11 @@ class ListComparatorViewset(viewsets.ViewSet):
         serializer = ListComparatorSerializer(comparator, context={'request': request})
         return Response(serializer.data)
 
+    def delete(self, request, pk=None, list_pk=None):
+        comparator = get_list_comparator(request.user, pk=pk)
+        comparator.delete()
+        return Response("ok")
+
 
 class ComparatorViewSet(viewsets.ViewSet):
     def list(self, request):

@@ -90,8 +90,11 @@ wittlsController.controller('WittlsCtrl', ['$scope', 'Wittl', 'Sorting',
             });
         };
 
-        $scope.del = function (wittl) {
-            console.debug('Del called with', wittl);
+        $scope.del = function (index, wittl) {
+            $scope.clauses.splice(index, 1);
+            if(!angular.isUndefined(wittl.$delete)) {
+                wittl.$delete();
+            }
         }
 
     }]);
