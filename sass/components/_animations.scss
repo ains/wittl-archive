@@ -1,0 +1,23 @@
+.comments,
+.members-area,
+.wittlist {
+
+	/* Transitions */
+	&.ng-hide-add.ng-hide-add-active,
+	&.ng-hide-remove.ng-hide-remove-active {
+		@include transition(opacity 5s ease-in);
+	}
+
+	/* Default state */
+	&.ng-hide-add-active,
+	&.ng-hide-remove {
+		opacity: 0;
+	}
+
+	/* Animated state */
+	&.ng-hide-add,
+	&.ng-hide-remove-active {
+		opacity: 1;
+	}
+ 	
+}
