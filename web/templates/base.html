@@ -57,7 +57,7 @@
         
         <div id="side-menu">
             <header>
-                <h1>wittl</h1>
+                <img src="/static/web/images/logo.png" title="wittl" />
             </header>
 
             <ul class="text_nav"> 
@@ -110,15 +110,32 @@
             </div>
 
             <header class="page-header">
-                {% if user.is_authenticated %}
-                <div class="user-area">
-                    <span>
-                        <a class="profile-link" href="{% url 'list_list' %}">{{ user.username }}</a>
-                        |
-                        <a class="logout" href="{% url 'logout' %}">Logout</a>
-                    </span>
+                <div class="container">
+                    <ul class="global-nav list-inline">
+                        <li><a href="{% url 'index' %}">Home</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">News</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                    <div class="user-area">
+                        {% if user.is_authenticated %}
+                        <span class="avatar">
+                            <img class="img-circle" src="{{ user.gravatar_url }}" title="{{ user.username }}" alt="{{ user.username }}" />
+                        </span>
+                        <span>
+                            <a class="profile-link" href="{% url 'list_list' %}">{{ user.username }}</a>
+                            |
+                            <a class="logout" href="{% url 'logout' %}">Logout</a>
+                        </span>
+                        {% else %}
+                        <span>
+                            <a class="logout" href="{% url 'login' %}">Log In</a>
+                            |
+                            <a class="logout" href="{% url 'register' %}">Sign Up</a>
+                        </span>
+                        {% endif %}
+                    </div>
                 </div>
-                {% endif %}
             </header>
 
             <div class="main-pane">

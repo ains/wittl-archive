@@ -24,8 +24,8 @@ $(function () {
         $('.wittl-form input.param-field').each(resizeInput);
     }, 250);
 
-    $('body').tooltip({
-        selector: '[rel=tooltip]'
-    });
+    // $('body').tooltip({
+    //     selector: '[rel=tooltip]'
+    // });
 
 });
