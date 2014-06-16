@@ -9,19 +9,9 @@ class AutoTraderImporter(BaseImporter):
     URL_PATTERNS = [r"https?:\/\/(www.)?autotrader.co.uk\/.*?"]
     SORTABLE_ATTRS = {
         "boot_capacity": "Boot capacity - seats up",
-        "max_towing_weight_unbraked": "Max towing weight (unbraked)",
-        "engine_power": "Engine power",
-        "CO2_emissions": "CO<sub>2</sub> emissions",
-        "urban_mpg": "Urban mpg",
-        "accleration": "Acceleration (0-62mph)",
         "mpg": "Average mpg",
-        "num_seats": "No. of seats",
-        "wheel_drive": "Wheel drive",
-        "extra_urban_mpg": "Extra Urban mpg",
-        "num_doors": "No. of doors",
-        "engine_size": "Engine size",
-        "top_speed": "Top speed",
-        "max_towing_weight_braked": "Max towing weight (braked)"
+        "accleration": "Acceleration (0-62mph)",
+        "top_speed": "Top speed"
     }
 
     class MetaGetter():
