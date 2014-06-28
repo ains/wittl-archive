@@ -1,0 +1,9 @@
+---
+
+- name: Install nodeJS
+  apt: name=nodejs update_cache={{ update_apt_cache }} state=installed
+  tags: packages
+
+- name: Install npm
+  apt: name=npm update_cache={{ update_apt_cache }} state=installed
+  tags: packages
