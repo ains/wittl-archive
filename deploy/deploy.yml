@@ -1,0 +1,37 @@
+---
+
+- hosts: all
+  hosts: all
+  sudo: yes
+  sudo_user: root
+  remote_user: root
+  vars:
+    - setup_git_repo: yes
+    - update_apt_cache: yes
+  vars_files:
+    - env_vars/base.yml
+    - roles/web/vars/main.yml
+  tasks:
+    - name: Update git repo
+      git: repo={{ git_repo }} dest={{ project_path }} accept_hostkey=yes
+      tags: git
+
+    - name: Run NPM install
+      command: npm install chdir={{ application_path }} --save --save-dev
+
+    - name: Run Grunt tasks
+      command: grunt chdir={{ application_path }}
+
+    - name: Run Django South migrations
+      shell: . {{ virtualenv_path }}/bin/activate
+             && . {{ virtualenv_path }}/bin/postactivate
+             && cd {{ application_path }}
+             && python manage.py migrate --noinput
+      tags: django
+
+    - name: Run Django collectstatic
+      shell: . {{ virtualenv_path }}/bin/activate
+             && . {{ virtualenv_path }}/bin/postactivate
+             && cd {{ application_path }}
+             && python manage.py collectstatic --noinput
+      tags: django

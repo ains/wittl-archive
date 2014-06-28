@@ -1,9 +1,13 @@
 ---
 
 - name: Install nodeJS
-  apt: name=nodejs update_cache={{ update_apt_cache }} state=installed
+  apt: name=nodejs-legacy update_cache={{ update_apt_cache }} state=installed
   tags: packages
 
 - name: Install npm
   apt: name=npm update_cache={{ update_apt_cache }} state=installed
   tags: packages
+
+- name: Install Grunt CLI
+  command: npm install -g grunt-cli
+  tags: grunt

@@ -4,6 +4,8 @@
 
 - include: node.yml
 
+- include: sass.yml
+
 - include: setup_virtualenv.yml
 
 - include: setup_git_repo.yml
