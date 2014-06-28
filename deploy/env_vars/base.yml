@@ -1,6 +1,6 @@
 ---
 
-git_repo: https://github.com/jcalazan/glucose-tracker.git
+git_repo: git@github.com:fourofour/wittl.git
 
 project_name: wittl
 application_name: wittl
