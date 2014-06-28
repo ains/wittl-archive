@@ -1,0 +1,8 @@
+---
+
+git_repo: https://github.com/jcalazan/glucose-tracker.git
+
+project_name: wittl
+application_name: wittl
+
+ssl_dest_dir: /etc/ssl

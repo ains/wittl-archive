@@ -2,9 +2,9 @@
 .idea/
 .env/
 *.sqlite3
-web/static/web/css/*.css
+wittl/web/static/web/css/*.css
 .sass-cache/
 run
-partner_api/keys.py
-node_modules/*
-web/static/web/js/templates.js
+wittl/partner_api/keys.py
+wittl/node_modules/*
+wittl/web/static/web/js/templates.js

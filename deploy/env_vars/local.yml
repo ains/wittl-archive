@@ -1,0 +1,34 @@
+---
+
+# Database settings.
+db_user: "{{ application_name }}"
+db_name: "{{ application_name }}"
+
+# Gunicorn settings. For the number of workers, a good rule to follow is
+# 2 x number of CPUs + 1
+gunicorn_num_workers: 1
+
+# Setting this to 1 will restart the Gunicorn process each time
+# you make a request, basically reloading the code. Very handy
+# when developing. Set to 0 for unlimited requests (default).
+gunicorn_max_requests: 1
+
+
+# Nginx settings.
+nginx_server_name: 192.168.33.15
+
+
+# SMTP settings.
+smtp_host: smtp.gmail.com
+smtp_user: admin@example.com
+smtp_password: mypassword
+
+run_django_syncdb: yes
+run_django_south_migration: yes
+run_django_collectstatic: yes
+
+development: yes
+
+#Local Secrets (not really secret)
+db_password: development
+django_secret_key: ktokws)2m_s^*my(gem$+=jd+i6f3c0)l$kn!)9@+gc0vho

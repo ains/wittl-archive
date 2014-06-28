@@ -1,0 +1,10 @@
+---
+
+- name: Setup the Git repo
+  git: repo={{ git_repo }} dest={{ project_path }} accept_hostkey=yes
+  when: setup_git_repo
+  tags: git
+
+
+- name: Copy keys file
+  template: src=keys.py.j2 dest={{ application_path }}/partner_api/keys.py
