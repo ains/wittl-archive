@@ -32,3 +32,6 @@
              && cd {{ application_path }}
              && python manage.py collectstatic --noinput
       tags: django
+
+    - name: Restart application server
+      supervisorctl: name={{ application_name }} state=restarted
