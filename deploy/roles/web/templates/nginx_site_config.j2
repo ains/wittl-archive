@@ -15,7 +15,7 @@ server {
     access_log {{ nginx_access_log_file }};
     error_log {{ nginx_error_log_file }};
 
-    {% if development %}
+    {% if not development %}
     location /static/ {
         alias   {{ nginx_static_dir }};
     }
