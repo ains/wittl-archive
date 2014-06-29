@@ -4,10 +4,6 @@
   apt: name=ruby-full update_cache={{ update_apt_cache }} state=installed
   tags: packages
 
-- name: Install Ruby Gems
-  apt: name=rubygems1.8 update_cache={{ update_apt_cache }} state=installed
-  tags: packages
-
 - name: Install SASS
   command: gem install sass
   tags: sass

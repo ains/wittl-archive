@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from api import router, lists_router
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 admin.autodiscover()
 
@@ -22,3 +23,6 @@ urlpatterns = patterns('',
                        url(r'^api/v1/', include(lists_router.urls)),
                        url(r'^favourites', 'web.views.favourite_list', name='favourites'),
 )
+
+
+urlpatterns += staticfiles_urlpatterns()
