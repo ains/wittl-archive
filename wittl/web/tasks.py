@@ -4,5 +4,5 @@ from celery import shared_task
 
 
 @shared_task
-def add(x, y):
-    return x + y
+def run_comparator(comparator, attributes):
+    return comparator.id, comparator.run(attributes)
