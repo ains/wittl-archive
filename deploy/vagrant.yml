@@ -17,3 +17,5 @@
     - base
     - db
     - web
+    - celery
+    - redis

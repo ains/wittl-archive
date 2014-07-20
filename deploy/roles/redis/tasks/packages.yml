@@ -1,0 +1,8 @@
+---
+- name: Commmon | Install redis package.
+  apt: >
+    pkg={{item}}
+    state=installed
+    update-cache=yes
+  with_items:
+    - redis-server

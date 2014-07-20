@@ -1,0 +1,9 @@
+# simple celerybeat upstart job
+# simple celery worker upstart job
+
+description "{{ project_name }}-celeryworker instance"
+start on runlevel [2345]
+stop on runlevel [06]
+
+
+exec {{ virtualenv_path }}bin/python {{ application_path }}manage.py celery worker -c 10 --loglevel=INFO -A wittl

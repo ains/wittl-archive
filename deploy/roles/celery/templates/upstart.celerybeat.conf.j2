@@ -1,0 +1,8 @@
+# simple celerybeat upstart job
+
+description "{{ project_name }}-celerybeat instance"
+start on runlevel [2345]
+stop on runlevel [06]
+
+
+exec {{ virtualenv_path }}/bin/python {{ application_path }}/manage.py celery beat --loglevel=INFO --settings=base.settings.live
