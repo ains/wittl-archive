@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = (
     'web',
     'south',
+    'djcelery',
     'rest_framework',
     'rest_framework.authtoken',
     'django.contrib.admin',
@@ -124,3 +125,7 @@ AUTH_USER_MODEL = 'web.User'
 PUSHER_APP_ID = "78083"
 PUSHER_KEY = keys.PUSHER_KEY
 PUSHER_SECRET = keys.PUSHER_SECRET
+
+
+#Celery settings
+CELERY_RESULT_BACKEND='djcelery.backends.cache:CacheBackend'

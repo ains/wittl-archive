@@ -11,7 +11,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network :private_network, ip: "192.168.33.15"
 
   config.vm.provider :virtualbox do |vb|
-    vb.customize ["modifyvm", :id, "--name", "Wittl-Vagrant", "--memory", "512"]
+    vb.customize ["modifyvm", :id, "--name", "Wittl-Vagrant", "--memory", "1024"]
   end
 
   config.vm.synced_folder "../", "/webapps/wittl/wittl"

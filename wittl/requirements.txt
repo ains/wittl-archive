@@ -11,3 +11,4 @@ pusher==0.8
 south==0.8.4
 gunicorn==18.0
 psycopg2==2.5.1
+django-celery

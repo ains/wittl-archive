@@ -15,15 +15,17 @@ server {
     access_log {{ nginx_access_log_file }};
     error_log {{ nginx_error_log_file }};
 
-    {% if not development %}
     location /static/ {
+        {% if not development %}
         alias   {{ nginx_static_dir }};
+        {% else %}
+        alias {{ application_path }}/web/static/;
+        {% endif %}
     }
 
     location /media/ {
         alias   {{ nginx_media_dir }};
     }
-    {% endif %}
 
     location / {
         if (-f {{ virtualenv_path }}/maintenance_on.html) {

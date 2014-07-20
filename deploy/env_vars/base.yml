@@ -6,3 +6,8 @@ project_name: wittl
 application_name: wittl
 
 ssl_dest_dir: /etc/ssl
+
+# Application settings.
+virtualenv_path: "/webapps/{{ application_name }}"
+project_path: "{{ virtualenv_path }}/{{ project_name }}"
+application_path: "{{ project_path }}/{{ application_name }}"
