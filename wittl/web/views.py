@@ -9,7 +9,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.forms.util import ErrorList
 
-from models import ListForm
+from models import ListForm, List
 from wittl.shortcuts import get_list
 from forms import UserCreationForm, UserChangePasswordForm
 
@@ -23,7 +23,15 @@ def register(request):
             user = auth.authenticate(username=user_data['username'],
                                      password=user_data['password2'])
             auth.login(request, user)
+
+            anonymous_list_id = request.session.get('anonymous_list_id')
+            if anonymous_list_id is not None:
+                list = get_list(request.user, id=anonymous_list_id)
+                list.creator = user
+                list.save()
+
             return redirect(reverse("list_list"))
+
     else:
         user_form = UserCreationForm()
 
@@ -68,7 +76,6 @@ def list_list(request):
     return render(request, "list/list.html", render_data)
 
 
-@login_required
 def list_view(request, list_id):
     list = get_list(request.user, id=list_id)
     render_data = {
@@ -103,3 +110,13 @@ def account_settings(request):
     return render(request, "settings.html", {
         'form': user_form,
     })
+
+
+def create_anonymous(request):
+    list = List()
+    list.creator = None
+    list.name = "My First wittlist"
+    list.save()
+    request.session['anonymous_list_id'] = list.id
+    success_url = reverse('list_view', args=(list.id,))
+    return HttpResponseRedirect(success_url)
