@@ -12,7 +12,7 @@ from django.forms.util import ErrorList
 from models import ListForm, List
 from wittl.shortcuts import get_list
 from forms import UserCreationForm, UserChangePasswordForm
-from tasks import add
+
 
 def register(request):
     if request.method == "POST":
