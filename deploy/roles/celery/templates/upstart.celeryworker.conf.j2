@@ -2,8 +2,49 @@
 # simple celery worker upstart job
 
 description "{{ project_name }}-celeryworker instance"
+setuid wittl
+setgid webapps
 start on runlevel [2345]
 stop on runlevel [06]
 
+env CELERY_LOG_DIR="/var/log/celery"
+env CELERY_RUN_DIR="/var/run/celery"
+env CELERY_LOG_FILE=celery-worker-%n.log
+env CELERY_PID_FILE=celery-worker-%n.pid
+ 
+env CELERY_LOG_LEVEL="INFO"
 
-exec {{ virtualenv_path }}bin/python {{ application_path }}manage.py celery worker -c 10 --loglevel=INFO -A wittl
+env USER=wittl
+env GROUP=webapps
+
+script
+    # we need this section so that pre-stop gets run!
+    # https://bugs.launchpad.net/upstart/+bug/252996
+    while true
+        do sleep 1d
+    done
+end script
+ 
+pre-start script
+    . {{ virtualenv_path}}/bin/postactivate
+ 
+    {{ virtualenv_path }}/bin/python {{ application_path }}/manage.py celery multi start $CELERY_NODES \
+                                --pidfile="$CELERY_RUN_DIR/$CELERY_PID_FILE" \
+                                --logfile="$CELERY_LOG_DIR/$CELERY_LOG_FILE" \
+                                --loglevel="$CELERY_LOG_LEVEL" \
+                                --app=wittl \
+                               --uid=$USER \
+                               --gid=$GROUP
+end script
+ 
+pre-stop script
+    . {{ virtualenv_path}}/bin/postactivate
+    {{ virtualenv_path }}/bin/python {{ application_path }}/manage.py celery multi stop $CELERY_NODES \
+                                --pidfile="$CELERY_RUN_DIR/$CELERY_PID_FILE" \
+                                --logfile="$CELERY_LOG_DIR/$CELERY_LOG_FILE" \
+                                --loglevel="$CELERY_LOG_LEVEL" \
+                                --app=wittl \
+                                --uid=$USER \
+                                --gid=$GROUP \
+                                --verbose
+end script

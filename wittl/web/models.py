@@ -2,6 +2,8 @@ import json
 import comparator
 import hashlib
 
+from celery import group
+
 from django.core.cache import cache
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -11,6 +13,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from importer import get_importer_by_name
+from tasks import run_comparator
 
 
 class User(AbstractUser):
@@ -87,8 +90,13 @@ class ListItem(models.Model):
 
     def comparator_data(self, user):
         score_data = {}
-        for comparator in self.list.get_comparators_for_user(user):
-            score_data[comparator.id] = comparator.run(self.decoded_attributes)
+
+        task_list = [run_comparator.s(comparator, self.decoded_attributes)
+                     for comparator in self.list.get_comparators_for_user(user)]
+        job = group(task_list)
+
+        for (comparator_id, result) in job.apply_async().get():
+            score_data[comparator_id] = result
 
         return score_data
 
@@ -137,6 +145,7 @@ class ListComparator(models.Model):
 
         result = cache.get(cache_key)
         if not result:
+            print("cache miss")
             result = comparator.run_comparator_by_name(self.comparator_name, self.decoded_configuration, object)
             cache.set(cache_key, result)
 

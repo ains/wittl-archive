@@ -27,5 +27,10 @@
   when: run_django_collectstatic
   tags: django
 
-
-
+- name: Create development admin user
+  shell: . {{ virtualenv_path }}/bin/activate
+         && . {{ virtualenv_path }}/bin/postactivate
+         && cd {{ application_path }}
+         && python manage.py update_admin_user --username=admin --password=development
+  when: development
+  tags: django

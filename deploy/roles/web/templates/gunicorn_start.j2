@@ -3,6 +3,7 @@
 NAME="{{ application_name }}"
 DJANGODIR={{ application_path }}
 SOCKFILE={{ virtualenv_path }}/run/gunicorn.sock
+PIDFILE={{ virtualenv_path }}/run/gunicorn.pid
 USER={{ gunicorn_user }}
 GROUP={{ gunicorn_group }}
 NUM_WORKERS={{ gunicorn_num_workers }}
@@ -25,6 +26,14 @@ source ../../bin/postactivate
 RUNDIR=$(dirname $SOCKFILE)
 test -d $RUNDIR || mkdir -p $RUNDIR
 
+{% if development %}
+watchmedo shell-command \
+    --patterns="*.py" \
+    --recursive \
+    --command='kill -HUP `cat $PIDFILE`' \
+    {{ application_path }} &
+{% endif %}
+
 # Programs meant to be run under supervisor should not daemonize themselves
 # (do not use --daemon).
 exec gunicorn wittl.wsgi:application \
@@ -33,4 +42,5 @@ exec gunicorn wittl.wsgi:application \
   		--max-requests $MAX_REQUESTS \
   		--user=$USER --group=$GROUP \
   		--log-level=debug \
+        --pid $PIDFILE\
   		--bind=unix:$SOCKFILE
