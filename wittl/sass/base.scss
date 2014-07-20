@@ -227,7 +227,6 @@ a {
     width: 100%;
     max-width: 1200 - $sidebar-width;
     margin: 0 auto;
-    padding-top: 30px;
 
     &:before,
     &:after {
@@ -290,6 +289,19 @@ section.pane {
             text-decoration: none;
           }
         }
+      }
+
+    }
+
+    .guide {
+      padding-top: 10px;
+      font-size: 1em;
+      font-weight: 300;
+      letter-spacing: 0.3px; 
+      color: lighten($subheading-color, 5%);
+
+      strong {
+        letter-spacing: normal;
       }
 
     }
@@ -1423,6 +1435,10 @@ body.modal-open {
     letter-spacing: 0.8px;
     font-size: 0.9em;
     color: darken($subheading-color, 10%);
+
+    strong {
+      letter-spacing: normal;
+    }
   }
 
   .intro {
@@ -1870,4 +1886,30 @@ select.invite-friends {
 
 .selectize-control.invite-friends {
   padding-bottom: 20px;
+}
+
+.hopscotch-content {
+
+  p {
+    letter-spacing: 0.3px;
+  }
+
+  .example-link {
+    display: block;
+    background-color: #F7F7F7;
+    color: #AAA;
+    padding: 10px;
+    border-radius: 4px;
+    word-wrap: break-word;
+    margin: 10px 0;
+
+  }
+
+  strong {
+    letter-spacing: normal;
+  }
+
+  .preview {
+    width: 100%;
+  }
 }

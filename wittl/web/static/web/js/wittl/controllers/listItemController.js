@@ -7,12 +7,14 @@ listItemController.controller('ListItemsCtrl', [
         $scope.$watch("listID", function () {
             var listID = $scope.listID;
             $scope.items = null;
+            $scope.newItemURL = "";
             $scope.wittlOrder = Wittl;
             $scope.view = {
-                membes: false,
+                members: false,
                 comments: false,
                 list: true
             };
+
             $scope.pendingMessages = Comment.pendingMessages;
             $scope.$watch(function () {
                 return Comment.pendingMessages;
@@ -81,7 +83,9 @@ listItemController.controller('ListItemsCtrl', [
             };
 
             $scope.createListItem = function (e) {
-                e.preventDefault();
+                if (e) {
+                    e.preventDefault();
+                }
 
                 var l = $('#new-list-item-submit').ladda();
                 l.ladda('start');
@@ -179,6 +183,23 @@ listItemController.controller('ListItemsCtrl', [
                 }
             });
 
+            hopscotch.registerHelper('addSuggestedItem', function (link) {
+                var type = function (string) {
+                    if (string.length > 0) {
+                        $scope.newItemURL += string[0];
+                        $scope.$apply();
+                        setTimeout(function () {
+                            type(string.slice(1, string.length));
+                        }, 20);
+                    }
+                };
+
+                type(link);
+            });
+
+            hopscotch.registerHelper('clearSuggestedItem', function () {
+                $scope.newItemURL = '';
+            });
 
         });
     }]);

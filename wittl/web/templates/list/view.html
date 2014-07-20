@@ -4,6 +4,7 @@
     <link href="//code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" type="text/css" rel="stylesheet" media="all"/>
     <link href="/static/web/js/vendor/ladda/ladda-themeless.min.css" type="text/css" rel="stylesheet"/>
     <link href="/static/web/js/vendor/selectize/css/selectize.bootstrap3.css" type="text/css" rel="stylesheet"/>
+    <link href="/static/web/css/vendor/hopscotch.min.css" type="text/css" rel="stylesheet"/>
 {% endblock %}
 
 {% block outsidewrapper %}
@@ -26,6 +27,7 @@
     <section class="wittlist-left pane" ng-controller="ListItemsCtrl">
         <header>
             <h2>My Wittlist - {{ list.name }}</h2>
+            <p class="guide">Add items from around the web that you want to compare and decide on. Just <strong><em>copy and paste the link</em></strong> to add your item or use our <a href="#" target="_blank">chrome plugin</a>.</p>
         </header>
 
         <div class="controls">
@@ -180,6 +182,7 @@
 
         <header>
             <h2>Wittl By</h2>
+            <p class="guide">Describe what's important to you with the wittls below and watch the magic as we rank and show you the best options from your list.</p>
         </header>
 
         <div class="wittl-wrapper">
