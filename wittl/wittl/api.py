@@ -66,6 +66,8 @@ class ListItemSerializer(ModelSerializer):
 
     def is_favourited(self, obj):
         user = self.context['request'].user
+        if not user.is_authenticated():
+            return False
         return user.favourites.filter(pk=obj.pk).exists()
 
     class Meta:
@@ -93,6 +95,8 @@ class ListComparatorSerializer(ModelSerializer):
 
 
 class ListViewSet(viewsets.ViewSet):
+    permission_classes = (AllowAny,)
+
     def list(self, request):
         queryset = request.user.list_set.all()
         serializer = ListSerializer(queryset, many=True, context={'request': request})
@@ -120,6 +124,8 @@ class ListViewSet(viewsets.ViewSet):
 
 
 class ListItemViewSet(viewsets.ViewSet):
+    permission_classes = (AllowAny,)
+
     def list(self, request, list_pk=None):
         queryset = get_list(request.user, pk=list_pk).items.all()
         serializer = ListItemSerializer(queryset, many=True, context={'request': request})

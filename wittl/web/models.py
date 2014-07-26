@@ -33,17 +33,19 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 
 class List(models.Model):
     name = models.CharField(max_length=256)
-    creator = models.ForeignKey(User, related_name="created_lists")
+    creator = models.ForeignKey(User, related_name="created_lists", blank=True, null=True, default=None)
     users = models.ManyToManyField(User)
 
     def __unicode__(self):
         return "{}/{}".format(self.creator, self.name)
 
     def get_comparators_for_user(self, user):
+        if not user.is_authenticated():
+            user = None
         return self.listcomparator_set.filter(user=user).all()
 
     def user_invited(self, user):
-        return self.users.filter(pk=user.pk).exists()
+        return self.users.filter(pk=user.pk).exists() or self.creator is None
 
 
 class ListComment(models.Model):
@@ -102,7 +104,7 @@ class ListItem(models.Model):
 
 
 class ListComparator(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, blank=True, null=True, default=None)
     list = models.ForeignKey(List)
     order = models.IntegerField()
     comparator_name = models.CharField(max_length="128")
