@@ -26,8 +26,10 @@ def register(request):
 
             anonymous_list_id = request.session.get('anonymous_list_id')
             if anonymous_list_id is not None:
-                list = get_list(request.user, id=anonymous_list_id)
+                list = get_list(user, id=anonymous_list_id)
                 list.creator = user
+                list.save()
+                list.users.add(user)
                 list.save()
 
             return redirect(reverse("list_list"))
